@@ -1,0 +1,79 @@
+# .github/ISSUE_TEMPLATE/bug_report.yml
+name: 🐛 故障报告 (Bug Report)
+description: 报告项目中出现的技术问题或 Bug。
+title: "[Bug]: "
+labels: ["bug", "needs triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢你花时间填写这份故障报告！请尽可能详细地描述问题，以帮助我快速定位和修复。
+
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: 详细描述一下你遇到的 Bug
+      description: 清晰、简洁地描述这个 Bug 是什么。
+      placeholder: 例如：在文章详情页，代码块的语法高亮在移动端失效了。
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction-steps
+    attributes:
+      label: 复现步骤
+      description: 请详细说明如何一步步重现这个问题。
+      placeholder: |
+        1. 使用手机浏览器（或开发者工具模拟手机）访问任意文章页面...
+        2. 滚动到包含代码块的位置...
+        3. 观察到代码没有颜色高亮，而是纯文本。
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: 期望的行为
+      description: 描述一下你认为正常情况下应该是什么样子。
+      placeholder: 代码块应该和在桌面端一样具有正常的语法高亮。
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: 截图或录屏
+      description: 如果可以，请附上截图或录屏来更直观地展示问题。
+      placeholder: 你可以直接将图片拖拽到这里上传。
+
+  - type: dropdown
+    id: browser
+    attributes:
+      label: 发生问题的浏览器/环境
+      multiple: true
+      options:
+        - Chrome
+        - Firefox
+        - Safari
+        - Edge
+        - Node.js (构建或开发时)
+
+  - type: input
+    id: astro-version
+    attributes:
+      label: 你的 Astro 版本
+      description: 可以在项目的 `package.json` 文件中找到。
+      placeholder: "e.g. Astro v4.5.0"
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: 检查项
+      description: 在提交前，请确认以下几点。
+      options:
+        - label: 我已经搜索过现有的 Issues，确认这不是一个重复的问题。
+          required: true
+        - label: 我提供了一个清晰的标题和详细的描述。
+          required: true
