@@ -10,6 +10,7 @@ const { url: site } = themeConfig.site
 export default defineConfig({
   site,
   base,
+  trailingSlash: 'always',
 
   vite: {
     plugins: [tailwindcss()],
