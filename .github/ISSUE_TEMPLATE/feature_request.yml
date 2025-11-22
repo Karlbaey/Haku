@@ -1,0 +1,38 @@
+# .github/ISSUE_TEMPLATE/feature_request.yml
+name: ✨ 功能请求 (Feature Request)
+description: 对博客提出新功能或改进建议。
+title: "[Feature]: "
+labels: ["enhancement", "needs triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        非常感谢你对我的博客提出建议！
+  - type: textarea
+    id: problem-description
+    attributes:
+      label: 这个功能请求是否与某个问题相关？
+      description: 请描述一下你希望通过这个新功能解决什么样的问题或痛点。
+      placeholder: 例如：目前博客没有搜索功能，当文章变多后，很难快速找到特定内容。
+    validations:
+      required: true
+  - type: textarea
+    id: solution-description
+    attributes:
+      label: 你期望的解决方案是什么？
+      description: 详细描述一下你希望看到的功能是什么样的。
+      placeholder: 例如：我希望在导航栏增加一个搜索框，输入关键词后可以展示相关的文章列表。
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 你考虑过的其他替代方案
+      description: 是否有其他方式可以实现类似的效果？
+      placeholder: 例如：也可以创建一个专门的归档页面，通过标签和分类来筛选，但实时搜索体验更好。
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 额外信息
+      description: 是否有其他任何关于这个请求的背景信息或截图？
+      placeholder: 例如：可以参考 xxx 博客的搜索实现方式。
