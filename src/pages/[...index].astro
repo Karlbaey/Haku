@@ -26,10 +26,11 @@ const articlesByYear = await getArticlesByYear()
 ---
 
 <Layout>
-  <!-- 这里是首页独有的内容 -->
-	<h1>Welcome!</h1>
+	<h2>Welcome!</h2>
 	<p>This is a lightning-fast website built using the Astro framework.</p>
 	<img src="https://gcore.jsdelivr.net/gh/Karlbaey/tutu@master/picture10/20251108164726616.png" alt="Acheron" />
+  <p><a href="/articles/a-memory-for-forgetting/">Jump to the only article.</a></p>
+  <p><a href="/articles/cheatsheet/">Jump to the cheatsheet.</a></p>
   <!-- Pinned Posts -->
   {pinnedPosts.length > 0 && (
     <section class="mb-7.5">

@@ -3,7 +3,7 @@ import type { ThemeConfig } from '@/types'
 export const themeConfig: ThemeConfig = {
     site: {
         title: 'HAKU',
-        subtitle: 'An simple astro theme',
+        subtitle: 'A simple astro theme',
         description: 'A demo',
         author: 'Jerry Karlbaey',
         base: '/',

@@ -1,1 +1,120 @@
-/* This is an empty file. It is waiting to be written. */
+/* src/styles/global.css */
+
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  --color-gray-50: oklch(98.5% 0 0);
+  --color-gray-100: oklch(95% 0 0);
+  --color-gray-200: oklch(90% 0 0);
+  --color-gray-300: oklch(85% 0 0);
+  --color-gray-400: oklch(75% 0 0);
+  --color-gray-500: oklch(65% 0 0);
+  --color-gray-600: oklch(55% 0 0);
+  --color-gray-700: oklch(45% 0 0);
+  --color-gray-800: oklch(30% 0 0);
+  --color-gray-900: oklch(15% 0 0);
+  --color-gray-950: oklch(5% 0 0);
+
+  --color-red-500: initial;
+  --color-blue-500: initial;
+  --color-green-500: initial;
+  --color-yellow-500: initial;
+}
+
+@layer base {
+  body {
+    @apply bg-white text-gray-800 antialiased;
+    font-family: "Noto Serif SC", ui-sans-serif, system-ui, -apple-system,
+      "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+      "Noto Color Emoji";
+
+    min-height: 100vh;
+  }
+
+  h1 {
+    font-size: 420%;
+    font-weight: bolder;
+  }
+
+  h1:hover {
+    color: #339afa;
+  }
+
+  h2 {
+    font-size: 300%;
+    font-weight: bold;
+  }
+
+  a {
+    @apply text-black underline decoration-gray-300 transition-colors duration-200;
+  }
+
+  a:hover {
+    @apply decoration-black;
+  }
+
+  hr {
+    @apply border-t border-gray-200 my-8;
+  }
+}
+
+@layer components {
+  .nav-container {
+    @apply w-full flex justify-between items-center;
+    max-width: 65ch;
+    padding: 1rem;
+  }
+
+  .content-wrapper {
+    width: 100%;
+    max-width: 65ch;
+    margin: auto;
+    padding: 0 1rem;
+  }
+
+  .prose {
+    @apply text-base leading-relaxed;
+
+    & h1 {
+      @apply text-4xl mb-6 mt-8;
+    }
+    & h2 {
+      @apply text-3xl mb-4 mt-6 border-b border-gray-200 pb-2;
+    }
+    & h3 {
+      @apply text-2xl mb-3 mt-5;
+    }
+    & p {
+      @apply my-5;
+    }
+    & ul {
+      @apply list-disc pl-6 my-5;
+    }
+    & ol {
+      @apply list-decimal pl-6 my-5;
+    }
+    & li {
+      @apply mb-2;
+    }
+    & blockquote {
+      @apply border-l-4 border-black pl-4 italic text-gray-600 my-6;
+    }
+
+    & pre {
+      @apply bg-gray-100 text-black p-4 rounded-md my-6 overflow-x-auto;
+    }
+
+    & code {
+      @apply bg-gray-200 text-black px-1 py-0.5 rounded-sm;
+    }
+
+    & pre code {
+      @apply bg-transparent p-0 rounded-none;
+    }
+  }
+}
