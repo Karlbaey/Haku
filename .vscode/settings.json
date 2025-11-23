@@ -1,4 +1,6 @@
 {
-    "commentTranslate.source": "deeplx-comment-translate.deeplx-comment-translate-deeplx",
-    "commentTranslate.targetLanguage": "zh-CN"
+  "commentTranslate.source": "deeplx-comment-translate.deeplx-comment-translate-deeplx",
+  "commentTranslate.targetLanguage": "zh-CN",
+  "scss.lint.unknownAtRules": "ignore",
+  "css.lint.unknownAtRules": "ignore"
 }
