@@ -1,0 +1,90 @@
+---
+import { getCollection } from "astro:content";
+
+const collectionName = 'articles'
+const allArticles = await getCollection(collectionName);
+
+let randomArticle = null;
+
+if (allArticles.length > 0) {
+  const randomIndex = Math.floor(Math.random() * allArticles.length);
+  randomArticle = allArticles[randomIndex];
+}
+---
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - 页面未找到</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: "Noto Serif SC";
+        }
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            width: 90%; /* 给一个最大宽度，防止在超宽屏上内容拉得太开 */
+            max-width: 600px;
+        }
+        .container h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            color: #333;
+        }
+        
+        .container .nav-links {
+            margin-top: 20px;
+        }
+        .container a {
+            margin: 0 10px;
+            color: #0077cc;
+            text-decoration: none;
+            font-size: 1.1rem;
+        }
+        .container a:hover {
+            text-decoration: underline;
+        }
+        /* 为随机博客部分添加新样式 */
+        .random-post {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid #e0e0e0;
+        }
+        .random-post h3 {
+            color: #555;
+            font-weight: normal;
+            margin-bottom: 15px;
+        }
+        
+        .random-post a {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #0055aa;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>404 Not Found</h1>
+        
+        <div class="nav-links">
+            <a href="javascript:history.back(-1)">返回上一页</a>
+            <a href="/">返回首页</a>
+        </div>
+        <!-- 4. 添加随机文章的显示逻辑 -->
+        {randomArticle && (
+            <div class="random-post">
+                <h3>或许你对这篇文章感兴趣？</h3>
+                <a href={`/${collectionName}/${randomArticle.data.abbrlink}/`}>
+                    {randomArticle.data.title}
+                </a>
+            </div>
+        )}
+    </div>
+</body>
+</html>
