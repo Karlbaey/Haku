@@ -2,6 +2,7 @@
 import type { Article, Language } from "@/types";
 import { isHomePage } from "@/utils/pages";
 import { getArticlePath } from "@/utils/path";
+import { getArticleDescription } from "@/utils/description";
 
 export interface Props {
   articles: Article[];
@@ -31,10 +32,16 @@ const isHome = isHomePage(Astro.url.pathname);
               transition:name={`article-${slug}${lang ? `-${lang}` : ""}`}
               data-disable-theme-transition
             >
-                {article.data.title}
+              {article.data.title}
             </a>
             {/* pinned, not ready yet */}
           </h3>
+          {/* desktop post description */}
+          {isHome && (
+            <div class="heti hidden" data-lg="mt-2.25 block">
+              <p>{getArticleDescription(article, "list")}</p>
+            </div>
+          )}
         </li>
       );
     })
