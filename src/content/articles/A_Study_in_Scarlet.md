@@ -1,9 +1,9 @@
 ---
-title: 'A Study in Scarlet'
+title: "A Study in Scarlet"
 published: 1887-12-25
 tags:
-  - 'Holmes'
-abbrlink: 'a-study-in-scarlet'
+  - "Holmes"
+abbrlink: "a-study-in-scarlet"
 ---
 
 （依照 1887 BEETON'S CHRISTMAS ANNUAL 编辑而成）
@@ -12,7 +12,7 @@ by Arthur Conan Doyle
 
 ## Part I
 
-(*Being a reprint from the reminiscences of John H. Watson, M.D., late of the Army Medical Department.*)
+(_Being a reprint from the reminiscences of John H. Watson, M.D., late of the Army Medical Department._)
 
 ### CHAPTER I MR. SHERLOCK HOLMES
 
@@ -696,6 +696,7 @@ It was close upon nine when he set out. I had no idea how long he might be, but 
 I was certainly feeling very weary, so I obeyed his injunction. I left Holmes seated in front of the smouldering fire, and long into the watches of the night I heard the low, melancholy wailings of his violin, and knew that he was still pondering over the strange problem which he had set himself to unravel.
 
 ### CHAPTER VI.
+
 TOBIAS GREGSON SHOWS WHAT HE CAN DO.
 
 The papers next day were full of the "Brixton Mystery," as they termed it. Each had a long account of the affair, and some had leaders upon it in addition, There was some information in them which was new to me. I still retain in my scrap-book numerous clippings and extracts bearing upon the case. Here is a condensation of a few of them:—
@@ -994,7 +995,7 @@ The whole thing occurred in a moment—so quickly that I had no time to realize 
 
 ## Part II
 
-(*The Country of the Saints.*)
+(_The Country of the Saints._)
 
 ### CHAPTER I. ON THE GREAT ALKALI PLAIN.
 
@@ -1279,6 +1280,7 @@ Lucy laughed through her tears at her father's description.
 John Ferrier uttered these consoling remarks in a very confident tone, but she could not help observing that he paid unusual care to the fastening of the doors that night, and that he carefully cleaned and loaded the rusty old shotgun which hung upon the wall of his bedroom.
 
 ### CHAPTER IV.
+
 A FLIGHT FOR LIFE.
 
 On the morning which followed his interview with the Mormon Prophet, John Ferrier went in to Salt Lake City, and having found his acquaintance, who was bound for the Nevada Mountains, he entrusted him with his message to Jefferson Hope. In it he told the young man of the imminent danger which threatened them, and how necessary it was that he should return. Having done thus he felt easier in his mind, and returned home with a lighter heart.
