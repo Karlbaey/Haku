@@ -3,6 +3,7 @@ import type { Article, Language } from "@/types";
 import { isHomePage } from "@/utils/pages";
 import { getArticlePath } from "@/utils/path";
 import { getArticleDescription } from "@/utils/description";
+import ArticleDate from "./ArticleDate.astro";
 
 export interface Props {
   articles: Article[];
@@ -36,7 +37,14 @@ const isHome = isHomePage(Astro.url.pathname);
             </a>
             {/* pinned, not ready yet */}
           </h3>
-          {/* desktop post description */}
+          {/* article time */}
+          <div class="hidden text-3.65 font-time lg:(ml-2.5 inline)">
+            <ArticleDate
+              date={article.data.published}
+              minutes={article.remarkPluginFrontmatter.minutes}
+            />
+          </div>
+          {/* desktop article description */}
           {isHome && (
             <div class="heti hidden" data-lg="mt-2.25 block">
               <p>{getArticleDescription(article, "list")}</p>

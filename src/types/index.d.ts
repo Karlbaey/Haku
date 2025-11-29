@@ -36,7 +36,7 @@ export interface ThemeConfig {
   global: {
     lang: Language;
     toc: boolean;
-    dateFmt: 'YYYY-MM-DD' | 'MM-DD-YYYY' | 'DD-MM-YYYY' | 'MMM D YYYY' | 'D MMM YYYY'
+    dateFmt: 'YYYY-MM-DD' | 'MM-DD-YYYY' | 'DD-MM-YYYY' | 'YYYY MMM D' | 'MMM D YYYY' | 'D MMM YYYY'
   };
 }
 
