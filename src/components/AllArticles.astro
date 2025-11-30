@@ -3,6 +3,7 @@ import type { Article, Language } from "@/types";
 import { isHomePage } from "@/utils/pages";
 import { getArticlePath } from "@/utils/path";
 import { getArticleDescription } from "@/utils/description";
+import Pin from "@/assets/pin.svg";
 import ArticleDate from "./ArticleDate.astro";
 
 export interface Props {
@@ -35,7 +36,14 @@ const isHome = isHomePage(Astro.url.pathname);
             >
               {article.data.title}
             </a>
-            {/* pinned, not ready yet */}
+            {/* pinned */}
+            {pinned && (
+              <Pin
+                aria-hidden="true"
+                class="ml-0.25em inline-block aspect-square w-0.98em lg:(w-1.05em )"
+                fill="currentColor"
+              />
+            )}
           </h3>
           {/* article time */}
           <div class="hidden text-3.65 font-time lg:(ml-2.5 inline)">

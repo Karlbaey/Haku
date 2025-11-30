@@ -62,12 +62,11 @@ function formatD(date: Date, format: DateFormat) {
 
     // zh-hans && zh-hant 2025年4月13日
     case "YYYY MMM D":
-      return date
-        .toLocaleString("zh-CN", {
-          year: "numeric",
-          month: "short",
-          day: "numeric",
-        });
+      return date.toLocaleString("zh-CN", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      });
 
     // Default to ISO format
     default:
@@ -92,5 +91,5 @@ function formatD(date: Date, format: DateFormat) {
 }
 
 <span class={timeSpacingClass}>
-  reading time {minutes} min
+  {minutes} min
 </span>

@@ -31,7 +31,7 @@ const articlesByYear = await getArticlesByYear()
   {pinnedPosts.length > 0 && (
     <section class="mb-7.5">
       <div class="uno-decorative-line" />
-      {/* <PostList articles={pinnedPosts} lang={lang} pinned={true} /> */}
+      <AllArticles articles={pinnedPosts} lang={lang} pinned={true} /> 
     </section>
   )}
   {[...articlesByYear.entries()].map(([_year, articles]) => (
