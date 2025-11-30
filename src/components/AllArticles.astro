@@ -1,0 +1,65 @@
+---
+import type { Article, Language } from "@/types";
+import { isHomePage } from "@/utils/pages";
+import { getArticlePath } from "@/utils/path";
+import { getArticleDescription } from "@/utils/description";
+import Pin from "@/assets/pin.svg";
+import ArticleDate from "./ArticleDate.astro";
+
+export interface Props {
+  articles: Article[];
+  lang: Language;
+  pinned?: boolean;
+}
+
+const { articles, lang, pinned = false } = Astro.props;
+const isHome = isHomePage(Astro.url.pathname);
+---
+
+<ul>
+  {
+    articles.map((article) => {
+      const slug = article.data.abbrlink || article.id;
+
+      return (
+        <li class:list={["mb-5.5", isHome ? "lg:mb-10" : ""]}>
+          {/* article title */}
+          <h3 class="inline transition-colors hover:c-primary">
+            <a
+              class:list={[
+                "cjk:tracking-wide",
+                isHome ? "lg:font-medium lg:text-4.5" : "",
+              ]}
+              href={getArticlePath(slug)}
+              transition:name={`article-${slug}${lang ? `-${lang}` : ""}`}
+              data-disable-theme-transition
+            >
+              {article.data.title}
+            </a>
+            {/* pinned */}
+            {pinned && (
+              <Pin
+                aria-hidden="true"
+                class="ml-0.25em inline-block aspect-square w-0.98em lg:(w-1.05em )"
+                fill="currentColor"
+              />
+            )}
+          </h3>
+          {/* article time */}
+          <div class="hidden text-3.65 font-time lg:(ml-2.5 inline)">
+            <ArticleDate
+              date={article.data.published}
+              minutes={article.remarkPluginFrontmatter.minutes}
+            />
+          </div>
+          {/* desktop article description */}
+          {isHome && (
+            <div class="heti hidden" data-lg="mt-2.25 block">
+              <p>{getArticleDescription(article, "list")}</p>
+            </div>
+          )}
+        </li>
+      );
+    })
+  }
+</ul>

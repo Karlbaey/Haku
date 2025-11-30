@@ -1,0 +1,95 @@
+---
+import type { ThemeConfig } from "@/types";
+import { themeConfig } from "@/config";
+import { isArticlePage } from "@/utils/pages";
+
+type DateFormat = ThemeConfig["global"]["dateFmt"];
+
+interface Props {
+  date: Date;
+  updatedDate?: Date;
+  minutes: number;
+}
+
+const { date, updatedDate, minutes } = Astro.props;
+const { dateFmt: format } = themeConfig.global;
+const isArticle = isArticlePage(Astro.url.pathname);
+const timeSpacingClass = isArticle ? "ml-1.75" : "ml-1.5";
+
+function formatD(date: Date, format: DateFormat) {
+  if (format === "YYYY-MM-DD") {
+    return date.toISOString().split("T")[0];
+  }
+
+  const opt: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month:
+      format === "MMM D YYYY" || format === "D MMM YYYY" ? "short" : "2-digit",
+    day:
+      format === "MMM D YYYY" || format === "D MMM YYYY"
+        ? "numeric"
+        : "2-digit",
+  };
+
+  switch (format) {
+    // US 04-13-2025
+    case "MM-DD-YYYY":
+      return date.toLocaleDateString("en-US", opt).replace(/\//g, "-");
+
+    // European 13-04-2025
+    case "DD-MM-YYYY":
+      return date.toLocaleDateString("en-GB", opt).replace(/\//g, "-");
+
+    // US Apr 13 2025
+    case "MMM D YYYY":
+      return date
+        .toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        })
+        .replace(",", "");
+
+    // British 13 Apr 2025
+    case "D MMM YYYY":
+      return date
+        .toLocaleDateString("en-GB", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        })
+        .replace(",", "");
+
+    // zh-hans && zh-hant 2025年4月13日
+    case "YYYY MMM D":
+      return date.toLocaleString("zh-CN", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      });
+
+    // Default to ISO format
+    default:
+      return date.toISOString().split("T")[0];
+  }
+}
+---
+
+<time datetime={date.toISOString().split("T")[0]}>
+  {formatD(date, format)}
+</time>
+
+{
+  updatedDate && (
+    <time
+      datetime={updatedDate.toISOString().split("T")[0]}
+      class={timeSpacingClass}
+    >
+      updated {formatD(updatedDate, format)}
+    </time>
+  )
+}
+
+<span class={timeSpacingClass}>
+  {minutes} min
+</span>

@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config'
 import { base, themeConfig } from './src/config'
+import { remarkReadingTime } from './src/components/scripts/remark-readingtime.mjs';
 
 import tailwindcss from '@tailwindcss/vite';
 
@@ -15,4 +16,10 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
+
+  markdown: {
+    remarkPlugins: [
+      remarkReadingTime,
+    ]
+  }
 });

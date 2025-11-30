@@ -13,6 +13,7 @@ export const themeConfig: ThemeConfig = {
     global: {
         lang: 'zh',
         toc: true,
+        dateFmt: 'YYYY MMM D' // 'YYYY-MM-DD' | 'MM-DD-YYYY' | 'DD-MM-YYYY' | 'MMM D YYYY' | 'D MMM YYYY'
     }
 }
 
