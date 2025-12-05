@@ -1,13 +1,12 @@
 ---
 import { themeConfig } from "@/config";
+import { isHomePage } from "@/utils/pages";
 
 const { title, subtitle } = themeConfig.site;
 
-const headerTitle = title;
-const headerSubtitle = subtitle;
+const TitleTag = isHomePage(Astro.url.pathname) ? "h1" : "h2"
+const SubtitleTag = "div"
 
-const TitleTag = "h1";
-const SubtitleTag = "div";
 ---
 
 <header class:list={["cjk:tracking-wide", "mb-10.8"]}>
@@ -24,13 +23,13 @@ const SubtitleTag = "div";
       data-disable-theme-transition
     >
       <a id="site-title-link" href="/" style="text-decoration-line: none;">
-        {headerTitle}
+        {title}
       </a>
     </div>
   </TitleTag>
 
   {
-    headerSubtitle && (
+    subtitle && (
       <SubtitleTag
         class:list={[
           "text-3.5 c-secondary font-navbar lg:text-4",
@@ -38,7 +37,7 @@ const SubtitleTag = "div";
         ]}
         aria-hidden="true"
       >
-        {headerSubtitle}
+        {subtitle}
       </SubtitleTag>
     )
   }
