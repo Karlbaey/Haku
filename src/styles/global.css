@@ -4,6 +4,13 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+.site-title-reset {
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+  line-height: inherit;
+}
+
 @theme {
   --color-white: #ffffff;
   --color-black: #000000;
@@ -27,6 +34,9 @@
 }
 
 @layer base {
+  html {
+    overflow-y: scroll;
+  }
   body {
     @apply bg-white text-gray-800 antialiased;
     font-family: "Noto Serif SC", ui-sans-serif, system-ui, -apple-system,

@@ -29,7 +29,7 @@
   --shadow-polaroid-dark: 0 5px 15px rgb(0 0 0 / 0.3);
 
   /* 字体 */
-  --font-family-handwritten: 'Comic Sans MS', cursive;
+  --font-family-handwritten: "Noto Serif SC", "Consolas", "Noto Sans SC";
 
   /* 间距系统 */
   --space-xs: 0.25rem;
