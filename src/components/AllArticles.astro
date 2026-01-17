@@ -16,7 +16,7 @@ const { articles, lang, pinned = false } = Astro.props;
 const isHome = isHomePage(Astro.url.pathname);
 ---
 
-<ul>
+<ul class="article-items">
   {
     articles.map((article) => {
       const slug = article.data.abbrlink || article.id;
@@ -63,3 +63,10 @@ const isHome = isHomePage(Astro.url.pathname);
     })
   }
 </ul>
+
+<style>
+  .article-items a {
+    color: var(--color-text-primary);
+    text-decoration: none;
+  }
+</style>

@@ -144,6 +144,7 @@ $$
 \oint_C \mathbf{E} \cdot d\mathbf{l} = - \frac{d\Phi_B}{dt} \\
 \oint_C \mathbf{H} \cdot d\mathbf{l} = I_{in} + \frac{d\Phi_D}{dt}
 
+
 $$
 
 ```latex
@@ -235,17 +236,21 @@ pie
 
 ### 可折叠内容
 
-使用 `<details>` 和 `<summary>` 标签来创建一个可折叠的内容区域。
+使用 `:::fold[title] ... :::` 来创建一个可折叠的内容区域。
 
-<details>
-  <summary>点击展开查看详细信息</summary>
-  <p>这里是隐藏的详细内容。可以包含段落、列表、甚至是图片。</p>
-</details>
+:::fold[点击展开查看详细信息]
+这里是隐藏的详细内容。可以包含段落、列表、甚至是图片。
+:::
+
+```text
+:::fold[点击展开查看详细信息]
+这里是隐藏的详细内容。可以包含段落、列表、甚至是图片。
+:::
+```
 
 ### 文本样式
 
 使用 HTML 标签来改变文本颜色：这段文字应该是 <span style="color: #007bff;">蓝色</span> 的，而这段是 <span style="color: #dc3545;">红色</span> 的。
-
 
 [^1]: 这是第一个脚注的解释文本。
 [^footnote2]: 这是第二个脚注的详细内容，可以很长。

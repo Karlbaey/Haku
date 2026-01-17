@@ -3,16 +3,16 @@ import { getPageInfo } from '@/utils/pages'
 
 const { isHome, isArticle, isTag, isAbout } = getPageInfo(Astro.url.pathname)
 
-const isPostActive = isHome || isArticle
+const isArticleActive = isHome || isArticle
 const isTagActive = isTag
 const isAboutActive = isAbout
 
 function getNavItemClass(isActive: boolean) {
   if (isActive) {
-    return 'highlight-static text-primary font-bold after:bottom-[0.7em] no-underline';
+    return 'highlight-static font-bold after:bottom-[0.7em] no-underline';
   }
   
-  const defaultClasses = 'highlight-hover text-gray-700 dark:text-gray-300 after:bottom-[0.7em] no-underline';
+  const defaultClasses = 'highlight-hover after:bottom-[0.7em] no-underline';
   const hoverClasses = 'hover:text-primary hover:font-bold';
 
   return [defaultClasses, hoverClasses].join(' ');
@@ -23,7 +23,7 @@ const navItems = [
   {
     href: '/',
     label: '随笔',
-    className: getNavItemClass(isPostActive),
+    className: getNavItemClass(isArticleActive),
   },
   {
     href: '/tags/',
@@ -41,7 +41,7 @@ const navItems = [
 <nav
   aria-label="Site Navigation"
   class:list={[
-    'mb-10.5 text-2xl font-semibold leading-tight font-navbar',
+    'mb-10.5 text-2xl font-semibold leading-tight',
     'lg:text-2xl lg:bottom-3px tracking-wide',
     isArticle ? 'hidden lg:block' : '',
   ]}

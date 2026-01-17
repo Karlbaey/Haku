@@ -1,27 +1,26 @@
-@import 'medium-zoom/dist/style.css';
-@import 'rehype-callouts/theme/vitepress';
-@import url('https://gcore.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css');
+@import "medium-zoom/dist/style.css";
+@import "rehype-callouts/theme/vitepress";
+@import url("https://gcore.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css");
 
-/* ===== CSS自定义属性 (现代化设计) ===== */
 :root {
-  /* 颜色系统 - 使用 light-dark() 函数 */
-  --color-text-primary: light-dark(#0a0a0a, #d5d5d6);
-  --color-text-secondary: light-dark(#52525b, #a1a1aa);
-  --color-text-muted: light-dark(#6b7280, #9ca3af);
-  --color-heading: light-dark(#0a0a0a, #d5d5d6);
-  --color-link: light-dark(#0a0a0a, #e5e7eb);
-  --color-link-hover: light-dark(#1f2937, #f3f4f6);
-  --color-anchor: light-dark(#6366f1, #818cf8);
+  --color-text-primary: #0a0a0a;
+  --color-text-secondary: #52525b;
+  --color-text-muted: #6b7280;
+  --color-heading: #0a0a0a;
+  --color-link: #0a0a0a;
+  --color-link-hover: #1f2937;
+  --color-anchor: #0a47c9;
+  --color-blockquote: #0a0a0a;
 
   /* 背景颜色 */
-  --color-bg-inline-code: light-dark(#f1f3f5, #1e1e20);
-  --color-text-inline-code: light-dark(#3b4252, #c9d1d9);
+  --color-bg-inline-code: #f1f3f5;
+  --color-text-inline-code: #3b4252;
   --color-bg-polaroid: #ffffff;
 
   /* 边框颜色 */
-  --color-border-light: light-dark(#e9edf2, #2b2b30);
-  --color-border-medium: light-dark(#555, #555);
-  --color-border-blockquote: light-dark(#e6ebf2, #3a3a40);
+  --color-border-light: #e9edf2;
+  --color-border-medium: #555, #555;
+  --color-border-blockquote: #e6ebf2;
 
   /* 阴影 */
   --shadow-polaroid: 0 5px 15px rgb(0 0 0 / 0.15);
@@ -30,7 +29,8 @@
 
   /* 字体 */
   --font-family-handwritten: "Noto Sans SC";
-  --font-family-text: "Noto Serif SC";
+  --font-family-text: serif, "Noto Serif SC";
+  --font-geist-mono: monospace, consolas;
 
   /* 间距系统 */
   --space-xs: 0.25rem;
@@ -48,6 +48,37 @@
   /* 动画 */
   --transition-fast: 0.3s ease;
   --transition-medium: 0.3s ease-in-out;
+}
+
+html.dark {
+  --color-text-primary: #d5d5d6;
+  --color-text-secondary: #a1a1aa;
+  --color-text-muted: #9ca3af;
+  --color-heading: #d5d5d6;
+  --color-link: #e5e7eb;
+  --color-link-hover: #f3f4f6;
+  --color-anchor: #4982ec;
+  --color-blockquote: #d5d5d6;
+
+  /* 背景颜色 */
+  --color-bg-inline-code: #1e1e20;
+  --color-text-inline-code: #c9d1d9;
+  --color-bg-polaroid: #ffffff;
+
+  /* 边框颜色 */
+  --color-border-light: #2b2b30;
+  --color-border-medium: #555;
+  --color-border-blockquote: #3a3a40;
+
+  /* 阴影 */
+  --shadow-polaroid: 0 5px 15px rgb(0 0 0 / 0.15);
+  --shadow-polaroid-hover: 0 8px 20px rgb(0 0 0 / 0.2);
+  --shadow-polaroid-dark: 0 5px 15px rgb(0 0 0 / 0.3);
+
+  /* 字体 */
+  --font-family-handwritten: "Noto Sans SC";
+  --font-family-text: serif, "Noto Serif SC";
+  --font-geist-mono: monospace, consolas;
 }
 
 /* ===== 基础样式重置 ===== */
@@ -149,7 +180,7 @@
 
   /* 链接样式 */
   & a {
-    color: var(--color-link);
+    color: var(--color-anchor);
     text-decoration: none;
     border-block-end: 1px solid var(--color-border-light);
     transition: border-color var(--transition-medium);
@@ -180,7 +211,7 @@
 
   /* 有序列表 */
   & ol > li::before {
-    content: counter(list-item) '.';
+    content: counter(list-item) ".";
     position: absolute;
     inset-inline-start: 0;
     font-weight: 400;
@@ -188,7 +219,7 @@
 
   /* 无序列表 */
   & ul > li::before {
-    content: '';
+    content: "";
     position: absolute;
     inset-inline-start: 0.2em;
     inset-block-start: calc(0.875em - 0.2em);
@@ -221,7 +252,7 @@
     gap: var(--space-sm);
     padding-inline-start: 0;
 
-    & input[type='checkbox'] {
+    & input[type="checkbox"] {
       margin-block-start: 0.3em;
       inline-size: 1em;
       block-size: 1em;
@@ -242,11 +273,11 @@
   & blockquote {
     font-weight: 500;
     font-style: italic;
-    color: inherit;
+    color: var(--color-blockquote);
     border-inline-start: 0.25rem solid var(--color-border-blockquote);
     margin-block: 1.6em;
     padding-inline-start: 1em;
-    quotes: '\201C' '\201D' '\2018' '\2019';
+    quotes: "\201C" "\201D" "\2018" "\2019";
 
     & > * {
       opacity: 0.7;
@@ -298,7 +329,7 @@
       font-weight: 400;
       color: inherit;
       font-size: inherit;
-      font-family: inherit;
+      font-family: monospace;
       line-height: inherit;
 
       &::before,
@@ -494,7 +525,7 @@ image-figure-polaroid {
   opacity: 0.9;
 
   &::before {
-    content: '';
+    content: "";
     display: block;
     inline-size: 100%;
     margin-block-end: 1.5em;
@@ -560,19 +591,19 @@ image-figure-polaroid {
 }
 
 /* per-type accent */
-.markdown .callout[data-callout='note'] {
+.markdown .callout[data-callout="note"] {
   --accent: #64748b;
 }
-.markdown .callout[data-callout='tip'] {
+.markdown .callout[data-callout="tip"] {
   --accent: #3b82f6;
 }
-.markdown .callout[data-callout='important'] {
+.markdown .callout[data-callout="important"] {
   --accent: #8b5cf6;
 }
-.markdown .callout[data-callout='warning'] {
+.markdown .callout[data-callout="warning"] {
   --accent: #f59e0b;
 }
-.markdown .callout[data-callout='caution'] {
+.markdown .callout[data-callout="caution"] {
   --accent: #ef4444;
 }
 
@@ -755,7 +786,7 @@ image-figure-polaroid {
   text-transform: uppercase;
   background-color: #a8a29e;
 
-  &[data-badge='n'] {
+  &[data-badge="n"] {
     background-color: #f87171;
   }
 }
@@ -764,12 +795,18 @@ image-figure-polaroid {
   color: black;
 }
 
-.dark .rds-badge[data-badge='n'] {
+.dark .rds-badge[data-badge="n"] {
   background-color: #fecaca;
 }
 
 /* ===== 链接图标样式 ===== */
-:is([data-link='github-acct'], [data-link='github-repo'], [data-link='custom-url'], [data-link='npm-pkg']) > img {
+:is(
+    [data-link="github-acct"],
+    [data-link="github-repo"],
+    [data-link="custom-url"],
+    [data-link="npm-pkg"]
+  )
+  > img {
   display: inline-block;
   inline-size: 1em;
   block-size: 1em;
@@ -816,4 +853,17 @@ image-figure-polaroid {
 .markdown code {
   white-space: pre-wrap;
   word-break: break-word;
+}
+
+footer {
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+header {
+  color: var(--color-heading);
+}
+
+nav {
+  color: var(--color-text-primary);
 }
