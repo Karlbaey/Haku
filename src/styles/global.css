@@ -11,6 +11,7 @@
 @layer base {
   :root {
     font-family: "Noto Serif SC", serif, "Noto Sans SC", sans-serif;
+    overflow-y: scroll;
   }
 
   svg[id^="mermaid-"] {
