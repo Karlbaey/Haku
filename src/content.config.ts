@@ -22,9 +22,18 @@ const articles = defineCollection({
         toc: z.boolean().optional().default(themeConfig.global.toc),
         abbrlink: z.string().optional().default('').refine(
             abbrlink => !abbrlink || /^[a-z0-9\-]*$/.test(abbrlink),
-            { message: 'Abbrlink can only contain lowercase letters, numbers and hyphens'}
+            { message: 'Abbrlink can only contain lowercase letters, numbers and hyphens' }
         ),
     }),
 })
 
-export const collections = { articles }
+const about = defineCollection({
+    type: 'content',
+    schema: z.object({
+        title: z.string(),
+        description: z.string().optional(),
+    }),
+});
+
+
+export const collections = { articles, 'about': about }
