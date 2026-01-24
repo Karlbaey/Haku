@@ -4,9 +4,10 @@ published: 2025-11-23
 tags:
   - "Markdown"
 abbrlink: "cheatsheet"
+description: "这里有一些可以在 HAKU 博客主题使用的语法。"
 ---
 
-## 1. 标题 (Headers)
+## 1. 标题
 
 # 一级标题 (H1)
 
@@ -22,7 +23,7 @@ abbrlink: "cheatsheet"
 
 ---
 
-## 2. 文本样式 (Text Styles)
+## 2. 文本样式
 
 _这是斜体文本_
 _这也是斜体文本_
@@ -43,7 +44,7 @@ _这也是斜体文本_
 
 ---
 
-## 3. 列表 (Lists)
+## 3. 列表
 
 ### 无序列表
 
@@ -61,7 +62,7 @@ _这也是斜体文本_
     2.  嵌套第二项
 3.  第三项
 
-### 任务列表 (Task Lists)
+### 任务列表
 
 - [x] 已完成的任务
 - [ ] 未完成的任务
@@ -69,7 +70,7 @@ _这也是斜体文本_
 
 ---
 
-## 4. 代码块 (Code Blocks)
+## 4. 代码块
 
 这是一个行内代码块：`console.log('Hello, World!');`
 
@@ -95,7 +96,7 @@ npm run dev
 
 ---
 
-## 5. 链接与图片 (Links & Images)
+## 5. 链接与图片
 
 ### 链接
 
@@ -107,7 +108,7 @@ npm run dev
 
 ---
 
-## 6. 表格 (Tables)
+## 6. 表格
 
 | 对齐方式 | 左对齐 | 居中对齐 | 右对齐 |
 | :------- | :----- | :------: | -----: |
@@ -117,11 +118,11 @@ npm run dev
 
 ---
 
-## 7. 脚注 (Footnotes)
+## 7. 脚注
 
 这是一个需要脚注的句子[^1]。这是另一个需要脚注的地方[^footnote2]。
 
-## 8. 数学公式 (KaTeX)
+## 8. 数学公式 （KaTeX）
 
 HAKU 支持 LaTeX 语法的数学公式以及化学公式渲染。
 
@@ -162,16 +163,13 @@ $$
 
 ## 9. Mermaid 图表渲染
 
-测试是否支持通过代码生成图表。
+HAKU 支持多种 mermaid 图表。
 
-### 流程图 (Flowchart)
-
-```mermaid
-flowchart LR;
-  a[A] --> b(B) --> c([C]) --> d{D};
-```
+### 流程图
 
 这是一个极为复杂的流程图。
+
+````text
 
 ```mermaid
 graph TB
@@ -224,7 +222,76 @@ graph TB
     style DataLayer fill:#fff3e0,stroke:#ff6f00
 ```
 
-### 序列图 (Sequence Diagram)
+````
+
+```mermaid
+graph TB
+    subgraph ClientLayer [客户端层]
+        direction TB
+        Web[Web 浏览器] --> |HTTPS/443| LB[负载均衡器]
+        App[移动端 App] --> |API/443| LB
+    end
+
+    subgraph ClusterLayer [K8s 集群]
+        LB --> Ingress[Ingress Gateway]
+
+        subgraph Services [核心服务网格]
+            direction LR
+            Auth[认证服务]
+            User[用户中心]
+            Order[订单系统]
+            Pay[支付网关]
+
+            Ingress --> Auth
+            Auth --> User
+            Ingress --> Order
+            Order --> Pay
+            Order --> User
+            Pay --> Wechat[微信支付]
+            Pay --> AliPay[支付宝]
+        end
+
+        subgraph DataLayer [数据持久层]
+            Redis[(Redis 缓存)]
+            MySQL[(MySQL 主从)]
+            ES{ElasticSearch}
+
+            User --> MySQL
+            Order --> MySQL
+            Order --> Redis
+            Services --> ES
+        end
+
+        subgraph MessageQueue [消息中间件]
+            Kafka{{Apache Kafka}}
+            Pay -.-> |支付成功事件| Kafka
+            Kafka -.-> |消费| Order
+            Kafka -.-> |消费| User
+        end
+    end
+
+    style ClientLayer fill:#f9f,stroke:#333
+    style Services fill:#e1f5fe,stroke:#0277bd
+    style DataLayer fill:#fff3e0,stroke:#ff6f00
+```
+
+### 序列图
+
+````text
+```mermaid
+sequenceDiagram
+    participant Alice
+    participant Bob
+    Alice->>John: Hello John, how are you?
+    loop Healthcheck
+        John->>John: Fight against hypochondria
+    end
+    Note right of John: Rational thoughts <br/>prevail!
+    John-->>Alice: Great!
+    John->>Bob: How about you?
+    Bob-->>John: Jolly good!
+```
+````
 
 ```mermaid
 sequenceDiagram
@@ -240,7 +307,20 @@ sequenceDiagram
     Bob-->>John: Jolly good!
 ```
 
-### 饼图 (Pie Chart)
+### 饼图
+
+````text
+
+```mermaid
+pie
+    title 编程语言分布
+    "JavaScript" : 45
+    "Python" : 25
+    "Java" : 15
+    "C++" : 10
+    "Other" : 5
+```
+````
 
 ```mermaid
 pie
@@ -253,6 +333,8 @@ pie
 ```
 
 ### 甘特图
+
+````text
 
 ```mermaid
 gantt
@@ -283,14 +365,65 @@ gantt
     Docker 容器化  :         ops2, after ops1, 5d
     灰度发布       :milestone, 2024-03-01, 0d
     正式上线       :crit, 2024-03-10, 0d
+````
 
+```mermaid
+gantt
+    title 2024年 SaaS 平台研发路线图
+    dateFormat  YYYY-MM-DD
+    axisFormat  %m-%d
+    excludes weekends
+
+    section 需求阶段
+    市场调研       :done,    des1, 2024-01-01, 2024-01-10
+    需求评审       :active,  des2, 2024-01-11, 5d
+    UI/UX 原型设计 :         des3, after des2, 7d
+
+    section 核心开发 (后端)
+    数据库架构设计 :crit,    back1, after des3, 5d
+    用户认证模块   :         back2, after back1, 7d
+    支付接口对接   :         back3, after back2, 10d
+    API 压力测试   :         back4, 2024-02-15, 5d
+
+    section 前端开发 (Web & Mobile)
+    环境搭建       :         front1, after des3, 3d
+    组件库开发     :         front2, after front1, 10d
+    管理后台开发   :         front3, after back2, 12d
+    落地页开发     :         front4, after front3, 5d
+
+    section 部署与运维
+    CI/CD 流程配置 :active,  ops1, 2024-01-20, 7d
+    Docker 容器化  :         ops2, after ops1, 5d
+    灰度发布       :milestone, 2024-03-01, 0d
+    正式上线       :crit, 2024-03-10, 0d
 ```
 
 ---
 
-## 10. 提示/警告块 (Admonitions/Alerts)
+## 10. 提示/警告块
 
 这种语法在 GitHub、Docsify 和许多文档生成器中很流行。
+
+```markdown
+> [!NOTE]
+> 这是一个提示（Note）。用于引起注意的普通信息。
+
+> [!TIP]
+> 这是一个技巧（Tip）。用于提供有用的建议或快捷方式。
+
+> [!IMPORTANT]
+> 这是重要信息（Important）。需要用户特别关注的内容。
+
+> [!WARNING]
+> 这是一个警告（Warning）。用于提示潜在的风险或需要谨慎操作的地方。
+
+> [!CAUTION]
+> 这是一个危险警告（Caution）。表示执行此操作可能会导致严重后果。
+
+:::note[自定义标题]
+这是一个自定义标题的提示块。
+:::
+```
 
 > [!NOTE]
 > 这是一个提示（Note）。用于引起注意的普通信息。
@@ -313,9 +446,9 @@ gantt
 
 ---
 
-## 11. 嵌入 HTML (Embedded HTML)
+## 11. 嵌入 HTML
 
-测试是否允许在 Markdown 中直接嵌入 HTML 代码。
+HAKU 可在 Markdown 中直接嵌入 HTML 代码。
 
 ### 可折叠内容
 
@@ -334,6 +467,12 @@ gantt
 ### 文本样式
 
 使用 HTML 标签来改变文本颜色：这段文字应该是 <span style="color: #007bff;">蓝色</span> 的，而这段是 <span style="color: #dc3545;">红色</span> 的。
+
+```html
+使用 HTML 标签来改变文本颜色：这段文字应该是
+<span style="color: #007bff;">蓝色</span> 的，而这段是
+<span style="color: #dc3545;">红色</span> 的。
+```
 
 [^1]: 这是第一个脚注的解释文本。
 
