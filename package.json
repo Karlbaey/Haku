@@ -9,14 +9,27 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/mdx": "^4.3.12",
+    "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.1.17",
-    "astro": "^5.16.2",
+    "astro": "^5.16.4",
+    "katex": "^0.16.25",
     "markdown-it": "^14.1.0",
     "mdast-util-to-string": "^4.0.0",
+    "medium-zoom": "^1.1.0",
+    "mermaid": "^11.12.2",
     "reading-time": "^1.5.0",
     "tailwindcss": "^4.1.18"
+    "rehype-callouts": "^2.1.2",
+    "rehype-katex": "^7.0.1",
+    "rehype-mermaid": "^3.0.0",
+    "remark-directive": "^4.0.0",
+    "remark-math": "^6.0.0",
+    "tailwindcss": "^4.1.17",
+    "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
-    "@types/markdown-it": "^14.1.2"
+    "@types/markdown-it": "^14.1.2",
+    "playwright": "^1.57.0"
   }
 }

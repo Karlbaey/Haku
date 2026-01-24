@@ -1,0 +1,22 @@
+{
+  "extends": [
+    "development"
+  ],
+  "hints": {
+    "compat-api/css": [
+      "default",
+      {
+        "ignore": [
+          "float: inline-start",
+          "text-wrap",
+          "text-wrap: wrap",
+          "mask-image",
+          "scrollbar-width",
+          "scrollbar-width: none",
+          "color: oklch(0.2033 0 360)"
+        ]
+      }
+    ],
+    "css-prefix-order": "off"
+  }
+}

@@ -1,43 +1,46 @@
 ---
 // src/pages/[...index].astro
-import { lang } from '@/config'
-import Layout from '../layouts/Layout.astro'
-import { getPinnedArticles, getArticlesByYear } from '@/utils/content'
-import AllArticles from '@/components/AllArticles.astro'
+import { lang } from "@/config";
+import Layout from "../layouts/Layout.astro";
+import { getPinnedArticles, getArticlesByYear } from "@/utils/content";
+import AllArticles from "@/components/AllArticles.astro";
 
 export async function getStaticPaths() {
   type PathItem = {
-    params: { index: string | undefined }
-    props: { language: string }
-  }
+    params: { index: string | undefined };
+    props: { language: string };
+  };
 
-  const paths: PathItem[] = []
+  const paths: PathItem[] = [];
 
   // Default locale
   paths.push({
     params: { index: undefined },
-    props: { language: lang }
-  })
+    props: { language: lang },
+  });
 
-  return paths
+  return paths;
 }
 
-const pinnedPosts = await getPinnedArticles()
-const articlesByYear = await getArticlesByYear()
+const pinnedPosts = await getPinnedArticles();
+const articlesByYear = await getArticlesByYear();
 ---
 
 <Layout>
-  <!-- Pinned Posts -->
-  {pinnedPosts.length > 0 && (
-    <section class="mb-7.5">
-      <div class="uno-decorative-line" />
-      <AllArticles articles={pinnedPosts} lang={lang} pinned={true} /> 
-    </section>
-  )}
-  {[...articlesByYear.entries()].map(([_year, articles]) => (
-    <section class="mb-7.5">
-      <div class="uno-decorative-line" />
-      <AllArticles articles={articles} lang={lang} />
-    </section>
-  ))}
+  {
+    pinnedPosts.length > 0 && (
+      <section class="mb-7.5">
+        <div class="uno-decorative-line" />
+        <AllArticles articles={pinnedPosts} lang={lang} pinned={true} />
+      </section>
+    )
+  }
+  {
+    [...articlesByYear.entries()].map(([_year, articles]) => (
+      <section class="mb-7.5">
+        <div class="uno-decorative-line" />
+        <AllArticles articles={articles} lang={lang} />
+      </section>
+    ))
+  }
 </Layout>

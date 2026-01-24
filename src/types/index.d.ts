@@ -38,6 +38,21 @@ export interface ThemeConfig {
     toc: boolean;
     dateFmt: 'YYYY-MM-DD' | 'MM-DD-YYYY' | 'DD-MM-YYYY' | 'YYYY MMM D' | 'MMM D YYYY' | 'D MMM YYYY'
   };
+  color: {
+    mode: 'light' | 'dark' | 'auto'
+    light: {
+      primary: string
+      secondary: string
+      background: string
+      highlight: string
+    }
+    dark: {
+      primary: string
+      secondary: string
+      background: string
+      highlight: string
+    }
+  };
 }
 
 export default ThemeConfig;

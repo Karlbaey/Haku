@@ -1,5 +1,6 @@
 ---
 import { base, themeConfig } from "@/config";
+import katexCSS from "katex/dist/katex.min.css?url";
 
 // Site configuration
 const { title, subtitle, description, author, url, favicon } = themeConfig.site;
@@ -29,4 +30,6 @@ const pageImage = articleSlug
      <meta name="description" content={pageDescription} />
      <meta name="author" content={author} />
      <meta name="generator" content={Astro.generator} />
+     <link rel="stylesheet" href={katexCSS} media="print" onload={`this.media='all'`} />
+     <script defer src="https://fastly.jsdelivr.net/npm/katex@0.16.9/dist/contrib/mhchem.min.js" />
 </head>

@@ -1,1 +1,15 @@
-/* This is an empty file. It is waiting to be written. */
+/* src/styles/global.css */
+
+/* ===== 1. 导入依赖与插件 ===== */
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@tailwind utilities;
+
+/* ===== 2. 暗色模式配置 ===== */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    font-family: "Noto Serif SC", serif, "Noto Sans SC", sans-serif;
+  }
+}

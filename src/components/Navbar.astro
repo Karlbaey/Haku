@@ -1,0 +1,62 @@
+---
+import { getPageInfo } from '@/utils/pages'
+
+const { isHome, isArticle, isTag, isAbout } = getPageInfo(Astro.url.pathname)
+
+const isArticleActive = isHome || isArticle
+const isTagActive = isTag
+const isAboutActive = isAbout
+
+function getNavItemClass(isActive: boolean) {
+  if (isActive) {
+    return 'highlight-static font-bold after:bottom-[0.7em] no-underline';
+  }
+  
+  const defaultClasses = 'highlight-hover after:bottom-[0.7em] no-underline';
+  const hoverClasses = 'hover:text-primary hover:font-bold';
+
+  return [defaultClasses, hoverClasses].join(' ');
+}
+
+
+const navItems = [
+  {
+    href: '/',
+    label: '随笔',
+    className: getNavItemClass(isArticleActive),
+  },
+  {
+    href: '/tags/',
+    label: '标签',
+    className: getNavItemClass(isTagActive),
+  },
+  {
+    href: '/about/',
+    label: '关于',
+    className: getNavItemClass(isAboutActive),
+  },
+]
+---
+
+<nav
+  aria-label="Site Navigation"
+  class:list={[
+    'mb-10.5 text-2xl font-semibold leading-tight',
+    'lg:text-2xl lg:bottom-3px tracking-wide',
+    isArticle ? 'hidden lg:block' : '',
+  ]}
+>
+  <ul>
+    {navItems.map(item => (
+      <li>
+        <a
+          href={item.href}
+          class={item.className}
+        >
+          {item.label}
+        </a>
+      </li>
+      <br/>
+    ))}
+  </ul>
+</nav>

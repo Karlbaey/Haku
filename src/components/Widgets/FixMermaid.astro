@@ -1,0 +1,43 @@
+<script>
+  import mermaid from "mermaid";
+  function correctMermaidViewBox() {
+    const mermaidContainers = document.querySelectorAll(
+      'pre.mermaid[data-processed="true"]',
+    );
+    mermaidContainers.forEach((container) => {
+      const svg = container.querySelector("svg");
+      if (!svg) return;
+      const rootGroup = svg.querySelector(".root");
+      if (!rootGroup) return;
+      if (rootGroup instanceof SVGGraphicsElement) {
+        try {
+          const bbox = rootGroup.getBBox();
+
+          if (bbox.width > 0 && bbox.height > 0) {
+            const padding = 20;
+            const newViewBox = [
+              bbox.x - padding,
+              bbox.y - padding,
+              bbox.width + padding * 2,
+              bbox.height + padding * 2,
+            ].join(" ");
+            const oldViewBoxAttr = svg.getAttribute("viewBox");
+            if (!oldViewBoxAttr) return;
+            const oldWidth = parseFloat(oldViewBoxAttr.split(" ")[2]);
+            if (oldWidth > bbox.width * 1.5) {
+              svg.setAttribute("viewBox", newViewBox);
+              svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+            }
+          }
+        } catch (e) {}
+      }
+    });
+  }
+  async function FixMermaid() {
+    mermaid.initialize({ startOnLoad: true });
+    await mermaid.run();
+    correctMermaidViewBox();
+  }
+  FixMermaid();
+  document.addEventListener("astro:after-swap", FixMermaid);
+</script>
