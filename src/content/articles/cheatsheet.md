@@ -166,11 +166,62 @@ $$
 
 ### 流程图 (Flowchart)
 
-需要注意的是目前的流程图有 bug，过于复杂的图形会导致展示崩溃。这可能会在以后的版本修复。
-
 ```mermaid
 flowchart LR;
   a[A] --> b(B) --> c([C]) --> d{D};
+```
+
+这是一个极为复杂的流程图。
+
+```mermaid
+graph TB
+    subgraph ClientLayer [客户端层]
+        direction TB
+        Web[Web 浏览器] --> |HTTPS/443| LB[负载均衡器]
+        App[移动端 App] --> |API/443| LB
+    end
+
+    subgraph ClusterLayer [K8s 集群]
+        LB --> Ingress[Ingress Gateway]
+
+        subgraph Services [核心服务网格]
+            direction LR
+            Auth[认证服务]
+            User[用户中心]
+            Order[订单系统]
+            Pay[支付网关]
+
+            Ingress --> Auth
+            Auth --> User
+            Ingress --> Order
+            Order --> Pay
+            Order --> User
+            Pay --> Wechat[微信支付]
+            Pay --> AliPay[支付宝]
+        end
+
+        subgraph DataLayer [数据持久层]
+            Redis[(Redis 缓存)]
+            MySQL[(MySQL 主从)]
+            ES{ElasticSearch}
+
+            User --> MySQL
+            Order --> MySQL
+            Order --> Redis
+            Services --> ES
+        end
+
+        subgraph MessageQueue [消息中间件]
+            Kafka{{Apache Kafka}}
+            Pay -.-> |支付成功事件| Kafka
+            Kafka -.-> |消费| Order
+            Kafka -.-> |消费| User
+        end
+    end
+
+    style ClientLayer fill:#f9f,stroke:#333
+    style Services fill:#e1f5fe,stroke:#0277bd
+    style DataLayer fill:#fff3e0,stroke:#ff6f00
 ```
 
 ### 序列图 (Sequence Diagram)
@@ -199,6 +250,40 @@ pie
     "Java" : 15
     "C++" : 10
     "Other" : 5
+```
+
+### 甘特图
+
+```mermaid
+gantt
+    title 2024年 SaaS 平台研发路线图
+    dateFormat  YYYY-MM-DD
+    axisFormat  %m-%d
+    excludes weekends
+
+    section 需求阶段
+    市场调研       :done,    des1, 2024-01-01, 2024-01-10
+    需求评审       :active,  des2, 2024-01-11, 5d
+    UI/UX 原型设计 :         des3, after des2, 7d
+
+    section 核心开发 (后端)
+    数据库架构设计 :crit,    back1, after des3, 5d
+    用户认证模块   :         back2, after back1, 7d
+    支付接口对接   :         back3, after back2, 10d
+    API 压力测试   :         back4, 2024-02-15, 5d
+
+    section 前端开发 (Web & Mobile)
+    环境搭建       :         front1, after des3, 3d
+    组件库开发     :         front2, after front1, 10d
+    管理后台开发   :         front3, after back2, 12d
+    落地页开发     :         front4, after front3, 5d
+
+    section 部署与运维
+    CI/CD 流程配置 :active,  ops1, 2024-01-20, 7d
+    Docker 容器化  :         ops2, after ops1, 5d
+    灰度发布       :milestone, 2024-03-01, 0d
+    正式上线       :crit, 2024-03-10, 0d
+
 ```
 
 ---

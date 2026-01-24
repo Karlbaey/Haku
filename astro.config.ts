@@ -33,7 +33,14 @@ export default defineConfig({
       remarkMath,
     ],
     rehypePlugins: [
-      [rehypeMermaid, { strategy: "pre-mermaid" }],
+      [rehypeMermaid, {
+        strategy: "inline-svg", mermaidConfig: {
+          theme: "default",
+          flowchart: {
+            useMaxWidth: true,
+          }
+        }
+      }],
       rehypeKatex,
     ],
     syntaxHighlight: {
