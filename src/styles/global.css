@@ -12,4 +12,11 @@
   :root {
     font-family: "Noto Serif SC", serif, "Noto Sans SC", sans-serif;
   }
+
+  svg[id^="mermaid-"] {
+    @apply bg-white dark:bg-gray-500 rounded-lg p-4 mx-auto block;
+
+    /* 确保背景不紧贴图表边缘 */
+    min-width: min-content;
+  }
 }

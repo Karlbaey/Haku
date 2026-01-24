@@ -341,10 +341,6 @@ html.dark {
         content: none;
       }
     }
-
-    &.mermaid {
-      background-color: var(--color-mermaid-bg);
-    }
   }
 }
 
