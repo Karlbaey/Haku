@@ -10,24 +10,26 @@ import "../styles/ext.css";
 import ToggleButton from "@/components/ToggleButton.astro";
 
 interface Props {
+  publishedDate?: string;
   articleTitle?: string;
   articleDescription?: string;
   articleSlug?: string;
   supportedLangs?: string[];
 }
 
+const { publishedDate, articleTitle, articleDescription } = Astro.props;
 const { author } = themeConfig.site;
 ---
 
 <!doctype html>
 <html lang="zh-cn">
-  <Head />
+  <Head articleTitle={articleTitle} articleDescription={articleDescription} />
   <body>
     <div
-      class="max-w-7xl mx-auto px-6 lg:grid lg:grid-cols-[240px_1fr] lg:gap-x-4"
+      class="max-w-360 mx-auto min-h-screen px-6 lg:grid lg:grid-cols-[320px_1fr] lg:gap-x-16"
     >
-      <aside>
-        <div class="lg:sticky lg:top-10">
+      <aside class="min-w-0">
+        <div class="lg:sticky lg:top-10 wrap-break-word">
           <Header />
           <Navbar />
           <div class="mt-4">
@@ -38,13 +40,18 @@ const { author } = themeConfig.site;
 
       <main class="py-8">
         <div class="content-wrapper">
-          <article class="markdown">
-            <slot />
+          <article>
+            <div class="markdown">
+              <slot />
+            </div>
           </article>
-          <footer class="mt-12 pt-8 border-t border-gray-200">
+          <footer>
             <p>
               &copy; {new Date().getFullYear()}
-              {author} - All rights reserved.
+              {author} - All rights reserved. Released under <a
+                href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
+                rel="canonical">CC BY-NC-SA 4.0</a
+              >.
             </p>
           </footer>
         </div>

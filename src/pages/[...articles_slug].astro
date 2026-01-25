@@ -1,100 +1,83 @@
 ---
-import type { CollectionEntry } from 'astro:content'
-import { getCollection, render } from 'astro:content'
+import type { CollectionEntry } from "astro:content";
+import { getCollection, render } from "astro:content";
+import themeConfig from "@/config";
 // import Comment from '@/components/Comment/Index.astro'
 // import PostDate from '@/components/PostDate.astro'
 // import TagList from '@/components/TagList.astro'
 // import BackButton from '@/components/Widgets/BackButton.astro'
 // import TOC from '@/components/Widgets/TOC.astro'
-import Layout from '@/layouts/Layout.astro'
-import { checkArticleSlugDuplication } from '@/utils/content'
-// import { getPostDescription } from '@/utils/description'
+import ArticleMeta from "@/components/ArticleMeta.astro";
+import Layout from "@/layouts/Layout.astro";
+import { checkArticleSlugDuplication } from "@/utils/content";
 
 export async function getStaticPaths() {
-  const articles = await getCollection('articles')
+  const articles = await getCollection("articles");
 
-  // Check if there are duplicate article slugs
-  const duplicates = await checkArticleSlugDuplication(articles)
+  const duplicates = await checkArticleSlugDuplication(articles);
   if (duplicates.length > 0) {
-    throw new Error(`Duplicate article slugs:\n${duplicates.join('\n')}`)
+    throw new Error(`Duplicate article slugs:\n${duplicates.join("\n")}`);
   }
 
   type PathItem = {
-    params: { articles_slug: string }
-    props: { article: any }
-  }
+    params: { articles_slug: string };
+    props: { article: any };
+  };
 
-  const paths: PathItem[] = []
+  const paths: PathItem[] = [];
 
-  // Default locale
-  articles.forEach((article: CollectionEntry<'articles'>) => {
+  articles.forEach((article: CollectionEntry<"articles">) => {
     // Show drafts in dev mode only
     if (import.meta.env.DEV || !article.data.draft) {
-      const slug = article.data.abbrlink || article.id
+      const slug = article.data.abbrlink || article.id;
 
       paths.push({
         params: { articles_slug: `articles/${slug}/` },
         props: {
           article,
         },
-      })
+      });
     }
-  })
+  });
 
-  return paths
+  return paths;
 }
 
-const { article } = Astro.props
-const slug = article.data.abbrlink || article.id
+const { article } = Astro.props;
+const { author } = themeConfig.site;
+const slug = article.data.abbrlink || article.id;
 // const description = getArticlesDescription(article, 'meta')
-const { Content, headings, remarkPluginFrontmatter } = await render(article)
+const { Content, headings, remarkPluginFrontmatter } = await render(article);
 ---
 
-<Layout
-  articleTitle={article.data.title}
-  articleSlug={article.id}
->
+<Layout articleTitle={article.data.title} articleSlug={article.id}>
   <article class="heti">
     <div class="relative">
       <!-- <BackButton /> -->
       <!-- Title -->
       <h1 class="article-title">
-        <span
-          transition:name={`article-${slug}`}
-          data-disable-theme-transition
-        >
+        <span transition:name={`article-${slug}`} data-disable-theme-transition>
           {article.data.title}
         </span>
       </h1>
     </div>
-
-    <!-- Date -->
-    <div
-      id="article-date"
-      class="mb-17.2 block c-primary font-time"
-      transition:name={`time-${slug}`}
-      data-disable-theme-transition
-    >
-      <!-- <PostDate
-        date={article.data.published}
-        updatedDate={article.data.updated}
-        minutes={remarkPluginFrontmatter.minutes}
-      /> -->
-    </div>
+    <ArticleMeta author={author} publishDate={article.data.published} />
     <!-- TOC -->
     <!-- {article.data.toc && <TOC headings={headings} />} -->
     <!-- Content -->
     <div id="article-content">
       <Content />
       <!-- Copyright -->
-      <div id="article-copyright" />
+      <div id="article-copyright"></div>
       <!-- Tag List -->
-      {article.data.tags?.length > 0 && (
-        <div class="mt-12.6 uno-decorative-line" />
-        // <TagList
-        //   tags={article.data.tags}
-        // />
-      )}
+      {
+        article.data.tags?.length > 0 && (
+          <div class="mt-12.6 uno-decorative-line" />
+          // <TagList
+          //   tags={article.data.tags}
+          // />
+        )
+      }
       <!-- Comment -->
       <!-- <Comment /> -->
     </div>

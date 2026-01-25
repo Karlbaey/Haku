@@ -22,13 +22,12 @@ const isHome = isHomePage(Astro.url.pathname);
       const slug = article.data.abbrlink || article.id;
 
       return (
-        <li class:list={["mb-5.5", isHome ? "lg:mb-10" : ""]}>
-          {/* article title */}
-          <h3 class="inline transition-colors hover:c-primary">
+        <li class:list={["mb-6", isHome ? "lg:mb-10" : ""]}>
+          <h3 class="inline transition-colors">
             <a
               class:list={[
-                "cjk:tracking-wide",
-                isHome ? "lg:font-medium lg:text-4.5" : "",
+                "tracking-wide",
+                isHome ? "lg:font-medium lg:text-lg" : "",
               ]}
               href={getArticlePath(slug)}
               transition:name={`article-${slug}${lang ? `-${lang}` : ""}`}
@@ -36,25 +35,24 @@ const isHome = isHomePage(Astro.url.pathname);
             >
               {article.data.title}
             </a>
-            {/* pinned */}
             {pinned && (
               <Pin
                 aria-hidden="true"
-                class="ml-0.25em inline-block aspect-square w-0.98em lg:(w-1.05em )"
+                class="ml-[0.25em] inline-block aspect-square w-[0.98em] lg:w-[1.05em]"
                 fill="currentColor"
               />
             )}
           </h3>
-          {/* article time */}
-          <div class="hidden text-3.65 font-time lg:(ml-2.5 inline)">
+
+          <div class="block mt-1 text-sm font-time lg:ml-2.5 lg:inline lg:mt-0">
             <ArticleDate
               date={article.data.published}
               minutes={article.remarkPluginFrontmatter.minutes}
             />
           </div>
-          {/* desktop article description */}
+
           {isHome && (
-            <div class="heti hidden" data-lg="mt-2.25 block">
+            <div class="heti mt-2 block lg:mt-3">
               <p>{getArticleDescription(article, "list")}</p>
             </div>
           )}

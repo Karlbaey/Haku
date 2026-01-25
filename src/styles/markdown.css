@@ -30,9 +30,9 @@
   --shadow-polaroid-dark: 0 5px 15px rgb(0 0 0 / 0.3);
 
   /* 字体 */
-  --font-family-handwritten: "Noto Sans SC";
-  --font-family-text: serif, "Noto Serif SC";
-  --font-geist-mono: monospace, consolas;
+  --font-family-handwritten: "Noto Sans SC", sans-serif, arial;
+  --font-family-text: "Noto Serif SC", sans-serif;
+  --font-geist-mono: "Fira Code", consolas, monospace;
 
   /* 间距系统 */
   --space-xs: 0.25rem;
