@@ -14,10 +14,26 @@
     overflow-y: scroll;
   }
 
-  svg[id^="mermaid-"] {
-    @apply bg-white dark:bg-gray-500 rounded-lg p-4 mx-auto block;
+  footer {
+    @apply mt-12 pt-8 border-t border-gray-200;
+  }
 
-    /* 确保背景不紧贴图表边缘 */
-    min-width: min-content;
+  svg[id^="mermaid-"] {
+    @apply bg-white dark:bg-gray-500 rounded-lg p-4 mx-auto block min-w-min;
+  }
+
+  .article-meta {
+    @apply flex items-center gap-6 text-sm mt-2 mb-8 text-shadow-zinc-800 dark:text-zinc-400 italic;
+  }
+
+  .meta-item {
+    @apply gap-1.5 flex items-center;
+    & .icon {
+      @apply max-w-full max-h-full;
+    }
+  }
+
+  .icon {
+    @apply inline-flex items-center w-5 h-5;
   }
 }
