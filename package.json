@@ -4,12 +4,13 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && pagefind --site dist",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.13",
+    "@pagefind/default-ui": "^1.4.0",
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.1.17",
     "astro": "^5.16.15",
@@ -18,6 +19,7 @@
     "mdast-util-to-string": "^4.0.0",
     "medium-zoom": "^1.1.0",
     "mermaid": "^11.12.2",
+    "pagefind": "^1.4.0",
     "reading-time": "^1.5.0",
     "rehype-callouts": "^2.1.2",
     "rehype-katex": "^7.0.1",
