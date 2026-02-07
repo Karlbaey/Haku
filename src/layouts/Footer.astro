@@ -1,0 +1,19 @@
+---
+import themeConfig from "@/config";
+import Division from "@/components/styles/Division.astro";
+
+const { author } = themeConfig.site;
+---
+
+<Division />
+
+<footer class="my-10 mx-auto max-w-4xl">
+  <p>
+    &copy; {new Date().getFullYear()}
+    {author} - All rights reserved. Released under <a
+      href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
+      rel="canonical"
+      class="hover:underline underline-offset-1">CC BY-NC-SA 4.0</a
+    >.
+  </p>
+</footer>

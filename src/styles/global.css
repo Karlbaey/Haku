@@ -1,8 +1,10 @@
 /* src/styles/global.css */
 
 /* ===== 1. 导入依赖与插件 ===== */
+@import url("https://fonts.loli.net/css2?family=Noto+Sans+SC:wght@100..900");
+@import url("https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@100..900");
 @import "tailwindcss";
-@plugin "@tailwindcss/typography";
+
 @tailwind utilities;
 
 /* ===== 2. 暗色模式配置 ===== */
@@ -10,18 +12,52 @@
 
 @layer base {
   :root {
-    --site-font: "Noto Serif SC", serif, "Noto Sans SC", sans-serif;
+    --haku-font-serif: "Noto Serif SC", serif;
+    --haku-font-sans: "Noto Sans SC", sans-serif;
+    --color-border: #a8a8a8;
+    --color-readme: #44403b;
+    --color-readme-anchor: #155dfc;
 
-    font-family: var(--site-font);
+    font-family: var(--haku-font-serif);
     overflow-y: scroll;
   }
 
+  html.dark {
+    --color-readme-anchor: #2b7fff;
+    --color-border: #3a3a3a;
+    --color-readme: #d6d3d1;
+  }
+
   footer {
-    @apply mt-12 pt-8 border-t border-gray-200;
+    @apply mt-6 pt-4;
   }
 
   svg[id^="mermaid-"] {
     @apply bg-white dark:bg-gray-500 rounded-lg p-4 mx-auto block min-w-min;
+  }
+}
+
+@layer components {
+  .readme-page {
+    @apply max-w-3xl px-4 mx-auto mb-6;
+    color: var(--color-readme);
+
+    p {
+      @apply mt-4;
+    }
+
+    a {
+      color: var(--color-readme-anchor);
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .list-page {
+    @apply px-4 mx-4 mt-6;
+    color: var(--color-readme);
   }
 }
 

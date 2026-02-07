@@ -58,7 +58,7 @@ function getExcerpt(text: string, language: Language, scene: ExcerptScene): stri
 
   // Remove trailing punctuation and add ellipsis
   if (cleanText.length > length) {
-    return `${excerpt.replace(/\p{P}+$/u, '')}...`
+    return `${excerpt.replace(/\p{P}+$/u, '')}……`
   }
 
   return excerpt

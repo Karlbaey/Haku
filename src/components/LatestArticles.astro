@@ -3,45 +3,36 @@ import type { Article, Language } from "@/types";
 import { isArticlePage } from "@/utils/pages";
 import { getArticlePath } from "@/utils/path";
 import { getArticleDescription } from "@/utils/description";
-import Pin from "@/assets/pin.svg";
 import ArticleDate from "./ArticleDate.astro";
 
 export interface Props {
   articles: Article[];
   lang: Language;
-  pinned?: boolean;
 }
 
-const { articles, lang, pinned = false } = Astro.props;
+const { articles = [], lang } = Astro.props;
 const isArticle = isArticlePage(Astro.url.pathname);
+
+// 获取最新的 3 篇文章
+const recentArticles = articles.slice(0, 3);
 ---
 
 <ul class="article-items">
   {
-    articles.map((article) => {
+    recentArticles.map((article) => {
       const slug = article.data.abbrlink || article.id;
 
       return (
         <li class:list={["mb-6", isArticle ? "lg:mb-10" : ""]}>
-          <h3 class="inline transition-colors">
+          <h3 class="inline hover:underline underline-offset-2">
             <a
-              class:list={[
-                "tracking-wide",
-                isArticle ? "lg:font-medium lg:text-lg" : "",
-              ]}
+              class:list={["tracking-wide"]}
               href={getArticlePath(slug)}
               transition:name={`article-${slug}${lang ? `-${lang}` : ""}`}
               data-disable-theme-transition
             >
               {article.data.title}
             </a>
-            {pinned && (
-              <Pin
-                aria-hidden="true"
-                class="ml-[0.25em] inline-block aspect-square w-[0.98em] lg:w-[1.05em]"
-                fill="currentColor"
-              />
-            )}
           </h3>
 
           <div class="block mt-1 text-sm font-time lg:ml-2.5 lg:inline lg:mt-0">

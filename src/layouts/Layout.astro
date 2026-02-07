@@ -1,15 +1,12 @@
 ---
 // src/layout/Layout.astro
 import Head from "@/layouts/Head.astro";
-import Header from "@/components/Header.astro";
-import Navbar from "@/components/Navbar.astro";
-import themeConfig from "@/config";
+import Navbar from "@/layouts/Navbar.astro";
+import Footer from "@/layouts/Footer.astro";
+import CodeCopyButton from "@/components/CodeCopyButton.astro";
 import "../styles/global.css";
 import "../styles/markdown.css";
 import "../styles/ext.css";
-import ToggleButton from "@/components/ToggleButton.astro";
-import CodeCopyButton from "@/components/CodeCopyButton.astro";
-import SearchButton from "@/components/SearchButton.astro";
 
 interface Props {
   publishedDate?: string;
@@ -20,44 +17,21 @@ interface Props {
 }
 
 const { articleTitle, articleDescription } = Astro.props;
-const { author } = themeConfig.site;
 ---
 
 <!doctype html>
 <html lang="zh-cn">
   <Head articleTitle={articleTitle} articleDescription={articleDescription} />
   <body>
-    <div
-      class="max-w-360 mx-auto min-h-screen px-6 lg:grid lg:grid-cols-[320px_1fr] lg:gap-x-16"
-    >
-      <aside class="min-w-0">
-        <div class="lg:sticky lg:top-10 wrap-break-word">
-          <Header />
-          <Navbar />
-          <div class="flex mt-4 items-center gap-x-4">
-            <ToggleButton />
-            <SearchButton />
-          </div>
-        </div>
-      </aside>
-
-      <main class="py-8 relative">
+    <Navbar />
+    <div class="justify-center items-center flex sm:px-6 lg:px-8">
+      <main class="py-6">
         <article>
-          <div class="markdown">
-            <slot />
-            <CodeCopyButton />
-          </div>
-          <footer>
-            <p>
-              &copy; {new Date().getFullYear()}
-              {author} - All rights reserved. Released under <a
-                href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
-                rel="canonical">CC BY-NC-SA 4.0</a
-              >.
-            </p>
-          </footer>
+          <slot />
+          <CodeCopyButton />
         </article>
       </main>
     </div>
+    <Footer />
   </body>
 </html>

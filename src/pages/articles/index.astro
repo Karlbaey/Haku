@@ -1,0 +1,30 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import AllArticles from "@/components/AllArticles.astro";
+import { lang } from "@/config";
+import { getPinnedArticles, getArticlesByYear } from "@/utils/content";
+
+const pinnedPosts = await getPinnedArticles();
+const articlesByYear = await getArticlesByYear();
+---
+
+<Layout>
+  <div class="max-w-3xl px-4 mb-6 markdown">
+    <div class="list-page">
+      {
+        pinnedPosts.length > 0 && (
+          <section class="mb-7.5">
+            <AllArticles articles={pinnedPosts} lang={lang} pinned={true} />
+          </section>
+        )
+      }
+      {
+        [...articlesByYear.entries()].map(([_year, articles]) => (
+          <section class="mb-7.5">
+            <AllArticles articles={articles} lang={lang} />
+          </section>
+        ))
+      }
+    </div>
+  </div>
+</Layout>

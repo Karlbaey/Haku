@@ -33,10 +33,6 @@ export function isTagPage(path: string) {
   return isPageType(path, "tags");
 }
 
-export function isAboutPage(path: string) {
-  return isPageType(path, "about");
-}
-
 /**
  * Obtain the context information of the page (such as the page type).
  * @param path Original URL path
@@ -46,12 +42,10 @@ export function getPageInfo(path: string) {
   const isHome = isHomePage(path);
   const isArticle = isArticlePage(path);
   const isTag = isTagPage(path);
-  const isAbout = isAboutPage(path);
 
   return {
     isHome,
     isArticle,
     isTag,
-    isAbout,
   };
 }
