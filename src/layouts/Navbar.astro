@@ -1,0 +1,79 @@
+---
+import { getPageInfo } from "@/utils/pages";
+import { Image } from "astro:assets";
+import SearchButton from "@/components/SearchButton.astro";
+import ToggleButton from "@/components/ToggleButton.astro";
+import Division from "@/components/styles/Division.astro";
+
+const { isHome, isArticle, isTag, isAbout } = getPageInfo(Astro.url.pathname);
+
+const isArticleActive = isArticle || isHome;
+const isTagActive = isTag;
+const isAboutActive = isAbout;
+
+function getNavItemClass(isActive: boolean) {
+  if (isActive) {
+    return "underline decoration-wavy text-bold";
+  }
+  return "hover:text-primary hover:font-bold highlight-hover no-underline";
+}
+
+const navItems = [
+  {
+    href: "/",
+    label: "随笔",
+    className: getNavItemClass(isArticleActive),
+  },
+  {
+    href: "/tags/",
+    label: "标签",
+    className: getNavItemClass(isTagActive),
+  },
+  {
+    href: "/about/",
+    label: "关于",
+    className: getNavItemClass(isAboutActive),
+  },
+];
+---
+
+<header>
+  <div
+    class="max-w-4xl justify-between items-center gap-x-8 mx-auto flex px-6 p-4 sm:px-8 lg:px-8"
+  >
+    <div class="flex items-center gap-x-8">
+      <a rel="noopener" href="/" class="shrink-0">
+        <Image
+          src="/favicon.png"
+          width={32}
+          height={32}
+          alt="Logo"
+          class="mt-2 w-8 h-8 border-2 border-transparent dark:border-border"
+          densities={[1, 2]}
+        />
+      </a>
+      <nav
+        aria-label="Site Navigation"
+        class:list={[
+          "gap-x-4 text-sm flex",
+          "md:text-base",
+          "lg:text-2xl lg:bottom-0.75",
+        ]}
+      >
+        {
+          navItems.map((item) => (
+            <a href={item.href} class={item.className}>
+              {item.label}
+            </a>
+          ))
+        }
+      </nav>
+    </div>
+    <div class="flex items-center gap-x-4">
+      <ToggleButton />
+      <SearchButton />
+    </div>
+  </div>
+</header>
+
+<Division />

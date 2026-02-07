@@ -1,10 +1,13 @@
 ---
 import themeConfig from "@/config";
+import Division from "@/components/styles/Division.astro";
 
 const { author } = themeConfig.site;
 ---
 
-<footer class="my-8">
+<Division />
+
+<footer class="my-10 mx-auto max-w-4xl">
   <p>
     &copy; {new Date().getFullYear()}
     {author} - All rights reserved. Released under <a
