@@ -10,12 +10,7 @@ if (!entry) {
 const { Content } = entry ? await entry.render() : { Content: null };
 ---
 
-<Layout
-  articleTitle={entry.data.title}
-  articleDescription={entry.data.description}
->
+<Layout articleTitle={entry.data.title}>
   <h1>{entry.data.title}</h1>
-  <div class="about-content">
-    {Content && <Content />}
-  </div>
+  {Content && <Content />}
 </Layout>
