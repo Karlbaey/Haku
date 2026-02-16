@@ -12,6 +12,7 @@ import remarkMath from 'remark-math';
 import tailwindcss from '@tailwindcss/vite';
 
 import mdx from '@astrojs/mdx';
+import Compressor from 'astro-compressor';
 
 const { url: site } = themeConfig.site
 
@@ -52,5 +53,7 @@ export default defineConfig({
     }
   },
 
-  integrations: [mdx()],
+  integrations: [mdx(), Compressor({
+    fileExtensions: [".css", ".js", ".mjs", ".html", ".cjs"],
+  })],
 });
