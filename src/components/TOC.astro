@@ -15,23 +15,19 @@ const filteredHeadings = headings.filter(
 <aside
   class="hidden xl:flex flex-col fixed left-12 top-1/2 w-64 -translate-y-1/2 max-h-(--toc-height) z-60 p-4"
 >
-  <!-- 标题部分：完全脱离滚动区域，flex-none 防止被压缩 -->
   <div
     class="flex-none flex items-center gap-2 mb-4 text-(--toc-title) font-bold text-lg"
   >
     <TocIcon fill="currentColor" />
     <span>目录</span>
   </div>
-
-  <!-- 列表部分：独立滚动区域，flex-1 自动填充剩余空间 -->
-  <!-- -mr-4 pr-4 技巧是为了让滚动条贴在组件最右侧边缘，而不挤压内容 -->
   <div class="flex-1 overflow-y-auto no-scrollbar min-h-0">
     <ul class="text-sm border-l-2 border-(--toc-border)">
       {
         filteredHeadings.map((heading) => (
           <li
             class={`
-          hover:border-l-2 hover:border-(--toc-active) -ml-1 transition-colors duration-200
+          hover:pl-1 border-l-2 border-transparent hover:border-(--toc-border-active) -ml-0.5 transition-colors
           ${heading.depth === 2 ? "mt-3" : "mt-1"}
         `}
           >
@@ -53,20 +49,59 @@ const filteredHeadings = headings.filter(
   </div>
 </aside>
 
+<script>
+  // 滚动监听逻辑
+  const observerOptions = {
+    root: null,
+    // 调整视口检测范围：只检测屏幕顶部 30% 的区域
+    // 这样当标题滚动到上方时才会高亮，而不是刚进入屏幕底部就高亮
+    rootMargin: "0px 0px -70% 0px",
+    threshold: 0,
+  };
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute("id");
+        if (!id) return;
+        // 1. 移除所有现有的激活状态
+        const tocLinks = document.querySelectorAll("aside a");
+        const tocItems = document.querySelectorAll("aside li");
+
+        tocLinks.forEach((link) => link.classList.remove("active"));
+        tocItems.forEach((item) => item.classList.remove("active"));
+        // 2. 激活当前对应的目录项
+        const activeLink = document.querySelector(`aside a[href="#${id}"]`);
+        if (activeLink) {
+          activeLink.classList.add("active");
+          // 激活父级 li 以改变边框颜色
+          activeLink.parentElement?.classList.add("active");
+        }
+      }
+    });
+  }, observerOptions);
+  // 监听所有文章内的标题
+  document.addEventListener("DOMContentLoaded", () => {
+    const headings = document.querySelectorAll("h2, h3, h4");
+    headings.forEach((heading) => observer.observe(heading));
+  });
+</script>
+
 <style>
   :root {
     --toc-height: 60%;
     --toc-title: #111827;
     --toc-text: #696969;
-    --toc-border: #e5e7eb;
-    --toc-active: #4d4d4d;
+    --toc-border: #8daff1;
+    --toc-active: #444444;
+    --toc-border-active: #0f6cd6;
   }
 
   html.dark {
     --toc-title: #ffffff;
     --toc-text: #a8a8a8;
-    --toc-border: #374151;
+    --toc-border: #285aac;
     --toc-active: #b3b3b3;
+    --toc-border-active: #69a6eb;
   }
   .no-scrollbar {
     -ms-overflow-style: none;
@@ -77,5 +112,13 @@ const filteredHeadings = headings.filter(
   }
   li::before {
     display: none;
+  }
+  li.active {
+    border-left-color: var(--toc-border-active);
+    font-weight: bold;
+  }
+  a.active {
+    color: var(--toc-active);
+    font-weight: bold;
   }
 </style>
