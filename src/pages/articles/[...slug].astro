@@ -5,9 +5,8 @@ import themeConfig from "@/config";
 // import Comment from '@/components/Comment/Index.astro'
 // import PostDate from '@/components/PostDate.astro'
 // import TagList from '@/components/TagList.astro'
-// import BackButton from '@/components/Widgets/BackButton.astro'
-// import TOC from '@/components/Widgets/TOC.astro'
 import ArticleMeta from "@/components/ArticleMeta.astro";
+import TOC from "@/components/TOC.astro";
 import Layout from "@/layouts/Layout.astro";
 import { checkArticleSlugDuplication } from "@/utils/content";
 
@@ -51,6 +50,7 @@ const { Content, headings, remarkPluginFrontmatter } = await render(article);
 ---
 
 <Layout articleTitle={article.data.title} articleSlug={article.id}>
+  <TOC headings={headings} />
   <div class="max-w-3xl px-4 mx-auto mb-6 markdown">
     <div class="relative">
       <!-- <BackButton /> -->
@@ -62,8 +62,6 @@ const { Content, headings, remarkPluginFrontmatter } = await render(article);
       </h1>
     </div>
     <ArticleMeta author={author} publishDate={article.data.published} />
-    <!-- TOC -->
-    <!-- {article.data.toc && <TOC headings={headings} />} -->
     <!-- Content -->
     <div id="article-content">
       <Content />
@@ -78,6 +76,7 @@ const { Content, headings, remarkPluginFrontmatter } = await render(article);
           // />
         )
       }
+      <a href="/articles/">←返回文章页面</a>
       <!-- Comment -->
       <!-- <Comment /> -->
     </div>
