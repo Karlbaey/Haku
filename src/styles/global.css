@@ -56,7 +56,7 @@
   }
 
   .list-page {
-    @apply px-4 mx-4 mt-6;
+    @apply mx-4 mt-6;
     color: var(--color-readme);
   }
 }
