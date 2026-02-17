@@ -2,8 +2,7 @@
 import type { Article, Language } from "@/types";
 import { isArticlePage } from "@/utils/pages";
 import { getArticlePath } from "@/utils/path";
-import { getArticleDescription } from "@/utils/description";
-import ArticleDate from "./ArticleDate.astro";
+import ArticleDate from "@/components/meta/ArticleDate.astro";
 
 export interface Props {
   articles: Article[];
@@ -41,12 +40,6 @@ const recentArticles = articles.slice(0, 3);
               minutes={article.remarkPluginFrontmatter.minutes}
             />
           </div>
-
-          {isArticle && (
-            <div class="mt-2 block lg:mt-3">
-              <p>{getArticleDescription(article, "list")}</p>
-            </div>
-          )}
         </li>
       );
     })

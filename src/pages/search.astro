@@ -7,13 +7,15 @@ const backUrl = "/";
 ---
 
 <Layout articleTitle="Search" articleDescription="Search Page">
-  <h1>搜索</h1>
-  <div
-    class="w-2/3"
-    id="pagefind-search"
-    transition:persist
-    data-backurl={backUrl}
-  >
+  <div class="searching">
+    <h1>搜索</h1>
+    <div
+      class="markdown"
+      id="pagefind-search"
+      transition:persist
+      data-backurl={backUrl}
+    >
+    </div>
   </div>
 </Layout>
 
@@ -92,7 +94,7 @@ const backUrl = "/";
   initSearch();
 </script>
 
-<style is:global>
+<style>
   :root {
     --pagefind-ui-scale: 1;
     --pagefind-ui-primary: #3b82f6;
@@ -113,6 +115,15 @@ const backUrl = "/";
     --pagefind-ui-text: #e6e6e6;
     --pagefind-ui-background: #131313;
     --pagefind-ui-border: #0a0a0a;
+  }
+
+  .searching {
+    max-width: 48rem;
+
+    h1 {
+      font-weight: 600;
+      font-size: 1.75em;
+    }
   }
 
   #pagefind-search {

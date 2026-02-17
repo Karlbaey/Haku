@@ -1,0 +1,13 @@
+---
+import { getCollection } from "astro:content";
+
+const allArticles = await getCollection("articles");
+
+const tags = [
+  ...new Set(allArticles.map((article) => article.data.tags).flat()),
+];
+---
+
+<div class="w-3xl mb-6 tags flex flex-wrap gap-x-2 gap-y-1">
+  {tags.map((tag) => <a href={`/tags/${tag}/`}>&nbsp;&nbsp;# {tag}&nbsp;</a>)}
+</div>

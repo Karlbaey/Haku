@@ -1,0 +1,61 @@
+---
+import type { Article } from "@/types";
+import Layout from "@/layouts/Layout.astro";
+import AllTags from "@/components/meta/AllTags.astro";
+import ArticleDate from "@/components/meta/ArticleDate.astro";
+import { getArticles } from "@/utils/content";
+
+export async function getStaticPaths() {
+  const allArticles = await getArticles();
+  // 获取所有不重复的标签
+  const uniqueTags = [
+    ...new Set(allArticles.map((article) => article.data.tags).flat()),
+  ];
+  // 为每个标签生成一个页面，并将相关的文章作为 props 传递
+  return uniqueTags.map((tag) => {
+    const filteredArticles = allArticles.filter((article) =>
+      article.data.tags.includes(tag),
+    );
+    return {
+      params: { tag },
+      props: { articles: filteredArticles },
+    };
+  });
+}
+
+export interface Props {
+  articles: Article[];
+}
+
+const { tag } = Astro.params;
+const { articles = [] } = Astro.props;
+---
+
+<Layout articleTitle=`包含标签“${tag}”的页面`>
+  <AllTags />
+  <div class="w-3xl tag-articles">
+    <h1 class="text-[2.5em] font-bold mb-8">
+      包含标签“{tag}”的页面
+    </h1>
+    <ul>
+      {
+        articles.map((article) => (
+          <li class="my-4">
+            <a
+              class="hover:underline underline-offset-2 font-semibold"
+              href={`/articles/${article.data.abbrlink}/`}
+            >
+              {article.data.title}
+            </a>
+            <div class="block mt-1 text-sm font-time lg:ml-2.5 lg:inline lg:mt-0">
+              <ArticleDate
+                date={article.data.published}
+                minutes={article.remarkPluginFrontmatter.minutes}
+              />
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</Layout>

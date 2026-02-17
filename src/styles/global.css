@@ -2,7 +2,7 @@
 
 /* ===== 1. 导入依赖与插件 ===== */
 @import url("https://fonts.loli.net/css2?family=Noto+Sans+SC:wght@100..900");
-@import url("https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@100..900");
+@import url("https://fonts.loli.net/css2?family=SN+Pro:ital,wght@0,200..900;1,200..900&display=swap");
 @import "tailwindcss";
 
 @tailwind utilities;
@@ -12,13 +12,17 @@
 
 @layer base {
   :root {
-    --haku-font-serif: "Noto Serif SC", serif;
-    --haku-font-sans: "Noto Sans SC", sans-serif;
+    --haku-font: "SN Pro", "Noto Sans SC", sans-serif;
     --color-border: #a8a8a8;
     --color-readme: #44403b;
     --color-readme-anchor: #155dfc;
+    --color-tag: #0a0a0a;
+    --color-tag-bg: #dfdfdf;
+    --color-tag-bg-hover: #a8a8a8;
+    --color-tag-title: #0a0a0a;
+    --color-tag-text: #202020;
 
-    font-family: var(--haku-font-serif);
+    font-family: var(--haku-font);
     overflow-y: scroll;
   }
 
@@ -26,6 +30,11 @@
     --color-readme-anchor: #2b7fff;
     --color-border: #3a3a3a;
     --color-readme: #d6d3d1;
+    --color-tag: #dbdbdb;
+    --color-tag-bg: #2b2b2b;
+    --color-tag-bg-hover: #666666;
+    --color-tag-title: #d5d5d6;
+    --color-tag-text: #c5c5c5;
   }
 
   footer {
@@ -56,7 +65,7 @@
   }
 
   .list-page {
-    @apply px-4 mx-4 mt-6;
+    @apply mx-4 mt-6;
     color: var(--color-readme);
   }
 }
@@ -116,5 +125,24 @@
     .copy-code-btn {
       @apply opacity-100;
     }
+  }
+}
+
+@layer components {
+  .tags a {
+    border: none;
+    color: var(--color-tag) !important;
+    background-color: var(--color-tag-bg);
+  }
+
+  .tags a:hover {
+    background-color: var(--color-tag-bg-hover);
+  }
+
+  .tag-articles {
+    h1 {
+      color: var(--color-tag-title);
+    }
+    color: var(--color-tag-text);
   }
 }

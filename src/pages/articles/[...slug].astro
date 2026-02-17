@@ -4,7 +4,7 @@ import { getCollection, render } from "astro:content";
 import themeConfig from "@/config";
 // import Comment from '@/components/Comment/Index.astro'
 // import PostDate from '@/components/PostDate.astro'
-// import TagList from '@/components/TagList.astro'
+import ArticleTags from "@/components/meta/ArticleTags.astro";
 import ArticleMeta from "@/components/meta/ArticleMeta.astro";
 import TOC from "@/components/meta/TOC.astro";
 import Layout from "@/layouts/Layout.astro";
@@ -62,6 +62,7 @@ const { Content, headings, remarkPluginFrontmatter } = await render(article);
       </h1>
     </div>
     <ArticleMeta author={author} publishDate={article.data.published} />
+    <ArticleTags article={article} />
     <!-- Content -->
     <div id="article-content">
       <Content />

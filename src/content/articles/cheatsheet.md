@@ -3,6 +3,7 @@ title: "Cheatsheet"
 published: 2025-11-23
 tags:
   - "Markdown"
+  - "帮助"
 abbrlink: "cheatsheet"
 description: "这里有一些可以在 HAKU 博客主题使用的语法。"
 ---

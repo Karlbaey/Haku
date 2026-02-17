@@ -1,0 +1,23 @@
+---
+import type { Article } from "@/types";
+
+export interface Props {
+  article: Article;
+  class?: string;
+}
+
+const { article } = Astro.props;
+const tags = article.data.tags || [];
+---
+
+{
+  tags.length > 0 && (
+    <div class="tags flex flex-wrap gap-x-2 gap-y-1">
+      {tags.map((tag) => (
+        <a href={`/tags/${tag}/`} class="text-sm">
+          &nbsp;#&nbsp;{tag}&nbsp;
+        </a>
+      ))}
+    </div>
+  )
+}
