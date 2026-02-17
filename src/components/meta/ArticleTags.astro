@@ -26,16 +26,18 @@ const tags = article.data.tags || [];
   :root {
     --color-tag: #0a0a0a;
     --color-tag-bg: #dfdfdf;
-    --color-tag-bg-hover: #cfcfcf;
+    --color-tag-bg-hover: #a8a8a8;
   }
 
   html.dark {
-    --color-tag: #d5d5d6;
+    --color-tag: #dbdbdb;
+    --color-tag-bg: #2b2b2b;
+    --color-tag-bg-hover: #666666;
   }
 
   .article-tags a {
     border: none;
-    color: inherit;
+    color: var(--color-tag);
     background-color: var(--color-tag-bg);
   }
 

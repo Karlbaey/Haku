@@ -31,7 +31,7 @@ const { articles = [] } = Astro.props;
 ---
 
 <Layout articleTitle=`包含标签“${tag}”的页面`>
-  <div class="w-3xl">
+  <div class="w-3xl tag-page">
     <h1 class="text-[2.5em] font-bold mb-8">
       包含标签“{tag}”的页面
     </h1>
@@ -57,3 +57,21 @@ const { articles = [] } = Astro.props;
     </ul>
   </div>
 </Layout>
+
+<style>
+  :root {
+    --color-tag-title: #0a0a0a --color-tag-text: #52525b;
+  }
+
+  html.dark {
+    --color-tag-title: #d5d5d6;
+    --color-tag-text: #c5c5c5;
+  }
+
+  .tag-page {
+    h1 {
+      color: var(--color-tag-title);
+    }
+    color: var(--color-tag-text);
+  }
+</style>
