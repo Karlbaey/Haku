@@ -1,0 +1,45 @@
+---
+import type { Article } from "@/types";
+
+export interface Props {
+  article: Article;
+  class?: string;
+}
+
+const { article } = Astro.props;
+const tags = article.data.tags || [];
+---
+
+{
+  tags.length > 0 && (
+    <div class="article-tags flex flex-wrap gap-x-2 gap-y-1">
+      {tags.map((tag) => (
+        <a href={`/tags/${tag}/`} class="text-sm">
+          &nbsp;#&nbsp;{tag}&nbsp;
+        </a>
+      ))}
+    </div>
+  )
+}
+
+<style>
+  :root {
+    --color-tag: #0a0a0a;
+    --color-tag-bg: #dfdfdf;
+    --color-tag-bg-hover: #cfcfcf;
+  }
+
+  html.dark {
+    --color-tag: #d5d5d6;
+  }
+
+  .article-tags a {
+    border: none;
+    color: inherit;
+    background-color: var(--color-tag-bg);
+  }
+
+  .article-tags a:hover {
+    background-color: var(--color-tag-bg-hover);
+  }
+</style>

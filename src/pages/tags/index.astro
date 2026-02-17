@@ -1,0 +1,27 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+
+const allArticles = await getCollection("articles");
+
+const tags = [...new Set(allArticles.map((article) => article.data.tags).flat())];
+
+const pageTitle = "标签";
+---
+
+<Layout articleTitle={pageTitle}>
+  <div class="max-w-3xl px-4 mb-6 markdown">
+    <div class="tags">
+      {tags.map((tag) => (
+        <p>
+          <!-- 链接到单个标签页面 -->
+          <a href={`/tags/${tag}/`}>{tag}</a>
+        </p>
+      ))}</div>
+  </div>
+</Layout>
+
+<style>
+  
+</style>
+

@@ -4,6 +4,7 @@ import { isArticlePage } from "@/utils/pages";
 import { getArticlePath } from "@/utils/path";
 import { getArticleDescription } from "@/utils/description";
 import Pin from "@/assets/pin.svg";
+import ArticleTags from "@/components/meta/ArticleTags.astro";
 import ArticleDate from "./ArticleDate.astro";
 
 export interface Props {
@@ -50,6 +51,8 @@ const isArticle = isArticlePage(Astro.url.pathname);
               minutes={article.remarkPluginFrontmatter.minutes}
             />
           </div>
+
+          <ArticleTags article={article} />
 
           {isArticle && (
             <div class="mt-2 block lg:mt-3">

@@ -2,7 +2,7 @@
 
 /* ===== 1. 导入依赖与插件 ===== */
 @import url("https://fonts.loli.net/css2?family=Noto+Sans+SC:wght@100..900");
-@import url("https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@100..900");
+@import url("https://fonts.loli.net/css2?family=SN+Pro:ital,wght@0,200..900;1,200..900&display=swap");
 @import "tailwindcss";
 
 @tailwind utilities;
@@ -12,13 +12,12 @@
 
 @layer base {
   :root {
-    --haku-font-serif: "Noto Serif SC", serif;
-    --haku-font-sans: "Noto Sans SC", sans-serif;
+    --haku-font: "SN Pro", "Noto Sans SC", sans-serif;
     --color-border: #a8a8a8;
     --color-readme: #44403b;
     --color-readme-anchor: #155dfc;
 
-    font-family: var(--haku-font-serif);
+    font-family: var(--haku-font);
     overflow-y: scroll;
   }
 
