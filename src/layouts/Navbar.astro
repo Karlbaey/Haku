@@ -1,8 +1,8 @@
 ---
 import { getPageInfo } from "@/utils/pages";
 import { Image } from "astro:assets";
-import SearchButton from "@/components/SearchButton.astro";
-import ToggleButton from "@/components/ToggleButton.astro";
+import SearchButton from "@/components/buttons/SearchButton.astro";
+import ToggleButton from "@/components/buttons/ToggleButton.astro";
 import Division from "@/components/styles/Division.astro";
 
 const { isArticle, isTag } = getPageInfo(Astro.url.pathname);
