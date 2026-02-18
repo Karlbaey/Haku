@@ -26,7 +26,7 @@
     overflow-y: scroll;
 
     color-scheme: light;
-    background-color: var(--bg-body);
+    background-color: var(--color-bg);
   }
 
   html.dark {
@@ -41,7 +41,7 @@
     --color-bg: #1b1a1d;
 
     color-scheme: dark;
-    background-color: var(--bg-body);
+    background-color: var(--color-bg);
   }
 
   footer {
