@@ -7,7 +7,7 @@ interface Props {
   articleDescription?: string;
 }
 
-const { title, subtitle, description, author, url, favicon } = themeConfig.site;
+const { title, subtitle, description, author, favicon } = themeConfig.site;
 
 const { articleTitle, articleDescription } = Astro.props;
 
@@ -60,6 +60,7 @@ const pageDescription = articleDescription || siteDescription;
   <meta name="description" content={pageDescription} />
   <meta property="og:url" content={Astro.url} />
   <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={pageDescription} />
   <meta name="author" content={author} />
   <meta name="generator" content={Astro.generator} />
   <link

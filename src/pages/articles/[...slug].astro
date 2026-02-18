@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import { getCollection, render } from "astro:content";
+import { getArticleDescription } from "@/utils/description";
 import themeConfig from "@/config";
 // import Comment from '@/components/Comment/Index.astro'
 // import PostDate from '@/components/PostDate.astro'
@@ -45,11 +46,15 @@ export async function getStaticPaths() {
 const { article } = Astro.props;
 const { author } = themeConfig.site;
 const slug = article.data.permalink || article.id;
-// const description = getArticlesDescription(article, 'meta')
-const { Content, headings, remarkPluginFrontmatter } = await render(article);
+const description = getArticleDescription(article, "meta");
+const { Content, headings } = await render(article);
 ---
 
-<Layout articleTitle={article.data.title} articleSlug={article.id}>
+<Layout
+  articleTitle={article.data.title}
+  articleSlug={article.id}
+  articleDescription={description}
+>
   <TOC headings={headings} />
   <div class="max-w-3xl px-4 mx-auto mb-6 markdown">
     <div class="relative">
@@ -68,15 +73,6 @@ const { Content, headings, remarkPluginFrontmatter } = await render(article);
       <Content />
       <!-- Copyright -->
       <div id="article-copyright"></div>
-      <!-- Tag List -->
-      {
-        article.data.tags?.length > 0 && (
-          <div class="mt-12.6" />
-          // <TagList
-          //   tags={article.data.tags}
-          // />
-        )
-      }
       <a href="/articles/">←返回文章页面</a>
       <!-- Comment -->
       <!-- <Comment /> -->
