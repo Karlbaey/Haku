@@ -39,7 +39,7 @@ function parseArgs() {
   return { cliTitle, cliPermalink };
 }
 
-export async function createNewArticle() {
+export async function create() {
   console.log(kleur.bold().blue("\nCreate new blog article\n"));
 
   // 1. 解析命令行参数

@@ -1,7 +1,9 @@
 #!/usr/bin/env node
-import { createNewArticle } from "../scripts/new-article.mjs";
+import { create } from "../scripts/create.mjs";
 import { deploy } from "../scripts/deploy.mjs";
-// import { updateTheme } from "../scripts/update-theme.mjs";
+import { dev } from "../scripts/dev.mjs";
+import { preview } from "../scripts/preview.mjs";
+import { build } from "../scripts/build.mjs";
 import kleur from "kleur";
 
 const args = process.argv.slice(2);
@@ -9,7 +11,10 @@ const command = args[0];
 
 // 简单的命令路由
 const commands = {
-  create: createNewArticle,
+  create: create,
+  dev: dev,
+  build: build,
+  preview: preview,
   deploy: deploy,
   // update: updateTheme,
   help: showHelp,
@@ -34,6 +39,9 @@ ${kleur.bold().magenta("🌸 Haku Theme CLI")}
 
 Usage:
   ${kleur.cyan("haku create")}     create a new blog article
+  ${kleur.cyan("haku dev")}        start local dev server
+  ${kleur.cyan("haku build")}      build the site for production
+  ${kleur.cyan("haku preview")}    preview the production build locally
   ${kleur.cyan("haku deploy")}     deploy to remote repository
   ${kleur.cyan("haku help")}       show this help message
 `);
