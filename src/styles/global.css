@@ -1,8 +1,6 @@
 /* src/styles/global.css */
 
 /* ===== 1. 导入依赖与插件 ===== */
-@import url("https://fonts.loli.net/css2?family=Noto+Sans+SC:wght@100..900");
-@import url("https://fonts.loli.net/css2?family=SN+Pro:ital,wght@0,200..900;1,200..900&display=swap");
 @import "tailwindcss";
 
 @tailwind utilities;
@@ -21,9 +19,14 @@
     --color-tag-bg-hover: #a8a8a8;
     --color-tag-title: #0a0a0a;
     --color-tag-text: #202020;
+    --color-bg: #ffffff;
 
     font-family: var(--haku-font);
+    font-display: swap;
     overflow-y: scroll;
+
+    color-scheme: light;
+    background-color: var(--bg-body);
   }
 
   html.dark {
@@ -35,6 +38,10 @@
     --color-tag-bg-hover: #666666;
     --color-tag-title: #d5d5d6;
     --color-tag-text: #c5c5c5;
+    --color-bg: #1b1a1d;
+
+    color-scheme: dark;
+    background-color: var(--bg-body);
   }
 
   footer {

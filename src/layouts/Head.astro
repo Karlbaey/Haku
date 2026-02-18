@@ -22,6 +22,19 @@ const pageDescription = articleDescription || siteDescription;
 ---
 
 <head>
+  <script is:inline>
+    (function () {
+      const theme = localStorage.getItem("theme");
+      const systemDark = window.matchMedia(
+        "(prefers-color-scheme: dark)",
+      ).matches;
+      if (theme === "dark" || (!theme && systemDark)) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    })();
+  </script>
   <!-- Basic info -->
   <meta charset="utf-8" />
   <meta
@@ -54,6 +67,14 @@ const pageDescription = articleDescription || siteDescription;
     href={katexCSS}
     media="print"
     onload={`this.media='all'`}
+  />
+  <link
+    rel="stylesheet"
+    href="https://fonts.loli.net/css2?family=Noto+Sans+SC:wght@100..900"
+  />
+  <link
+    rel="stylesheet"
+    href="https://fonts.loli.net/css2?family=SN+Pro:ital,wght@0,200..900;1,200..900&display=swap"
   />
   <script
     defer
