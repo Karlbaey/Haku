@@ -3,13 +3,12 @@ import { getCollection } from "astro:content";
 
 const collectionName = "articles";
 const allArticles = await getCollection(collectionName);
-
-let randomArticle = null;
-
-if (allArticles.length > 0) {
-  const randomIndex = Math.floor(Math.random() * allArticles.length);
-  randomArticle = allArticles[randomIndex];
-}
+// 在构建时，生成一个只包含必要信息（标题和链接）的轻量级数组
+// 这样可以避免把整篇文章的内容都传给客户端
+const articleList = allArticles.map((article) => ({
+  title: article.data.title,
+  href: `/${collectionName}/${article.data.permalink}/`,
+}));
 ---
 
 <!doctype html>
@@ -29,7 +28,7 @@ if (allArticles.length > 0) {
         left: 50%;
         transform: translate(-50%, -50%);
         text-align: center;
-        width: 90%; /* 给一个最大宽度，防止在超宽屏上内容拉得太开 */
+        width: 90%;
         max-width: 600px;
       }
       .container h1 {
@@ -50,11 +49,11 @@ if (allArticles.length > 0) {
       .container a:hover {
         text-decoration: underline;
       }
-      /* 为随机博客部分添加新样式 */
       .random-post {
         margin-top: 60px;
         padding-top: 30px;
         border-top: 1px solid #e0e0e0;
+        display: none;
       }
       .random-post h3 {
         color: #555;
@@ -77,17 +76,26 @@ if (allArticles.length > 0) {
         <a href="javascript:history.back(-1)">返回上一页</a>
         <a href="/">返回首页</a>
       </div>
-      <!-- 4. 添加随机文章的显示逻辑 -->
-      {
-        randomArticle && (
-          <div class="random-post">
-            <h3>或许你对这篇文章感兴趣？</h3>
-            <a href={`/${collectionName}/${randomArticle.data.permalink}/`}>
-              {randomArticle.data.title}
-            </a>
-          </div>
-        )
-      }
+
+      <div class="random-post" id="random-post-container">
+        <h3>或许你对这篇文章感兴趣？</h3>
+        <a href="#" id="random-post-link">加载中...</a>
+      </div>
     </div>
+    <script is:inline define:vars={{ articleList }}>
+      if (articleList && articleList.length > 0) {
+        const randomIndex = Math.floor(Math.random() * articleList.length);
+        const randomArticle = articleList[randomIndex];
+
+        const container = document.getElementById("random-post-container");
+        const link = document.getElementById("random-post-link");
+
+        if (container && link) {
+          link.href = randomArticle.href;
+          link.textContent = randomArticle.title;
+          container.style.display = "block";
+        }
+      }
+    </script>
   </body>
 </html>
