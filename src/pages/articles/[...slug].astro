@@ -28,7 +28,7 @@ export async function getStaticPaths() {
   articles.forEach((article: CollectionEntry<"articles">) => {
     // Show drafts in dev mode only
     if (import.meta.env.DEV || !article.data.draft) {
-      const slug = article.data.abbrlink || article.id;
+      const slug = article.data.permalink || article.id;
 
       paths.push({
         params: { slug: `${slug}/` },
@@ -44,7 +44,7 @@ export async function getStaticPaths() {
 
 const { article } = Astro.props;
 const { author } = themeConfig.site;
-const slug = article.data.abbrlink || article.id;
+const slug = article.data.permalink || article.id;
 // const description = getArticlesDescription(article, 'meta')
 const { Content, headings, remarkPluginFrontmatter } = await render(article);
 ---

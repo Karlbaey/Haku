@@ -43,7 +43,7 @@ const { articles = [] } = Astro.props;
           <li class="my-4">
             <a
               class="hover:underline underline-offset-2 font-semibold"
-              href={`/articles/${article.data.abbrlink}/`}
+              href={`/articles/${article.data.permalink}/`}
             >
               {article.data.title}
             </a>

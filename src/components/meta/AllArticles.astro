@@ -20,7 +20,7 @@ const isArticle = isArticlePage(Astro.url.pathname);
 <ul class="article-items">
   {
     articles.map((article) => {
-      const slug = article.data.abbrlink || article.id;
+      const slug = article.data.permalink || article.id;
 
       return (
         <li class:list={["mx-auto mb-6", isArticle ? "lg:mb-10" : ""]}>

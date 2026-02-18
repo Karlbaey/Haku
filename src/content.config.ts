@@ -20,9 +20,9 @@ const articles = defineCollection({
         draft: z.boolean().optional().default(false),
         pin: z.number().int().min(0).max(99).optional().default(0),
         toc: z.boolean().optional().default(themeConfig.global.toc),
-        abbrlink: z.string().optional().default('').refine(
-            abbrlink => !abbrlink || /^[a-z0-9\-]*$/.test(abbrlink),
-            { message: 'Abbrlink can only contain lowercase letters, numbers and hyphens' }
+        permalink: z.string().optional().default('').refine(
+            permalink => !permalink || /^[a-z0-9\-]*$/.test(permalink),
+            { message: 'Permalink can only contain lowercase letters, numbers and hyphens' }
         ),
     }),
 })

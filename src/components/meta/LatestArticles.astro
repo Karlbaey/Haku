@@ -19,7 +19,7 @@ const recentArticles = articles.slice(0, 3);
 <ul class="article-items">
   {
     recentArticles.map((article) => {
-      const slug = article.data.abbrlink || article.id;
+      const slug = article.data.permalink || article.id;
 
       return (
         <li class:list={["mb-6", isArticle ? "lg:mb-10" : ""]}>

@@ -29,6 +29,9 @@ importers:
       katex:
         specifier: ^0.16.28
         version: 0.16.28
+      kleur:
+        specifier: ^4.1.5
+        version: 4.1.5
       markdown-it:
         specifier: ^14.1.1
         version: 14.1.1
@@ -72,9 +75,21 @@ importers:
       '@types/markdown-it':
         specifier: ^14.1.2
         version: 14.1.2
+      cac:
+        specifier: ^6.7.14
+        version: 6.7.14
+      date-fns:
+        specifier: ^4.1.0
+        version: 4.1.0
+      picocolors:
+        specifier: ^1.1.1
+        version: 1.1.1
       playwright:
         specifier: ^1.58.2
         version: 1.58.2
+      prompts:
+        specifier: ^2.4.2
+        version: 2.4.2
 
 packages:
 
@@ -1162,6 +1177,10 @@ packages:
     resolution: {integrity: sha512-F3PH5k5juxom4xktynS7MoFY+NUWH5LC4CnH11YB8NPew+HLpmBLCybSAEyb2F+4pRXhuhWqFesoQd6DAyc2hw==}
     engines: {node: '>=18'}
 
+  cac@6.7.14:
+    resolution: {integrity: sha512-b6Ilus+c3RrdDk+JhLKUAQfzzgLEPy6wcXqS7f/xe1EETvsDP6GORG7SFuOs6cID5YkqchW/LXZbX5bc8j7ZcQ==}
+    engines: {node: '>=8'}
+
   camelcase@8.0.0:
     resolution: {integrity: sha512-8WB3Jcas3swSvjIeA2yvCJ+Miyz5l1ZmB6HFb9R1317dt9LCQoswg/BGrmAmkWVEszSrrg4RwmO46qIm2OEnSA==}
     engines: {node: '>=16'}
@@ -1428,6 +1447,9 @@ packages:
 
   dagre-d3-es@7.0.13:
     resolution: {integrity: sha512-efEhnxpSuwpYOKRm/L5KbqoZmNNukHa/Flty4Wp62JRvgH2ojwVgPgdYyr4twpieZnyRDdIH7PY2mopX26+j2Q==}
+
+  date-fns@4.1.0:
+    resolution: {integrity: sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg==}
 
   dayjs@1.11.19:
     resolution: {integrity: sha512-t5EcLVS6QPBNqM2z8fakk/NKel+Xzshgt8FFKAn+qwlD1pzZWxh0nVCrvFK7ZDb6XucZeF9z8C7CBWTRIVApAw==}
@@ -1737,6 +1759,10 @@ packages:
 
   kleur@3.0.3:
     resolution: {integrity: sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==}
+    engines: {node: '>=6'}
+
+  kleur@4.1.5:
+    resolution: {integrity: sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ==}
     engines: {node: '>=6'}
 
   langium@3.3.1:
@@ -3637,6 +3663,8 @@ snapshots:
       widest-line: 5.0.0
       wrap-ansi: 9.0.2
 
+  cac@6.7.14: {}
+
   camelcase@8.0.0: {}
 
   ccount@2.0.1: {}
@@ -3914,6 +3942,8 @@ snapshots:
     dependencies:
       d3: 7.9.0
       lodash-es: 4.17.22
+
+  date-fns@4.1.0: {}
 
   dayjs@1.11.19: {}
 
@@ -4342,6 +4372,8 @@ snapshots:
   khroma@2.1.0: {}
 
   kleur@3.0.3: {}
+
+  kleur@4.1.5: {}
 
   langium@3.3.1:
     dependencies:

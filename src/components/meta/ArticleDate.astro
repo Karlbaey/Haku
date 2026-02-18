@@ -17,10 +17,6 @@ const isArticle = isArticlePage(Astro.url.pathname);
 const timeSpacingClass = isArticle ? "ml-1.75" : "ml-1.5";
 
 function formatD(date: Date, format: DateFormat) {
-  if (format === "YYYY-MM-DD") {
-    return date.toISOString().split("T")[0];
-  }
-
   const opt: Intl.DateTimeFormatOptions = {
     year: "numeric",
     month:

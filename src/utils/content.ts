@@ -41,7 +41,7 @@ async function _checkArticleSlugDuplication(articles: CollectionEntry<'articles'
   const duplicates: string[] = []
 
   articles.forEach((article) => {
-    const slug = article.data.abbrlink || article.id
+    const slug = article.data.permalink || article.id
 
     if (slugSet.has(slug)) {
       duplicates.push(`Duplicate slug "${slug}" found`)

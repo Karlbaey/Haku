@@ -3,7 +3,7 @@ title: "A Study in Scarlet"
 published: 1887-12-25
 tags:
   - "Holmes"
-abbrlink: "a-study-in-scarlet"
+permalink: "a-study-in-scarlet"
 ---
 
 （依照 1887 BEETON'S CHRISTMAS ANNUAL 编辑而成）
