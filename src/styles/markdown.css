@@ -315,7 +315,6 @@ html.dark {
 
   /* 代码块 */
   & pre {
-    overflow-x: auto;
     font-size: 0.9375em;
     line-height: 1.7142857;
     border-radius: 0rem 0rem var(--radius-md) var(--radius-md);
@@ -323,20 +322,84 @@ html.dark {
 
     & code {
       font-family: var(--font-geist-mono);
-      background-color: transparent;
-      border: none !important;
       padding: 0;
       font-weight: 400;
       color: inherit;
       font-size: inherit;
-      font-family: monospace;
       line-height: inherit;
-
-      &::before,
-      &::after {
-        content: none;
-      }
     }
+  }
+
+  figure[data-rehype-pretty-code-figure] {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+
+    max-width: 100%;
+    min-width: 0;
+
+    margin-block: 1.5rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border-medium);
+    overflow: hidden;
+    overflow-x: hidden;
+    background-color: #272822;
+
+    /*这里的 position 是为了让语言角标定位 */
+    position: relative;
+  }
+
+  /* 文件名标题栏 (自动生成的 figcaption) */
+  figure[data-rehype-pretty-code-figure] figcaption {
+    min-width: 0%;
+    width: 100%;
+    box-sizing: border-box;
+
+    background-color: #ffffff14;
+    color: #e6e6e6;
+    padding: 0.5rem 1rem;
+    padding-right: 4rem;
+    font-size: 0.85rem;
+    font-family: var(--font-geist-mono);
+    border-bottom: 1px solid var(--color-border-medium);
+    font-family: "Cascadia Code", "Courier", monospace;
+
+    /* 防止文件名太长换行 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  figure[data-rehype-pretty-code-figure] figcaption::before {
+    content: "📄 ";
+  }
+
+  /* 代码区域 */
+  figure[data-rehype-pretty-code-figure] pre {
+    min-width: 0;
+    margin: 0;
+    padding: 1rem 1.25rem;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  /* 语言显示 (利用 figure 上的 data-language 属性) */
+  figure[data-rehype-pretty-code-figure][data-language]::after {
+    content: attr(data-language);
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+    pointer-events: none;
+  }
+
+  /* 如果有标题栏，语言标签稍微往下挪一点，或者你也可以去掉这行让它就在右上角 */
+  figure[data-rehype-pretty-code-figure]:has(figcaption)::after {
+    top: 0.5rem; /* 调整位置以对齐标题栏 */
   }
 }
 

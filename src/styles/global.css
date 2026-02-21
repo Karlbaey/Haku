@@ -3,8 +3,6 @@
 /* ===== 1. 导入依赖与插件 ===== */
 @import "tailwindcss";
 
-@tailwind utilities;
-
 /* ===== 2. 暗色模式配置 ===== */
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -131,13 +129,6 @@
 }
 
 @layer utilities {
-  .code-block-wrapper {
-    position: relative;
-    margin-bottom: 1rem;
-    max-width: 100%;
-    overflow: hidden;
-  }
-
   .copy-code-btn {
     position: absolute;
     top: 0.5rem;

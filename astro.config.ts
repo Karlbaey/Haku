@@ -1,4 +1,3 @@
-// @ts-check
 import { defineConfig } from 'astro/config'
 import { base, themeConfig } from './src/config'
 import { remarkReadingTime } from './src/components/scripts/remark-readingtime.mjs';
@@ -6,7 +5,7 @@ import { remarkContainerDirectives } from './src/components/scripts/remark-sp-co
 
 import rehypeKatex from 'rehype-katex';
 import rehypeMermaid from 'rehype-mermaid';
-import rehypePrettyCode, { type LineElement } from 'rehype-pretty-code';
+import rehypePrettyCode from 'rehype-pretty-code';
 import remarkDirective from 'remark-directive';
 import remarkMath from 'remark-math';
 
@@ -45,11 +44,8 @@ export default defineConfig({
       }],
       rehypeKatex,
       [rehypePrettyCode, {
-        theme: 'monokai', keepBackground: true, onVisitLine(node: LineElement) {
-          if (node.children.length === 0) {
-            node.children = [{ type: 'text', value: ' ' }];
-          }
-        }
+        theme: 'monokai',
+        keepBackground: true,
       }]
     ],
     syntaxHighlight: false,

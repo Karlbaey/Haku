@@ -77,7 +77,7 @@ _这也是斜体文本_
 
 这是一个带有语法高亮的 Python 代码块：
 
-```python
+```python title="hello.py"
 import antigravity
 
 def greet(name):
@@ -90,7 +90,7 @@ if __name__ == "__main__":
 
 这是一个没有指定语言的普通代码块：
 
-```text
+```text title="plain.txt"
 npm install
 npm run dev
 ```
@@ -131,7 +131,7 @@ HAKU 支持 LaTeX 语法的数学公式以及化学公式渲染。
 
 质能方程是 $ E=mc^2 $。当 $ a \ne 0 $ 时，二次方程 $ ax^2 + bx + c = 0 $ 的解为 $ x = {-b \pm \sqrt{b^2-4ac} \over 2a} $。
 
-```latex
+```latex title="Mass_Energy_Equivalent_Formula_(Einstein).tex"
 质能方程是 $ E=mc^2 $。当 $ a \ne 0 $ 时，二次方程 $ ax^2 + bx + c = 0 $ 的解为 $ x = {-b \pm \sqrt{b^2-4ac} \over 2a} $。
 ```
 
@@ -149,7 +149,7 @@ $$
 
 $$
 
-```latex
+```latex title="Maxwell.tex"
 $$
 
 \oint_S \mathbf{D} \cdot d\mathbf{a} = Q_{in} \\
@@ -170,7 +170,7 @@ HAKU 支持多种 mermaid 图表。
 
 这是一个极为复杂的流程图。
 
-````text
+````text title="services.txt"
 ```mermaid
 graph TB
     subgraph ClientLayer [客户端层]
@@ -276,7 +276,7 @@ graph TB
 
 ### 序列图
 
-````text
+````text title="greetings.txt"
 ```mermaid
 sequenceDiagram
     participant Alice
@@ -308,7 +308,7 @@ sequenceDiagram
 
 ### 饼图
 
-````text
+````text title="code_langs.txt"
 ```mermaid
 pie
     title 编程语言分布
@@ -332,7 +332,7 @@ pie
 
 ### 甘特图
 
-````text
+````text title="saas_route.txt"
 ```mermaid
 gantt
     title 2024年 SaaS 平台研发路线图
@@ -402,7 +402,7 @@ gantt
 
 这种语法在 GitHub、Docsify 和许多文档生成器中很流行。
 
-```markdown
+```markdown title="notifications.md"
 > [!NOTE]
 > 这是一个提示（Note）。用于引起注意的普通信息。
 
@@ -456,7 +456,7 @@ HAKU 可在 Markdown 中直接嵌入 HTML 代码。
 这里是隐藏的详细内容。可以包含段落、列表、甚至是图片。
 :::
 
-```text
+```markdown title="collapsible_block.md"
 :::fold[点击展开查看详细信息]
 这里是隐藏的详细内容。可以包含段落、列表、甚至是图片。
 :::
@@ -466,7 +466,7 @@ HAKU 可在 Markdown 中直接嵌入 HTML 代码。
 
 使用 HTML 标签来改变文本颜色：这段文字应该是 <span style="color: #007bff;">蓝色</span> 的，而这段是 <span style="color: #dc3545;">红色</span> 的。
 
-```html
+```html title="change_colors.html"
 使用 HTML 标签来改变文本颜色：这段文字应该是
 <span style="color: #007bff;">蓝色</span> 的，而这段是
 <span style="color: #dc3545;">红色</span> 的。
