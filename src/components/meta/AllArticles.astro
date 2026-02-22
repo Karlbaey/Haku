@@ -37,7 +37,6 @@ const isArticle = isArticlePage(Astro.url.pathname);
               />
             </svg>
           </div>
-          {/* 标题 - 改用 var(--color-text-primary) 强制跟随主题 */}
           <h3 class="mb-2 text-lg font-bold tracking-wide lg:text-xl pr-8 text-(--color-text-primary)">
             <a
               href={getArticlePath(slug)}
@@ -55,15 +54,12 @@ const isArticle = isArticlePage(Astro.url.pathname);
               />
             )}
           </h3>
-          {/* 日期 - 改用 var(--color-text-secondary) */}
           <div class="mb-3 text-sm text-(--color-text-secondary)">
             <ArticleDate
               date={article.data.published}
               minutes={article.remarkPluginFrontmatter.minutes}
             />
           </div>
-
-          {/* 简介 - 改用 var(--color-text-paragraph) 或 secondary */}
           {isArticle && (
             <p class="mb-4 line-clamp-3 text-sm text-(--color-text-paragraph) lg:text-base">
               {getArticleDescription(article, "list")}

@@ -1,0 +1,123 @@
+---
+import type { GetStaticPaths, Page } from "astro";
+import Layout from "@/layouts/Layout.astro";
+import AllArticles from "@/components/meta/AllArticles.astro";
+import { lang } from "@/config";
+import { getPinnedArticles, getArticlesByYear } from "@/utils/content";
+import type { Article } from "@/types";
+
+export interface Props {
+  page: Page<Article>; // page type
+}
+
+// use satisfies to decide types
+export const getStaticPaths = (async ({ paginate }) => {
+  const articlesByYearMap = await getArticlesByYear();
+  const allArticles = [...articlesByYearMap.values()].flat();
+  return paginate(allArticles, { pageSize: 5 });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+
+//  判定置顶文章是否展示（在第一页）
+const pinnedPosts = await getPinnedArticles();
+const showPinned = page.currentPage === 1 && pinnedPosts.length > 0;
+
+const articlesByYear = page.data.reduce((map, article) => {
+  const date = new Date(article.data.published);
+  const year = date.getFullYear();
+
+  // 如果 map 里还没这个年份，初始化一个空数组
+  if (!map.has(year)) {
+    map.set(year, []);
+  }
+
+  map.get(year)?.push(article);
+  return map;
+}, new Map<number, Article[]>());
+---
+
+<Layout articleDescription={`博客列表 - 第 ${page.currentPage} 页`}>
+  <div class="w-screen lg:w-3xl px-6 mb-6">
+    <div class="list-page">
+      {
+        showPinned && (
+          <section class="mb-7.5">
+            <AllArticles articles={pinnedPosts} lang={lang} pinned={true} />
+          </section>
+        )
+      }
+      {
+        [...articlesByYear.entries()].map(([_year, articles]) => (
+          <section class="mb-7.5">
+            <AllArticles articles={articles} lang={lang} />
+          </section>
+        ))
+      }
+
+      <nav class="mt-12 flex justify-between items-center text-sm font-medium">
+        {
+          (
+            <a
+              href={page.url.prev}
+              class:list={[
+                "switch-page-btn",
+                page.url.prev ? "is-active" : "isnt-active",
+              ]}
+            >
+              ← 上一页
+            </a>
+          )
+        }
+
+        <span class="text-zinc-400">
+          第 {page.currentPage} 页 / 共 {page.lastPage} 页
+        </span>
+
+        {
+          (
+            <a
+              href={page.url.next}
+              class:list={[
+                "switch-page-btn",
+                page.url.next ? "is-active" : "isnt-active",
+              ]}
+            >
+              下一页 →
+            </a>
+          )
+        }
+      </nav>
+    </div>
+  </div>
+
+  <style>
+    :root {
+      --bg-color: #0000000d;
+      --bg-hover: #0000001a;
+    }
+
+    html.dark {
+      --bg-color: #ffffff1a;
+      --bg-hover: #ffffff33;
+    }
+
+    .switch-page-btn {
+      padding-inline: 1rem;
+      padding-block: 0.5rem;
+      border-radius: 0.5rem;
+      transition: background-color 0.15s ease-in-out;
+    }
+
+    .is-active {
+      background-color: var(--bg-color);
+      &:hover {
+        background-color: var(--bg-hover);
+      }
+    }
+
+    .isnt-active {
+      cursor: not-allowed;
+    }
+  </style>
+</Layout>
