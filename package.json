@@ -15,8 +15,8 @@
     "@astrojs/mdx": "^4.3.13",
     "@pagefind/default-ui": "^1.4.0",
     "@tailwindcss/typography": "^0.5.19",
-    "@tailwindcss/vite": "^4.1.17",
-    "astro": "^5.17.2",
+    "@tailwindcss/vite": "^4.2.0",
+    "astro": "^5.17.3",
     "astro-compressor": "^1.2.0",
     "katex": "^0.16.28",
     "kleur": "^4.1.5",
@@ -33,7 +33,7 @@
     "remark-directive": "^4.0.0",
     "remark-math": "^6.0.0",
     "shiki": "^3.22.0",
-    "tailwindcss": "^4.1.17",
+    "tailwindcss": "^4.2.0",
     "unist-util-visit": "^5.1.0"
   },
   "devDependencies": {
