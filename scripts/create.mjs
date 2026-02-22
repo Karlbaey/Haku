@@ -115,8 +115,7 @@ export async function create() {
 
   const content = `---
 title: "${title}"
-description: ""
-published: "${dateStr}"
+published: ${dateStr}
 tags:
   - "Note"
 draft: false
