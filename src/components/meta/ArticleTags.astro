@@ -1,8 +1,8 @@
 ---
-import type { Article } from "@/types";
+import type { CollectionEntry } from "astro:content";
 
 export interface Props {
-  article: Article;
+  article: CollectionEntry<"articles">;
   class?: string;
 }
 

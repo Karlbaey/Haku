@@ -5,11 +5,12 @@ import katexCSS from "katex/dist/katex.min.css?url";
 interface Props {
   articleTitle?: string;
   articleDescription?: string;
+  og?: string;
 }
 
-const { title, subtitle, description, author, favicon } = themeConfig.site;
+const { title, subtitle, description, author, favicon, url } = themeConfig.site;
 
-const { articleTitle, articleDescription } = Astro.props;
+const { articleTitle, articleDescription, og } = Astro.props;
 
 const siteTitle = title;
 const siteSubtitle = subtitle;
@@ -19,6 +20,7 @@ const pageTitle = articleTitle
   ? `${articleTitle} | ${siteTitle}`
   : `${siteTitle} - ${siteSubtitle}`;
 const pageDescription = articleDescription || siteDescription;
+const pageOGImage = og ? `${url}/og/${og}.png` : `${url}/favicon.png`;
 ---
 
 <head>
@@ -61,7 +63,7 @@ const pageDescription = articleDescription || siteDescription;
   <meta property="og:url" content={Astro.url} />
   <meta property="og:title" content={pageTitle} />
   <meta property="og:description" content={pageDescription} />
-  <meta property="og:image" content="/" />
+  <meta property="og:image" content={pageOGImage} />
   <meta name="author" content={author} />
   <meta name="generator" content={Astro.generator} />
   <link

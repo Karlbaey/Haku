@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import type { Article } from "@/types";
 import { getCollection, render } from "astro:content";
 import { getArticleDescription } from "@/utils/description";
 import themeConfig from "@/config";
@@ -21,7 +22,7 @@ export async function getStaticPaths() {
 
   type PathItem = {
     params: { slug: string };
-    props: { article: any };
+    props: { article: CollectionEntry<"articles"> };
   };
 
   const paths: PathItem[] = [];
@@ -52,7 +53,7 @@ const { Content, headings } = await render(article);
 
 <Layout
   articleTitle={article.data.title}
-  articleSlug={article.id}
+  articleID={article.slug}
   articleDescription={description}
 >
   <TOC headings={headings} />

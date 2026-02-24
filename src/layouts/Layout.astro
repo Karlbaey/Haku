@@ -13,16 +13,20 @@ interface Props {
   publishedDate?: string;
   articleTitle?: string;
   articleDescription?: string;
-  articleSlug?: string;
+  articleID?: string;
   supportedLangs?: string[];
 }
 
-const { articleTitle, articleDescription } = Astro.props;
+const { articleTitle, articleDescription, articleID } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="zh-cn">
-  <Head articleTitle={articleTitle} articleDescription={articleDescription} />
+  <Head
+    articleTitle={articleTitle}
+    articleDescription={articleDescription}
+    og={articleID}
+  />
   <body>
     <Navbar />
     <div class="justify-center items-center flex sm:px-5 lg:px-8">
