@@ -1,6 +1,7 @@
 ---
 import { getPageInfo } from "@/utils/pages";
 import { Image } from "astro:assets";
+import Feed from "@/assets/feed.svg";
 import SearchButton from "@/components/buttons/SearchButton.astro";
 import ToggleButton from "@/components/buttons/ToggleButton.astro";
 import Division from "@/components/styles/Division.astro";
@@ -64,6 +65,9 @@ const navItems = [
       </nav>
     </div>
     <div class="flex items-center gap-x-4">
+      <a href="/feed.xml">
+        <Feed fill="currentColor" height={24} width={24} />
+      </a>
       <ToggleButton />
       <SearchButton />
     </div>

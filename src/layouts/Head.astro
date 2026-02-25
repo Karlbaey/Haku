@@ -67,6 +67,12 @@ const pageOGImage = og ? `${url}/og/${og}.png` : `${url}/favicon.png`;
   <meta name="author" content={author} />
   <meta name="generator" content={Astro.generator} />
   <link
+    rel="alternate"
+    type="application/rss+xml"
+    title="HAKU - RSS"
+    href="/feed.xml"
+  />
+  <link
     rel="stylesheet"
     href={katexCSS}
     media="print"

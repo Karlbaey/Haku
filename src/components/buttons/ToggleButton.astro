@@ -9,19 +9,24 @@ const {
 } = themeConfig.color;
 ---
 
-<div>
-  <!-- Theme Toggle -->
-  <button
-    id="theme-toggle-button"
-    class="aspect-square w-4 c-secondary active:scale-90 hover:c-primary relative"
-    aria-label="Switch light/dark theme"
-  >
-    <!-- 白天图标 -->
-    <DayIcon class="day-icon inset-0 transition-opacity duration-300" />
-    <!-- 黑夜图标 -->
-    <NightIcon class="night-icon inset-0 transition-opacity duration-300" />
-  </button>
-</div>
+<button
+  id="theme-toggle-button"
+  class="cursor-pointer"
+  aria-label="Switch light/dark theme"
+>
+  <!-- 白天图标 -->
+  <DayIcon
+    class="day-icon transition-opacity duration-300"
+    height={24}
+    width={24}
+  />
+  <!-- 黑夜图标 -->
+  <NightIcon
+    class="night-icon transition-opacity duration-300"
+    height={24}
+    width={24}
+  />
+</button>
 
 <!-- Theme Toggle Script >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
 <script
