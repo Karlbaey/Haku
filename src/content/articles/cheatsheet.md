@@ -5,7 +5,7 @@ tags:
   - "Markdown"
   - "帮助"
 permalink: "cheatsheet"
-description: "这里有一些可以在 HAKU 博客主题使用的语法。"
+description: "这里有一些可以在 Haku 博客主题使用的语法。"
 ---
 
 ## 1. 标题
@@ -142,7 +142,7 @@ npm run dev
 
 ## 8. 数学公式 （KaTeX）
 
-HAKU 支持 LaTeX 语法的数学公式以及化学公式渲染。
+Haku 支持 LaTeX 语法的数学公式以及化学公式渲染。
 
 ### 行内公式
 
@@ -181,13 +181,13 @@ $$
 
 ## 9. Mermaid 图表渲染
 
-HAKU 支持多种 mermaid 图表。
+Haku 支持多种 mermaid 图表。
 
 ### 流程图
 
 这是一个极为复杂的流程图。
 
-````text title="services.txt"
+````markdown title="services.md"
 ```mermaid
 graph TB
     subgraph ClientLayer [客户端层]
@@ -293,7 +293,7 @@ graph TB
 
 ### 序列图
 
-````text title="greetings.txt"
+````markdown title="greetings.md"
 ```mermaid
 sequenceDiagram
     participant Alice
@@ -325,7 +325,7 @@ sequenceDiagram
 
 ### 饼图
 
-````text title="code_langs.txt"
+````markdown title="code_langs.md"
 ```mermaid
 pie
     title 编程语言分布
@@ -349,7 +349,7 @@ pie
 
 ### 甘特图
 
-````text title="saas_route.txt"
+````markdown title="saas_route.md"
 ```mermaid
 gantt
     title 2024年 SaaS 平台研发路线图
@@ -463,7 +463,7 @@ gantt
 
 ## 11. 嵌入 HTML
 
-HAKU 可在 Markdown 中直接嵌入 HTML 代码。
+Haku 可在 Markdown 中直接嵌入 HTML 代码。
 
 ### 可折叠内容
 

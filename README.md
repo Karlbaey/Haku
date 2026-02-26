@@ -1,4 +1,4 @@
-# Astro HAKU
+# Astro Haku
 
 目前部署到了两个网站：<https://haku.karlbaey.top> 和 <https://astro-theme-haku.netlify.app>。
 
