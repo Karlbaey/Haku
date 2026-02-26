@@ -1,28 +1,29 @@
-import { defineConfig } from 'astro/config'
-import { base, themeConfig } from './src/config'
-import { remarkReadingTime } from './src/components/scripts/remark-readingtime.mjs';
-import { remarkContainerDirectives } from './src/components/scripts/remark-sp-containers.mjs';
+import { defineConfig } from "astro/config";
+import { base, themeConfig } from "./src/config";
+import { remarkReadingTime } from "./src/components/scripts/remark-readingtime.mjs";
+import { remarkContainerDirectives } from "./src/components/scripts/remark-sp-containers.mjs";
 
-import rehypeKatex from 'rehype-katex';
-import rehypeMermaid from 'rehype-mermaid';
-import rehypePrettyCode from 'rehype-pretty-code';
-import remarkDirective from 'remark-directive';
-import remarkMath from 'remark-math';
+import rehypeKatex from "rehype-katex";
+import rehypeMermaid from "rehype-mermaid";
+import rehypePrettyCode from "rehype-pretty-code";
+import remarkDirective from "remark-directive";
+import remarkMath from "remark-math";
 
-import tailwindcss from '@tailwindcss/vite';
+import tailwindcss from "@tailwindcss/vite";
 
-import mdx from '@astrojs/mdx';
-import Compressor from 'astro-compressor';
+import mdx from "@astrojs/mdx";
+import sitemap from "@astrojs/sitemap";
+import Compressor from "astro-compressor";
 
-import partytown from '@astrojs/partytown';
+import partytown from "@astrojs/partytown";
 
-const { url: site } = themeConfig.site
+const { url: site } = themeConfig.site;
 
 // https://astro.build/config
 export default defineConfig({
   site,
   base,
-  trailingSlash: 'always',
+  trailingSlash: "always",
 
   vite: {
     plugins: [tailwindcss()],
@@ -36,24 +37,36 @@ export default defineConfig({
       remarkMath,
     ],
     rehypePlugins: [
-      [rehypeMermaid, {
-        strategy: "inline-svg", mermaidConfig: {
-          theme: "default",
-          flowchart: {
-            useMaxWidth: true,
-          }
-        }
-      }],
+      [
+        rehypeMermaid,
+        {
+          strategy: "inline-svg",
+          mermaidConfig: {
+            theme: "default",
+            flowchart: {
+              useMaxWidth: true,
+            },
+          },
+        },
+      ],
       rehypeKatex,
-      [rehypePrettyCode, {
-        theme: 'monokai',
-        keepBackground: true,
-      }]
+      [
+        rehypePrettyCode,
+        {
+          theme: "monokai",
+          keepBackground: true,
+        },
+      ],
     ],
     syntaxHighlight: false,
   },
 
-  integrations: [mdx(), Compressor({
-    fileExtensions: [".css", ".js", ".mjs", ".html", ".cjs"],
-  }), partytown()],
+  integrations: [
+    mdx(),
+    sitemap(),
+    Compressor({
+      fileExtensions: [".css", ".js", ".mjs", ".html", ".cjs"],
+    }),
+    partytown(),
+  ],
 });

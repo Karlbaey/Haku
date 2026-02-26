@@ -66,6 +66,7 @@ const pageOGImage = og ? `${url}/og/${og}.png` : `${url}/favicon.png`;
   <meta property="og:image" content={pageOGImage} />
   <meta name="author" content={author} />
   <meta name="generator" content={Astro.generator} />
+  <link rel="sitemap" href={`${base}/sitemap-index.xml`} />
   <link
     rel="alternate"
     type="application/rss+xml"
