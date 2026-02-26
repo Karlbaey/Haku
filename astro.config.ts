@@ -14,6 +14,8 @@ import tailwindcss from '@tailwindcss/vite';
 import mdx from '@astrojs/mdx';
 import Compressor from 'astro-compressor';
 
+import partytown from '@astrojs/partytown';
+
 const { url: site } = themeConfig.site
 
 // https://astro.build/config
@@ -53,5 +55,5 @@ export default defineConfig({
 
   integrations: [mdx(), Compressor({
     fileExtensions: [".css", ".js", ".mjs", ".html", ".cjs"],
-  })],
+  }), partytown()],
 });
