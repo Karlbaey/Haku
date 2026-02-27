@@ -3,8 +3,182 @@ import themeConfig from "@/config";
 import Giscus from "@/components/Comment/Giscus.astro";
 import Waline from "@/components/Comment/Waline.astro";
 
-const { provider } = themeConfig.comments;
+const { providers = [], giscus, waline } = themeConfig.comments;
+
+const giscusEnabled = giscus.enabled;
+const walineEnabled = waline.enabled && !!waline.serverURL;
+const configuredProviders = Array.isArray(providers) ? providers : [];
+
+const sanitizedProviders = [...new Set(configuredProviders)]
+  .filter(
+    (system): system is "giscus" | "waline" =>
+      system === "giscus" || system === "waline",
+  )
+  .slice(0, 2);
+
+const visibleProviders = sanitizedProviders.filter((system) =>
+  system === "giscus" ? giscusEnabled : walineEnabled,
+);
+
+const shouldShowGiscus = visibleProviders.includes("giscus");
+const shouldShowWaline = visibleProviders.includes("waline");
+const showSwitch = visibleProviders.length === 2;
+const defaultPanel = visibleProviders[0];
+
+const commentTitleMap: Record<"giscus" | "waline", string> = {
+  giscus: "Giscus",
+  waline: "Waline",
+};
 ---
 
-{provider === "giscus" && <Giscus />}
-{provider === "waline" && <Waline />}
+{
+  (shouldShowGiscus || shouldShowWaline) && (
+    <h2 id="comment-area">评论区</h2>
+    <section class="comment-overview mt-10" data-comment-overview>
+      {showSwitch && (
+        <nav class="comment-pagination" aria-label="Comment switcher">
+          {visibleProviders.map((system, index) => (
+            <button
+              type="button"
+              class:list={["comment-page-btn", { "is-active": index === 0 }]}
+              data-comment-tab={system}
+              aria-selected={index === 0 ? "true" : "false"}
+            >
+              {commentTitleMap[system]}
+            </button>
+          ))}
+        </nav>
+      )}
+
+      {shouldShowGiscus && (
+        <div
+          class:list={[
+            "comment-panel",
+            { "is-hidden": showSwitch && defaultPanel !== "giscus" },
+          ]}
+          data-comment-panel="giscus"
+        >
+          <Giscus />
+        </div>
+      )}
+      {shouldShowWaline && (
+        <div
+          class:list={[
+            "comment-panel",
+            { "is-hidden": showSwitch && defaultPanel !== "waline" },
+          ]}
+          data-comment-panel="waline"
+        >
+          <Waline />
+        </div>
+      )}
+    </section>
+  )
+}
+
+<script is:inline>
+  const initCommentOverview = () => {
+    const blocks = document.querySelectorAll("[data-comment-overview]");
+
+    blocks.forEach((block) => {
+      if (block.dataset.bound === "true") {
+        return;
+      }
+
+      const tabs = block.querySelectorAll("[data-comment-tab]");
+      const panels = block.querySelectorAll("[data-comment-panel]");
+
+      if (tabs.length === 0 || panels.length < 2) {
+        block.dataset.bound = "true";
+        return;
+      }
+
+      const setActive = (target) => {
+        tabs.forEach((tab) => {
+          const isActive = tab.dataset.commentTab === target;
+          tab.classList.toggle("is-active", isActive);
+          tab.setAttribute("aria-selected", isActive ? "true" : "false");
+        });
+
+        panels.forEach((panel) => {
+          const isActive = panel.dataset.commentPanel === target;
+          panel.classList.toggle("is-hidden", !isActive);
+        });
+      };
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          setActive(tab.dataset.commentTab);
+        });
+      });
+
+      const initialActive =
+        block.querySelector("[data-comment-tab].is-active")?.dataset
+          .commentTab ?? tabs[0]?.dataset.commentTab;
+
+      if (initialActive) {
+        setActive(initialActive);
+      }
+
+      block.dataset.bound = "true";
+    });
+  };
+
+  document.addEventListener("astro:page-load", initCommentOverview);
+  initCommentOverview();
+</script>
+
+<style>
+  .comment-pagination {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-bottom: 1rem;
+    padding: 0.25rem;
+    border: 1px solid
+      color-mix(in srgb, var(--color-text-secondary) 25%, transparent);
+    border-radius: 0.75rem;
+    background: color-mix(in srgb, var(--color-bg) 85%, white 15%);
+  }
+
+  .comment-page-btn {
+    border: none;
+    border-radius: 0.55rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.86rem;
+    line-height: 1.2;
+    color: var(--color-text-secondary);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .comment-page-btn:hover {
+    color: var(--color-text-primary);
+    background: color-mix(in srgb, var(--color-tag-bg) 72%, transparent);
+  }
+
+  .comment-page-btn.is-active {
+    color: var(--color-text-primary);
+    background: color-mix(in srgb, var(--color-tag-bg) 90%, white 10%);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
+  }
+
+  .comment-panel.is-hidden {
+    display: none;
+  }
+
+  html.dark .comment-pagination {
+    background: color-mix(in srgb, var(--color-bg) 88%, black 12%);
+    border-color: color-mix(
+      in srgb,
+      var(--color-text-secondary) 30%,
+      transparent
+    );
+  }
+
+  html.dark .comment-page-btn.is-active {
+    background: color-mix(in srgb, var(--color-tag-bg) 86%, white 14%);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.25);
+  }
+</style>

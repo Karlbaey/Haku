@@ -7,12 +7,14 @@ const giscusHost = (import.meta.env.PUBLIC_GISCUS_HOST || giscus.host).replace(
   "",
 );
 const isReady = giscus.enabled; // We should believe in users as much as possible
+const initialTheme = giscus.theme === "preferred_color_scheme" ? "light" : giscus.theme;
 ---
 
 {
   isReady && (
-    <section id="comments" class="mt-10">
+    <section id="comments-giscus">
       <script
+        is:inline
         src={`${giscusHost}/client.js`}
         data-repo={giscus.repo}
         data-repo-id={giscus.repoID}
@@ -23,13 +25,69 @@ const isReady = giscus.enabled; // We should believe in users as much as possibl
         data-reactions-enabled={giscus.reactionsEnabled}
         data-emit-metadata={giscus.emitMetadata}
         data-input-position={giscus.inputPosition}
-        data-theme={giscus.theme}
+        data-theme={initialTheme}
         data-lang={giscus.lang}
         data-loading={giscus.loading}
         data-term={giscus.term}
         crossorigin="anonymous"
         async
       />
+      <script is:inline define:vars={{ giscusHost, giscusTheme: giscus.theme }}>
+        const resolveTheme = () => {
+          if (giscusTheme !== "preferred_color_scheme") {
+            return giscusTheme;
+          }
+
+          return document.documentElement.classList.contains("dark")
+            ? "dark"
+            : "light";
+        };
+
+        const syncGiscusTheme = () => {
+          const theme = resolveTheme();
+          const iframe = document.querySelector("iframe.giscus-frame");
+
+          if (!iframe) {
+            return;
+          }
+
+          iframe.contentWindow?.postMessage(
+            {
+              giscus: {
+                setConfig: {
+                  theme,
+                },
+              },
+            },
+            giscusHost,
+          );
+        };
+
+        let commentThemeObserver = window.__commentThemeObserver;
+        const isThemeSyncBound = window.__commentThemeSyncBound === true;
+
+        if (!commentThemeObserver) {
+          commentThemeObserver = new MutationObserver(() => {
+            syncGiscusTheme();
+          });
+
+          commentThemeObserver.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ["class"],
+          });
+
+          window.__commentThemeObserver = commentThemeObserver;
+        }
+
+        if (!isThemeSyncBound) {
+          document.addEventListener("theme-changed", syncGiscusTheme);
+          document.addEventListener("astro:page-load", syncGiscusTheme);
+          window.__commentThemeSyncBound = true;
+        }
+
+        setTimeout(syncGiscusTheme, 500);
+        setTimeout(syncGiscusTheme, 1200);
+      </script>
     </section>
   )
 }

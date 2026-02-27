@@ -22,6 +22,7 @@ export const langMap = {
 
 // Supported Languages
 export type Language = keyof typeof langMap;
+export type CommentSystem = "giscus" | "waline";
 
 export interface ThemeConfig {
   site: {
@@ -60,7 +61,7 @@ export interface ThemeConfig {
     };
   };
   comments: {
-    provider: "none" | "giscus" | "waline";
+    providers: [] | [CommentSystem] | [CommentSystem, CommentSystem];
     giscus: {
       enabled: boolean;
       host: string;

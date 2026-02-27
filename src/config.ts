@@ -44,7 +44,7 @@ export const themeConfig: ThemeConfig = {
     },
   },
   comments: {
-    provider: "giscus",
+    providers: ["giscus", "waline"],
     giscus: {
       enabled: true,
       host: "https://giscus.app",
@@ -62,10 +62,10 @@ export const themeConfig: ThemeConfig = {
       loading: "lazy",
     },
     waline: {
-      enabled: false,
-      serverURL: "",
-      lang: "en",
-      pageview: false,
+      enabled: true,
+      serverURL: "https://wa.karlbaey.top",
+      lang: "zh",
+      pageview: true,
       comment: true,
       search: false,
       login: "enable",
