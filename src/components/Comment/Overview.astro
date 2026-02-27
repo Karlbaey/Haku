@@ -25,58 +25,70 @@ const shouldShowWaline = visibleProviders.includes("waline");
 const showSwitch = visibleProviders.length === 2;
 const defaultPanel = visibleProviders[0];
 
-const commentTitleMap: Record<"giscus" | "waline", string> = {
-  giscus: "Giscus",
-  waline: "Waline",
-};
+const getLabel = (system: string) =>
+  system.slice(0, 1).toUpperCase() + system.slice(1);
 ---
 
 {
   (shouldShowGiscus || shouldShowWaline) && (
-    <h2 id="comment-area">评论区</h2>
-    <section class="comment-overview mt-10" data-comment-overview>
-      {showSwitch && (
-        <nav class="comment-pagination" aria-label="Comment switcher">
-          {visibleProviders.map((system, index) => (
-            <button
-              type="button"
-              class:list={["comment-page-btn", { "is-active": index === 0 }]}
-              data-comment-tab={system}
-              aria-selected={index === 0 ? "true" : "false"}
-            >
-              {commentTitleMap[system]}
-            </button>
-          ))}
-        </nav>
-      )}
+    <>
+      <h2 id="comment-area">Comments</h2>
+      <section class="comment-overview mt-10" data-comment-overview>
+        {showSwitch && (
+          <nav class="comment-pagination" aria-label="Comment switcher">
+            {visibleProviders.map((system, index) => (
+              <button
+                type="button"
+                class:list={["comment-page-btn", { "is-active": index === 0 }]}
+                data-comment-tab={system}
+                aria-selected={index === 0 ? "true" : "false"}
+              >
+                {getLabel(system)}
+              </button>
+            ))}
+          </nav>
+        )}
 
-      {shouldShowGiscus && (
-        <div
-          class:list={[
-            "comment-panel",
-            { "is-hidden": showSwitch && defaultPanel !== "giscus" },
-          ]}
-          data-comment-panel="giscus"
-        >
-          <Giscus />
-        </div>
-      )}
-      {shouldShowWaline && (
-        <div
-          class:list={[
-            "comment-panel",
-            { "is-hidden": showSwitch && defaultPanel !== "waline" },
-          ]}
-          data-comment-panel="waline"
-        >
-          <Waline />
-        </div>
-      )}
-    </section>
+        {shouldShowGiscus && (
+          <div
+            class:list={[
+              "comment-panel",
+              { "is-hidden": showSwitch && defaultPanel !== "giscus" },
+            ]}
+            data-comment-panel="giscus"
+          >
+            <Giscus />
+          </div>
+        )}
+        {shouldShowWaline && (
+          <div
+            class:list={[
+              "comment-panel",
+              { "is-hidden": showSwitch && defaultPanel !== "waline" },
+            ]}
+            data-comment-panel="waline"
+          >
+            <Waline />
+          </div>
+        )}
+      </section>
+    </>
   )
 }
 
 <script is:inline>
+  const COMMENT_HASH_PREFIX = "#comment-";
+
+  const getCommentTargetFromHash = () => {
+    const rawHash = decodeURIComponent(
+      window.location.hash || "",
+    ).toLowerCase();
+    if (!rawHash.startsWith(COMMENT_HASH_PREFIX)) {
+      return null;
+    }
+    return rawHash.slice(COMMENT_HASH_PREFIX.length).trim() || null;
+  };
+
   const initCommentOverview = () => {
     const blocks = document.querySelectorAll("[data-comment-overview]");
 
@@ -94,6 +106,13 @@ const commentTitleMap: Record<"giscus" | "waline", string> = {
       }
 
       const setActive = (target) => {
+        const hasTarget = [...panels].some(
+          (panel) => panel.dataset.commentPanel === target,
+        );
+        if (!hasTarget) {
+          return false;
+        }
+
         tabs.forEach((tab) => {
           const isActive = tab.dataset.commentTab === target;
           tab.classList.toggle("is-active", isActive);
@@ -104,11 +123,23 @@ const commentTitleMap: Record<"giscus" | "waline", string> = {
           const isActive = panel.dataset.commentPanel === target;
           panel.classList.toggle("is-hidden", !isActive);
         });
+
+        return true;
       };
 
       tabs.forEach((tab) => {
         tab.addEventListener("click", () => {
-          setActive(tab.dataset.commentTab);
+          const target = tab.dataset.commentTab;
+          if (!target) {
+            return;
+          }
+
+          if (setActive(target)) {
+            const nextHash = `${COMMENT_HASH_PREFIX}${target}`;
+            if (window.location.hash !== nextHash) {
+              history.replaceState(null, "", nextHash);
+            }
+          }
         });
       });
 
@@ -116,16 +147,43 @@ const commentTitleMap: Record<"giscus" | "waline", string> = {
         block.querySelector("[data-comment-tab].is-active")?.dataset
           .commentTab ?? tabs[0]?.dataset.commentTab;
 
-      if (initialActive) {
-        setActive(initialActive);
+      const hashTarget = getCommentTargetFromHash();
+      if ((hashTarget && !setActive(hashTarget)) || !hashTarget) {
+        if (initialActive) {
+          setActive(initialActive);
+        }
       }
 
       block.dataset.bound = "true";
     });
   };
 
-  document.addEventListener("astro:page-load", initCommentOverview);
+  const syncCommentByHash = () => {
+    const target = getCommentTargetFromHash();
+    if (!target) {
+      return;
+    }
+
+    document.querySelectorAll("[data-comment-overview]").forEach((block) => {
+      const tab = block.querySelector(`[data-comment-tab="${target}"]`);
+      if (tab) {
+        tab.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+      }
+    });
+  };
+
+  if (!window.__commentHashChangeBound) {
+    window.addEventListener("hashchange", syncCommentByHash);
+    window.__commentHashChangeBound = true;
+  }
+
+  document.addEventListener("astro:page-load", () => {
+    initCommentOverview();
+    syncCommentByHash();
+  });
+
   initCommentOverview();
+  syncCommentByHash();
 </script>
 
 <style>
