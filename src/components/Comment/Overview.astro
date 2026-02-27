@@ -1,0 +1,10 @@
+---
+import themeConfig from "@/config";
+import Giscus from "@/components/Comment/Giscus.astro";
+import Waline from "@/components/Comment/Waline.astro";
+
+const { provider } = themeConfig.comments;
+---
+
+{provider === "giscus" && <Giscus />}
+{provider === "waline" && <Waline />}

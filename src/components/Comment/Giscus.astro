@@ -1,0 +1,35 @@
+---
+import themeConfig from "@/config";
+
+const giscus = themeConfig.comments.giscus;
+const giscusHost = (import.meta.env.PUBLIC_GISCUS_HOST || giscus.host).replace(
+  /\/$/,
+  "",
+);
+const isReady = giscus.enabled; // We should believe in users as much as possible
+---
+
+{
+  isReady && (
+    <section id="comments" class="mt-10">
+      <script
+        src={`${giscusHost}/client.js`}
+        data-repo={giscus.repo}
+        data-repo-id={giscus.repoID}
+        data-category={giscus.category}
+        data-category-id={giscus.categoryID}
+        data-mapping={giscus.mapping}
+        data-strict={giscus.strict}
+        data-reactions-enabled={giscus.reactionsEnabled}
+        data-emit-metadata={giscus.emitMetadata}
+        data-input-position={giscus.inputPosition}
+        data-theme={giscus.theme}
+        data-lang={giscus.lang}
+        data-loading={giscus.loading}
+        data-term={giscus.term}
+        crossorigin="anonymous"
+        async
+      />
+    </section>
+  )
+}

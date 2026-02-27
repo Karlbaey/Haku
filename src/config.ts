@@ -1,51 +1,83 @@
-import type { ThemeConfig } from '@/types'
+import type { ThemeConfig } from "@/types";
 
 export const themeConfig: ThemeConfig = {
   site: {
-    title: 'Haku',
-    subtitle: 'A simple astro theme',
-    description: 'A demo',
-    author: 'Hakubot',
-    base: '/',
-    url: 'https://haku.karlbaey.top',
-    favicon: '/favicon.png'
+    title: "Haku",
+    subtitle: "A simple astro theme",
+    description: "A demo",
+    author: "Hakubot",
+    base: "/",
+    url: "https://haku.karlbaey.top",
+    favicon: "/favicon.png",
   },
   global: {
-    lang: 'zh',
+    lang: "zh",
     toc: true,
-    dateFmt: 'YYYY MMM D' // 'YYYY-MM-DD' | 'MM-DD-YYYY' | 'DD-MM-YYYY' | 'MMM D YYYY' | 'D MMM YYYY'
+    dateFmt: "YYYY MMM D", // 'YYYY-MM-DD' | 'MM-DD-YYYY' | 'DD-MM-YYYY' | 'MMM D YYYY' | 'D MMM YYYY'
   },
   color: {
     // default theme mode
-    mode: 'light', // light | dark | auto
+    mode: "light", // light | dark | auto
     light: {
       // primary color
       // used for title, hover, etc
       // oklch color picker: https://oklch.com/
-      primary: 'oklch(25% 0.005 298)',
+      primary: "oklch(25% 0.005 298)",
       // secondary color
       // used for post text
-      secondary: 'oklch(40% 0.005 298)',
+      secondary: "oklch(40% 0.005 298)",
       // background color
-      background: 'oklch(96% 0.005 298)',
+      background: "oklch(96% 0.005 298)",
       // highlight color
       // used for navbar, selected text, etc
-      highlight: 'oklch(0.93 0.195089 103.2532 / 0.5)',
+      highlight: "oklch(0.93 0.195089 103.2532 / 0.5)",
     },
     dark: {
       // primary color
-      primary: 'oklch(92% 0.005 298)',
+      primary: "oklch(92% 0.005 298)",
       // secondary color
-      secondary: 'oklch(77% 0.005 298)',
+      secondary: "oklch(77% 0.005 298)",
       // background color
-      background: 'oklch(22% 0.005 298)',
+      background: "oklch(22% 0.005 298)",
       // highlight color
-      highlight: 'oklch(0.93 0.195089 103.2532 / 0.2)',
+      highlight: "oklch(0.93 0.195089 103.2532 / 0.2)",
     },
   },
-}
+  comments: {
+    provider: "giscus",
+    giscus: {
+      enabled: true,
+      host: "https://giscus.app",
+      repo: "Karlbaey/astro-theme-haku",
+      repoID: "R_kgDOQWi63Q",
+      category: "Announcements",
+      categoryID: "DIC_kwDOQWi63c4CyFMJ",
+      mapping: "pathname",
+      strict: "0",
+      reactionsEnabled: "1",
+      emitMetadata: "0",
+      inputPosition: "top",
+      theme: "preferred_color_scheme",
+      lang: "zh-CN",
+      loading: "lazy",
+    },
+    waline: {
+      enabled: false,
+      serverURL: "",
+      lang: "en",
+      pageview: false,
+      comment: true,
+      search: false,
+      login: "enable",
+      dark: "html.dark",
+      requiredMeta: ["nick", "mail"],
+      emoji: [],
+    },
+  },
+};
 
-export default themeConfig
+export default themeConfig;
 
-export const base = themeConfig.site.base === '/' ? '' : themeConfig.site.base.replace(/\/$/, '')
-export const lang = themeConfig.global.lang
+export const base =
+  themeConfig.site.base === "/" ? "" : themeConfig.site.base.replace(/\/$/, "");
+export const lang = themeConfig.global.lang;

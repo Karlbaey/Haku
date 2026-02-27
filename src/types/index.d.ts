@@ -59,6 +59,44 @@ export interface ThemeConfig {
       highlight: string;
     };
   };
+  comments: {
+    provider: "none" | "giscus" | "waline";
+    giscus: {
+      enabled: boolean;
+      host: string;
+      repo: string;
+      repoID: string;
+      category: string;
+      categoryID: string;
+      mapping:
+        | "pathname"
+        | "url"
+        | "title"
+        | "og:title"
+        | "specific"
+        | "number";
+      strict: "0" | "1";
+      reactionsEnabled: "0" | "1";
+      emitMetadata: "0" | "1";
+      inputPosition: "top" | "bottom";
+      theme: string;
+      lang: string;
+      loading: "lazy" | "eager";
+      term?: string;
+    };
+    waline: {
+      enabled: boolean;
+      serverURL: string;
+      lang: string;
+      pageview: boolean;
+      comment: boolean;
+      search: boolean;
+      login: "enable" | "disable" | "force";
+      dark: string;
+      requiredMeta: Array<"nick" | "mail" | "link">;
+      emoji: string[];
+    };
+  };
 }
 
 export default ThemeConfig;

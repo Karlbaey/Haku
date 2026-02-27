@@ -6,6 +6,7 @@
   },
   "version": "0.0.1",
   "scripts": {
+    "prebuild": "node scripts/sync-giscus-config.mjs",
     "dev": "astro dev",
     "build": "astro build && pagefind --site dist",
     "preview": "astro preview",

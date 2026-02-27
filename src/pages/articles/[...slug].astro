@@ -4,7 +4,7 @@ import type { Article } from "@/types";
 import { getCollection, render } from "astro:content";
 import { getArticleDescription } from "@/utils/description";
 import themeConfig from "@/config";
-// import Comment from '@/components/Comment/Index.astro'
+import Comment from "@/components/Comment/Overview.astro";
 // import PostDate from '@/components/PostDate.astro'
 import ArticleTags from "@/components/meta/ArticleTags.astro";
 import ArticleMeta from "@/components/meta/ArticleMeta.astro";
@@ -76,7 +76,7 @@ const { Content, headings } = await render(article);
       <div id="article-copyright"></div>
       <a href="/articles/">←返回文章页面</a>
       <!-- Comment -->
-      <!-- <Comment /> -->
+      <Comment />
     </div>
   </div>
 </Layout>
