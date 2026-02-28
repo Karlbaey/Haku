@@ -1,14 +1,14 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import type { Article } from "@/types";
 import { getCollection, render } from "astro:content";
 import { getArticleDescription } from "@/utils/description";
 import themeConfig from "@/config";
 import Comment from "@/components/Comment/Overview.astro";
-// import PostDate from '@/components/PostDate.astro'
+import Division from "@/components/styles/Division.astro";
 import ArticleTags from "@/components/meta/ArticleTags.astro";
 import ArticleMeta from "@/components/meta/ArticleMeta.astro";
 import TOC from "@/components/meta/TOC.astro";
+import SocialShare from "@/components/meta/SocialShare.astro";
 import Layout from "@/layouts/Layout.astro";
 import { checkArticleSlugDuplication } from "@/utils/content";
 
@@ -28,7 +28,6 @@ export async function getStaticPaths() {
   const paths: PathItem[] = [];
 
   articles.forEach((article: CollectionEntry<"articles">) => {
-    // Show drafts in dev mode only
     if (import.meta.env.DEV || !article.data.draft) {
       const slug = article.data.permalink || article.id;
 
@@ -46,8 +45,10 @@ export async function getStaticPaths() {
 
 const { article } = Astro.props;
 const { author } = themeConfig.site;
+const isSNSSharingActive = themeConfig.socialShare.activated;
 const slug = article.data.permalink || article.id;
 const description = getArticleDescription(article, "meta");
+const shareUrl = new URL(Astro.url.pathname, themeConfig.site.url).toString();
 const { Content, headings } = await render(article);
 ---
 
@@ -59,8 +60,6 @@ const { Content, headings } = await render(article);
   <TOC headings={headings} />
   <div class="max-w-3xl w-full px-4 mx-auto mb-6 markdown">
     <div class="relative">
-      <!-- <BackButton /> -->
-      <!-- Title -->
       <h1 class="article-title">
         <span transition:name={`article-${slug}`} data-disable-theme-transition>
           {article.data.title}
@@ -69,13 +68,22 @@ const { Content, headings } = await render(article);
     </div>
     <ArticleMeta author={author} publishDate={article.data.published} />
     <ArticleTags article={article} />
-    <!-- Content -->
+
     <div id="article-content">
       <Content />
-      <!-- Copyright -->
       <div id="article-copyright"></div>
-      <a href="/articles/">←返回文章页面</a>
-      <!-- Comment -->
+      <a href="/articles/">返回文章页面</a>
+      {
+        isSNSSharingActive && (
+          <Division />
+          <SocialShare
+            title={article.data.title}
+            url={shareUrl}
+            summary={description}
+          />
+        )
+      }
+      <Division />
       <Comment />
     </div>
   </div>

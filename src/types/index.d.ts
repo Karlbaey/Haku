@@ -23,6 +23,7 @@ export const langMap = {
 // Supported Languages
 export type Language = keyof typeof langMap;
 export type CommentSystem = "giscus" | "waline";
+export type SocialSharePlatform = "twitter" | "qq" | "mastodon";
 
 export interface ThemeConfig {
   site: {
@@ -97,6 +98,10 @@ export interface ThemeConfig {
       requiredMeta: Array<"nick" | "mail" | "link">;
       emoji: string[];
     };
+  };
+  socialShare: {
+    activated: boolean;
+    providers: SocialSharePlatform[];
   };
 }
 

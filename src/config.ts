@@ -74,6 +74,10 @@ export const themeConfig: ThemeConfig = {
       emoji: [],
     },
   },
+  socialShare: {
+    activated: true,
+    providers: ["twitter", "qq", "mastodon"],
+  },
 };
 
 export default themeConfig;
