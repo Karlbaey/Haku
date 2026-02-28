@@ -33,11 +33,11 @@ export const themeConfig: ThemeConfig = {
     // you can use Giscus, Waline, or simply both
     providers: ["giscus", "waline"],
     // Giscus settings
-    // see https://haku.karlbaey.top/articles/comments#Giscus
+    // see https://haku.karlbaey.top/articles/configuration#giscus-配置
     giscus: {
       enabled: true,
       host: "https://giscus.app",
-      repo: "Karlbaey/astro-theme-haku",
+      repo: "Karlbaey/Haku",
       repoID: "R_kgDOQWi63Q",
       category: "Announcements",
       categoryID: "DIC_kwDOQWi63c4CyFMJ",
@@ -48,10 +48,10 @@ export const themeConfig: ThemeConfig = {
       inputPosition: "top",
       theme: "preferred_color_scheme",
       lang: "zh-CN",
-      loading: "lazy",
+      loading: "eager",
     },
     // Waline settings
-    // see https://haku.karlbaey.top/articles/comments#Waline
+    // see https://haku.karlbaey.top/articles/configuration#waline-配置
     waline: {
       enabled: true,
       serverURL: "https://wa.karlbaey.top",
