@@ -4,6 +4,7 @@ import { deploy } from "../scripts/deploy.mjs";
 import { dev } from "../scripts/dev.mjs";
 import { preview } from "../scripts/preview.mjs";
 import { build } from "../scripts/build.mjs";
+import { update } from "../scripts/update.mjs";
 import kleur from "kleur";
 
 const args = process.argv.slice(2);
@@ -16,7 +17,7 @@ const commands = {
   build: build,
   preview: preview,
   deploy: deploy,
-  // update: updateTheme,
+  update: update,
   help: showHelp,
 };
 
@@ -43,6 +44,7 @@ Usage:
   ${kleur.cyan("haku build")}      build the site for production
   ${kleur.cyan("haku preview")}    preview the production build locally
   ${kleur.cyan("haku deploy")}     deploy to remote repository
+  ${kleur.cyan("haku update")}     update theme from upstream repository
   ${kleur.cyan("haku help")}       show this help message
 `);
 }

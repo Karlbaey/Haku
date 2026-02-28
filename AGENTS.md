@@ -47,3 +47,4 @@
 - Do not commit secrets or environment-specific credentials.
 - Keep site-level settings centralized in `src/config.ts` and avoid hardcoding duplicate values across components.
 - Ever use UTF-8 text encoding.
+- Do not delete any code comment.

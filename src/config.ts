@@ -48,7 +48,7 @@ export const themeConfig: ThemeConfig = {
       inputPosition: "top",
       theme: "preferred_color_scheme",
       lang: "zh-CN",
-      loading: "eager",
+      loading: "lazy",
     },
     // Waline settings
     // see https://haku.karlbaey.top/articles/configuration#waline-配置

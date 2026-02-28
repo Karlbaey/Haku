@@ -2,5 +2,5 @@
 blank_issues_enabled: false # 禁止创建空白 Issue
 contact_links:
   - name: 💬 普遍讨论 (General Discussion)
-    url: https://github.com/Karlbaey/astro-theme-haku/discussions/new/choose
+    url: https://github.com/Karlbaey/Haku/discussions/new/choose
     about: 如果你只是想提问或进行开放式讨论，请使用 Discussions。

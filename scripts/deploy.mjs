@@ -19,80 +19,143 @@ async function runGitCommand(cmd) {
   }
 }
 
-export async function deploy() {
-  console.log(kleur.bold().blue("\n🚀 Deploying via git\n"));
-
-  // 1. 检查是否在 git 仓库中
+// 确认在 git 仓库中
+async function ensureGitRepo() {
   try {
     await execAsync("git rev-parse --git-dir", { cwd: process.cwd() });
   } catch {
-    console.error(kleur.red("❌ Not inside a Git repository."));
+    console.error(kleur.red("Error: Not inside a Git repository."));
     process.exit(1);
   }
+}
 
-  // 2. 获取当前分支名
-  let currentBranch;
+// 获取当前分支
+async function getCurrentBranch() {
   try {
-    currentBranch = await runGitCommand("git rev-parse --abbrev-ref HEAD");
-    if (currentBranch === "HEAD") {
+    const branch = await runGitCommand("git rev-parse --abbrev-ref HEAD");
+    if (branch === "HEAD") {
       console.error(
-        kleur.red(
-          "❌ You are in detached HEAD state. Please switch to a branch.",
-        ),
+        kleur.red("❌ Error: You are in detached HEAD state. Switch to a branch."),
       );
       process.exit(1);
     }
+    return branch;
   } catch (error) {
     console.error(
-      kleur.red(`❌ Failed to get current branch: ${error.message}`),
+      kleur.red(`❌ Error: Failed to get current branch: ${error.message}`),
     );
     process.exit(1);
   }
+}
 
-  // 3. 获取远程仓库名称（默认 origin，可扩展为从配置读取）
-  const remote = "origin";
-  let remoteUrl;
+// 获取远程 URL
+async function getRemoteUrl(remote) {
   try {
-    remoteUrl = await runGitCommand(`git remote get-url ${remote}`);
+    return await runGitCommand(`git remote get-url ${remote}`);
   } catch {
-    console.error(kleur.red(`❌ Remote '${remote}' not found.`));
+    console.error(kleur.red(`❌ Error: Remote '${remote}' not found.`));
     process.exit(1);
   }
+}
+
+// 问答式确认是否加入到暂存区，并请求提交信息
+async function stageAndCommit() {
+  const { shouldStageAll } = await prompts({
+    type: "confirm",
+    name: "shouldStageAll",
+    message: "Add all files to staging area? (git add .)",
+    initial: true,
+  });
+
+  if (typeof shouldStageAll !== "boolean") {
+    console.log(kleur.yellow("🛑 Deploy cancelled."));
+    return false;
+  }
+
+  if (!shouldStageAll) {
+    return true;
+  }
+
+  try {
+    await runGitCommand("git add .");
+  } catch (error) {
+    console.error(kleur.red(`❌ Error: Failed to stage files: ${error.message}`));
+    process.exit(1);
+  }
+
+  const { commitMessage } = await prompts({
+    type: "text",
+    name: "commitMessage",
+    message: "Commit message:",
+    validate: (value) =>
+      value.trim().length > 0 ? true : "Commit message cannot be empty",
+  });
+
+  if (!commitMessage || !commitMessage.trim()) {
+    console.log(kleur.yellow("🛑 Deploy cancelled."));
+    return false;
+  }
+
+  try {
+    const safeCommitMessage = commitMessage.replace(/"/g, '\\"');
+    await runGitCommand(`git commit -m "${safeCommitMessage}"`);
+    console.log(kleur.green("✅ Commit created successfully."));
+  } catch (error) {
+    const message = error.message || "";
+    if (
+      message.includes("nothing to commit") ||
+      message.includes("no changes added to commit")
+    ) {
+      console.log(kleur.yellow("Nothing to commit, continuing deploy."));
+      return true;
+    }
+    console.error(kleur.red(`Error: Commit failed: ${message}`));
+    process.exit(1);
+  }
+
+  return true;
+}
+
+// 部署到远端仓库
+export async function deploy() {
+  console.log(kleur.bold().blue("\n🚀 Deploying via git\n"));
+
+  await ensureGitRepo();
+
+  const currentBranch = await getCurrentBranch();
+  const remote = "origin";
+  const remoteUrl = await getRemoteUrl(remote);
 
   console.log(kleur.cyan(`📦 Remote: ${remote} -> ${remoteUrl}`));
   console.log(kleur.cyan(`🌿 Branch: ${currentBranch}`));
 
-  // 4. 检查是否有未提交的更改
+  // 获取 git 信息
   let status;
   try {
-    status = await runGitCommand("git status --porcelain");
+    status = await runGitCommand("git status --porcelain"); // 比较干净的 status 输出
   } catch (error) {
-    console.error(kleur.red(`❌ Failed to check git status: ${error.message}`));
+    console.error(
+      kleur.red(`❌ Error: Failed to check git status: ${error.message}`),
+    );
     process.exit(1);
   }
 
+  // 提示有未提交/未暂存的文件
   if (status) {
-    console.log(kleur.yellow("\n⚠️  You have uncommitted changes:"));
+    console.log(kleur.yellow("\n⚠️ You have uncommitted changes:"));
     console.log(
       status
         .split("\n")
-        .map((line) => `   ${line}`)
+        .map((line) => `  ${line}`)
         .join("\n"),
     );
-    const { shouldContinue } = await prompts({
-      type: "confirm",
-      name: "shouldContinue",
-      message:
-        "Continue with push anyway? (uncommitted changes will not be pushed)",
-      initial: false,
-    });
-    if (!shouldContinue) {
-      console.log(kleur.yellow("🛑 Deploy cancelled."));
+
+    const canContinue = await stageAndCommit();
+    if (!canContinue) {
       return;
     }
   }
 
-  // 5. 确认推送
   const { confirmPush } = await prompts({
     type: "confirm",
     name: "confirmPush",
@@ -105,21 +168,23 @@ export async function deploy() {
     return;
   }
 
-  // 6. 执行 git push
-  console.log(kleur.cyan(`\n⏳ Pushing to ${remote}/${currentBranch}...`));
+  console.log(kleur.cyan(`\nPushing to ${remote}/${currentBranch}...`));
+
   try {
     const { stdout, stderr } = await execAsync(
       `git push ${remote} ${currentBranch}`,
-      {
-        cwd: process.cwd(),
-      },
+      { cwd: process.cwd() },
     );
-    if (stdout) console.log(stdout);
-    if (stderr) console.error(kleur.yellow(stderr));
+    if (stdout) {
+      console.log(stdout);
+    }
+    if (stderr) {
+      console.error(kleur.yellow(stderr));
+    }
     console.log(kleur.green("\n✅ Deployed successfully!"));
   } catch (error) {
     console.error(
-      kleur.red(`\n❌ Push failed:\n${error.stderr || error.message}`),
+      kleur.red(`\nError: Push failed:\n${error.stderr || error.message}`),
     );
     process.exit(1);
   }

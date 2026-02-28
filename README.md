@@ -4,6 +4,6 @@
 
 都是能用的，以后应该还有 vercel 版本。
 
-## 评论
+## 部署教程
 
-加了个 Giscus 还有 Waline，文档一会儿再写。
+请前往 <https://haku.karlbaey.top/articles/> 阅读。
