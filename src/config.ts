@@ -78,6 +78,16 @@ export const themeConfig: ThemeConfig = {
     activated: true,
     providers: ["twitter", "qq", "mastodon"],
   },
+  analytics: {
+    // Create your own google analytics ID
+    // https://analytics.google.com/analytics/web/
+    googleAnalyticsID: "G-S7HGM3JPX0",
+    // Create your own umami analytics ID
+    // https://cloud.umami.is/analytics/us/websites/
+    umamiWebsiteID: "5d00bd0c-2f51-43cc-9f70-099aa5d68bac",
+    // Do not edit unless you host your own umami analytics
+    umamiScriptSrc: "https://cloud.umami.is/script.js",
+  },
 };
 
 export default themeConfig;

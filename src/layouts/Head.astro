@@ -9,6 +9,8 @@ interface Props {
 }
 
 const { title, subtitle, description, author, favicon, url } = themeConfig.site;
+const { googleAnalyticsID, umamiWebsiteID, umamiScriptSrc } =
+  themeConfig.analytics;
 
 const { articleTitle, articleDescription, og } = Astro.props;
 
@@ -91,4 +93,35 @@ const pageOGImage = og ? `${url}/og/${og}.png` : `${url}/favicon.png`;
     defer
     src="https://fastly.jsdelivr.net/npm/katex@0.16.9/dist/contrib/mhchem.min.js"
   ></script>
+  {
+    googleAnalyticsID && (
+      <>
+        <script
+        is:inline
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsID}`}
+        ></script>
+        <script is:inline define:vars={{ googleAnalyticsID }}>
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag("js", new Date());
+          gtag("config", googleAnalyticsId);
+        </script>
+      </>
+    )
+  }
+  {
+    umamiWebsiteID &&
+      umamiScriptSrc && (
+        <script
+        is:inline
+          async
+          defer
+          data-website-id={umamiWebsiteID}
+          src={umamiScriptSrc}
+        ></script>
+      )
+  }
 </head>

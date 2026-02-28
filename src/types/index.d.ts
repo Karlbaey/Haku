@@ -103,6 +103,11 @@ export interface ThemeConfig {
     activated: boolean;
     providers: SocialSharePlatform[];
   };
+  analytics: {
+    googleAnalyticsID: string;
+    umamiWebsiteID: string;
+    umamiScriptSrc: string;
+  };
 }
 
 export default ThemeConfig;
