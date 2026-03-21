@@ -1,12 +1,12 @@
 <script>
   import mediumZoom from "medium-zoom";
 
-  let zoom;
+  let zoom: import("medium-zoom").Zoom | undefined;
 
   const initArticleImageZoom = () => {
     zoom?.detach();
 
-    const images = document.querySelectorAll(
+    const images = document.querySelectorAll<HTMLElement>(
       "#article-content [data-zoomable]",
     );
 
