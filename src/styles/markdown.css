@@ -406,6 +406,21 @@ html.dark {
 
 /* ===== 图片和媒体样式 ===== */
 .markdown {
+  & figure.markdown-image {
+    margin-block: var(--space-xl);
+  }
+
+  & figure.markdown-image img {
+    margin-block: 0;
+  }
+
+  & figure.markdown-image figcaption {
+    margin-block-start: var(--space-sm);
+    text-align: center;
+    color: var(--color-text-muted);
+    font-size: 0.875em;
+  }
+
   & img {
     margin-block: var(--space-xl);
     margin-inline: auto;

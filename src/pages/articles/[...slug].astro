@@ -11,6 +11,7 @@ import TOC from "@/components/meta/TOC.astro";
 import SocialShare from "@/components/meta/SocialShare.astro";
 import Layout from "@/layouts/Layout.astro";
 import { checkArticleSlugDuplication } from "@/utils/content";
+import ArticleImageZoom from "@/components/buttons/ArticleImageZoom.astro";
 
 export async function getStaticPaths() {
   const articles = await getCollection("articles");
@@ -87,4 +88,5 @@ const { Content, headings } = await render(article);
       <Comment />
     </div>
   </div>
+  <ArticleImageZoom />
 </Layout>

@@ -2,6 +2,7 @@ import { defineConfig } from "astro/config";
 import { base, themeConfig } from "./src/config";
 import { remarkReadingTime } from "./src/components/scripts/remark-readingtime.mjs";
 import { remarkContainerDirectives } from "./src/components/scripts/remark-sp-containers.mjs";
+import { rehypeArticleImages } from "./src/components/scripts/rehype-article-images.mjs";
 
 import rehypeKatex from "rehype-katex";
 import rehypeMermaid from "rehype-mermaid";
@@ -37,6 +38,7 @@ export default defineConfig({
       remarkMath,
     ],
     rehypePlugins: [
+      rehypeArticleImages,
       [
         rehypeMermaid,
         {

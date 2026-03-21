@@ -1,0 +1,26 @@
+<script>
+  import mediumZoom from "medium-zoom";
+
+  let zoom;
+
+  const initArticleImageZoom = () => {
+    zoom?.detach();
+
+    const images = document.querySelectorAll(
+      "#article-content [data-zoomable]",
+    );
+
+    if (!images.length) {
+      return;
+    }
+
+    zoom = mediumZoom(images, {
+      background: "rgb(10 10 10 / 0.85)",
+      margin: 24,
+      scrollOffset: 0,
+    });
+  };
+
+  document.addEventListener("DOMContentLoaded", initArticleImageZoom);
+  document.addEventListener("astro:page-load", initArticleImageZoom);
+</script>
