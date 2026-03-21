@@ -188,6 +188,7 @@
   }
 
   .tags a:hover {
+    text-decoration: none;
     background-color: var(--color-tag-bg-hover);
   }
 
@@ -197,7 +198,4 @@
     }
     color: var(--color-tag-text);
   }
-}
-
-@layer component {
 }
