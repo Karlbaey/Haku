@@ -1,0 +1,296 @@
+.markdown {
+  margin-top: 2.4rem;
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  font-family: var(--font-body-en), var(--font-body-zh);
+}
+
+@media (max-width: 767px) {
+  .markdown {
+    margin-top: 2rem;
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+}
+
+.markdown > :first-child {
+  margin-top: 0;
+}
+
+.markdown > :last-child {
+  margin-bottom: 0;
+}
+
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4,
+.markdown h5,
+.markdown h6 {
+  margin: 1.9rem 0 0.8rem;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+  color: var(--heading);
+  font-family: var(--font-title);
+}
+
+.markdown h1 {
+  font-size: 1.95rem;
+  font-weight: 700;
+}
+
+.markdown h2 {
+  margin-top: 2rem;
+  margin-bottom: 0.8rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.markdown h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.7rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.markdown h4 {
+  font-size: 1.14rem;
+  font-weight: 650;
+}
+
+.markdown p,
+.markdown ul,
+.markdown ol,
+.markdown blockquote,
+.markdown figure,
+.markdown pre,
+.markdown table,
+.markdown details {
+  margin: 1.25em 0;
+}
+
+.markdown p {
+  text-wrap: pretty;
+}
+
+.markdown ul,
+.markdown ol {
+  padding-inline-start: 1.55em;
+}
+
+.markdown ul {
+  list-style: disc;
+}
+
+.markdown ol {
+  list-style: decimal;
+}
+
+.markdown li {
+  margin: 0.45em 0;
+  padding-left: 0.1em;
+  line-height: inherit;
+}
+
+.markdown li > ul,
+.markdown li > ol {
+  margin-top: 0.45em;
+}
+
+.markdown li > ul {
+  list-style: circle;
+}
+
+.markdown li > ol {
+  list-style: lower-alpha;
+}
+
+.markdown .footnotes ol {
+  list-style: decimal;
+}
+
+.markdown blockquote:not(.admonition) {
+  margin-inline: 0;
+  padding-inline-start: 1rem;
+  border-inline-start: 0.2rem solid var(--subtle);
+  color: var(--muted);
+  font-style: normal;
+}
+
+.markdown blockquote:not(.admonition) p {
+  margin: 0.55em 0;
+}
+
+.markdown a {
+  color: var(--accent);
+  overflow-wrap: anywhere;
+}
+
+.markdown a:hover {
+  color: var(--accent-soft);
+}
+
+.markdown hr {
+  border: 0;
+  height: 2rem;
+  margin: 0;
+}
+
+.markdown img {
+  margin: 1.6rem auto;
+}
+
+.markdown figure {
+  margin-inline: 0;
+}
+
+.markdown .md-image-figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.markdown figure figcaption {
+  margin-top: 0.6rem;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: var(--muted);
+  text-align: center;
+}
+
+.markdown code,
+.markdown kbd,
+.markdown samp {
+  font-family: var(--font-mono);
+}
+
+.markdown :not(pre) > code {
+  background: var(--inline-code-bg);
+  padding: 0.08em 0.35em;
+  font-size: 0.9em;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.markdown pre {
+  margin: 1.3rem 0;
+  background: var(--code-bg);
+  padding: 1rem 1.05rem;
+  overflow: visible;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.markdown pre code {
+  display: block;
+  padding: 0;
+  background: transparent;
+  white-space: inherit;
+  word-break: inherit;
+  overflow-wrap: inherit;
+  font-size: 0.88rem;
+  line-height: 1.72;
+}
+
+.markdown figure[data-rehype-pretty-code-figure] {
+  margin: 1.6rem 0;
+  background: var(--code-bg);
+  overflow: hidden;
+}
+
+.markdown figure[data-rehype-pretty-code-figure] figcaption {
+  margin: 0;
+  color: #dbe4f0;
+  font-size: 0.82rem;
+}
+
+.markdown figure[data-rehype-pretty-code-figure] figcaption[data-rehype-pretty-code-title] {
+  position: relative;
+  padding: 0.7rem 1rem;
+  padding-left: 9rem;
+  padding-right: 9rem;
+  border-bottom: 1px solid #22324d;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+.markdown
+  figure[data-rehype-pretty-code-figure]
+  figcaption[data-rehype-pretty-code-title][data-language]::after {
+  content: attr(data-language);
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  width: calc(9rem - 2rem);
+  transform: translateY(-50%);
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: center;
+  text-overflow: ellipsis;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  pointer-events: none;
+}
+
+.markdown figure[data-rehype-pretty-code-figure] pre {
+  margin: 0;
+  padding: 0.95rem 1rem 1rem;
+  background: transparent;
+}
+
+.markdown figure[data-rehype-pretty-code-figure] pre code {
+  font-size: 0.86rem;
+}
+
+.markdown figure[data-rehype-pretty-code-figure] pre [data-line] {
+  display: block;
+}
+
+.markdown figure[data-rehype-pretty-code-figure] pre [data-highlighted-line] {
+  background: #1e2b43;
+}
+
+.markdown figure[data-rehype-pretty-code-figure] pre mark[data-highlighted-chars] {
+  background: #c79b3d;
+  color: #fff8d5;
+  border-radius: 0.22rem;
+  padding-inline: 0.15rem;
+}
+
+.markdown figure[data-rehype-pretty-code-figure] pre mark[data-highlighted-chars] > span {
+  color: inherit !important;
+}
+
+.markdown figure[data-rehype-pretty-code-figure] pre [data-line] > span:not([style]) {
+  color: #f8f8f2;
+}
+
+.markdown table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 0.58rem;
+}
+
+.markdown th,
+.markdown td {
+  text-align: left;
+  padding: 0.22rem 0.58rem 0.22rem 0;
+}
+
+.markdown thead th {
+  color: var(--muted);
+  font-weight: 640;
+}
+
+.markdown kbd {
+  background: var(--inline-code-bg);
+  padding: 0.1em 0.32em;
+  font-size: 0.82em;
+}

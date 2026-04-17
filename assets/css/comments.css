@@ -1,0 +1,77 @@
+.comments-section {
+  margin-top: 3rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+}
+
+.comments-section-head {
+  margin-bottom: 1rem;
+}
+
+.comments-section-head h2 {
+  margin: 0;
+  color: var(--heading);
+  font-size: 1.2rem;
+}
+
+.comments-section-head p {
+  margin: 0.45rem 0 0;
+  color: var(--muted);
+  font-size: 0.94rem;
+}
+
+.comments-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.comments-tab {
+  appearance: none;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 0.45rem 0.95rem;
+  font: inherit;
+  cursor: pointer;
+  transition: border-color 160ms ease, color 160ms ease, background-color 160ms ease;
+}
+
+.comments-tab:hover {
+  color: var(--heading);
+  border-color: var(--accent-soft);
+}
+
+.comments-tab.is-active {
+  color: var(--tag-pill-active-text);
+  border-color: var(--tag-pill-active-border);
+  background: var(--tag-pill-active-bg);
+  font-weight: 600;
+}
+
+.comments-panel {
+  min-height: 12rem;
+}
+
+.comments-panel[hidden] {
+  display: none;
+}
+
+.comments-panel :global(.giscus),
+.comments-panel :global(.wl-editor),
+.comments-panel :global(.wl-card) {
+  margin-top: 0;
+}
+
+@media (max-width: 767px) {
+  .comments-section {
+    margin-top: 2.5rem;
+  }
+
+  .comments-tab {
+    width: 100%;
+    justify-content: center;
+  }
+}
