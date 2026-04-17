@@ -1,15 +1,11 @@
 ---
 title: 让你的 VS Code 也能写 C++
-pubDate: 2025-10-03T14:52:01.124Z
+date: 2025-10-03T14:52:01.124Z
 description: ""
-updated: ""
 tags:
   - Golang
 draft: false
-pin: 0
-toc: true
-lang: ""
-permalink: "to-let-your-vs-code-support-cpp"
+slug: "to-let-your-vs-code-support-cpp"
 ---
 
 现在主流的 C++ IDE 一般是 Visual Studio 和 Dev-C++，但是前者占用高，后者 GUI 太简陋。
@@ -48,7 +44,7 @@ permalink: "to-let-your-vs-code-support-cpp"
 
 接着继续按下 <kbd>F1</kbd> 搜索 `Preferences: Open User Settings (JSON)`。<kbd>Ctrl</kbd>+<kbd>F</kbd> 搜索 `code-runner.executorMap`，如下面所示修改。
 
-```json title="settings.json"
+```json {title="settings.json"}
 "code-runner.executorMap": {
         // 其余省略
         //其他地方不要动！
@@ -59,7 +55,7 @@ permalink: "to-let-your-vs-code-support-cpp"
 
 然后写一个 `hello.cpp` 测试一下。
 
-```cpp title="hello.cpp"
+```cpp {title="hello.cpp"}
 #include <iostream>
 
 int main() {

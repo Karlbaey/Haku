@@ -1,0 +1,25 @@
+{{ $page := .page }}
+{{ $tags := .tags | default (slice) }}
+{{ $variant := .variant | default "card" }}
+{{ $terms := cond $page ($page.GetTerms "tags") (slice) }}
+{{ $hasRealTags := gt (len $terms) 0 }}
+{{ $displayTags := cond $hasRealTags $tags (slice "未分类") }}
+
+<ul class="article-tag-list{{ if eq $variant "flow" }} article-tag-list--flow{{ end }}" aria-label="文章标签">
+  {{ if $hasRealTags }}
+    {{ range $terms }}
+      <li>
+        <a href="{{ .RelPermalink }}">#{{ .LinkTitle }}</a>
+      </li>
+    {{ end }}
+  {{ else }}
+    {{ range $displayTags }}
+      {{ $tag := strings.TrimSpace . }}
+      {{ if $tag }}
+        <li>
+          <span>#{{ $tag }}</span>
+        </li>
+      {{ end }}
+    {{ end }}
+  {{ end }}
+</ul>

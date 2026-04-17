@@ -1,0 +1,11 @@
+{{ $result := transform.HighlightCodeBlock . }}
+{{ $title := index .Attributes "title" }}
+
+{{ if $title }}
+  <figure data-rehype-pretty-code-figure>
+    <figcaption data-rehype-pretty-code-title{{ with .Type }} data-language="{{ . }}"{{ end }}>{{ $title }}</figcaption>
+    {{ $result.Wrapped }}
+  </figure>
+{{ else }}
+  {{ $result.Wrapped }}
+{{ end }}

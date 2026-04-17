@@ -1,0 +1,24 @@
+{{ $page := .page }}
+{{ $variant := .variant | default "card" }}
+{{ $author := .author | default ($page.Params.author | default $page.Site.Params.author.name | default "佚名") }}
+{{ $pubDateText := partial "format-date.html" $page.Date }}
+{{ $updatedText := partial "format-date.html" $page.Lastmod }}
+
+{{ if eq $variant "flow" }}
+  <div class="article-meta article-meta--flow">
+    <p class="article-meta-line">
+      <span>发布于 {{ $pubDateText }}</span>
+      {{ if and $updatedText (ne $updatedText $pubDateText) }}<span>更新于 {{ $updatedText }}</span>{{ end }}
+      <span>作者 {{ $author }}</span>
+    </p>
+    {{ partial "tag-list.html" (dict "page" $page "tags" $page.Params.tags "variant" "flow") }}
+  </div>
+{{ else }}
+  <div class="article-meta article-meta--card">
+    <p class="article-meta-line">
+      <span>发布于 {{ $pubDateText }}</span>
+      {{ if and $updatedText (ne $updatedText $pubDateText) }}<span>更新于 {{ $updatedText }}</span>{{ end }}
+    </p>
+    {{ partial "tag-list.html" (dict "page" $page "tags" $page.Params.tags) }}
+  </div>
+{{ end }}

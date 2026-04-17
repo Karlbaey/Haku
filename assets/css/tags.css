@@ -44,7 +44,29 @@
   color: var(--muted);
 }
 
+.tag-directory {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+}
+
+.tag-directory-item {
+  margin: 0;
+}
+
 .tag-directory-link {
+  display: inline-flex;
+  min-height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 1rem;
+  border: 1px solid var(--tag-pill-border);
+  border-radius: 0.75rem;
+  text-decoration: none;
   background: var(--tag-pill-bg);
   border-color: var(--tag-pill-border);
   color: var(--tag-pill-text);

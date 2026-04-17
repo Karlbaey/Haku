@@ -1,0 +1,30 @@
+{{ define "meta" }}
+  {{ $description := .Description | default site.Params.description }}
+  {{ partial "head.html" (dict
+    "page" .
+    "title" (printf "%s | %s" .Title site.Title)
+    "description" $description
+  ) }}
+{{ end }}
+
+{{ define "main" }}
+  <main class="page-main">
+    <a class="article-back-link" href="/">← 返回首页</a>
+    <header class="tag-page-header">
+      <h1>{{ .Title }}</h1>
+      {{ with .Description }}<p class="tag-page-description">{{ . }}</p>{{ end }}
+    </header>
+
+    {{ if gt (len .Pages) 0 }}
+      <section class="article-list" aria-label="{{ .Title }} 列表">
+        {{ range .Pages.ByDate.Reverse }}
+          {{ partial "article-card.html" (dict "page" .) }}
+        {{ end }}
+      </section>
+    {{ else }}
+      <section class="markdown">
+        {{ .Content }}
+      </section>
+    {{ end }}
+  </main>
+{{ end }}

@@ -1,0 +1,42 @@
+[[fields]]
+key = "name"
+label = "站点名称"
+inputType = "text"
+required = true
+placeholder = "例如：卡尔白的纸箱"
+
+[[fields]]
+key = "url"
+label = "站点链接"
+inputType = "url"
+required = true
+placeholder = "https://example.com"
+
+[[fields]]
+key = "description"
+label = "站点简介"
+inputType = "textarea"
+required = true
+placeholder = "用一句到两句话介绍你的站点。"
+
+[[fields]]
+key = "site"
+label = "展示域名"
+inputType = "text"
+required = true
+placeholder = "example.com"
+
+[[fields]]
+key = "avatar"
+label = "头像链接"
+inputType = "url"
+required = true
+placeholder = "https://example.com/avatar.png"
+
+[[fields]]
+key = "tags"
+label = "标签"
+inputType = "text"
+required = false
+placeholder = "博客, 技术, 生活"
+description = "多个标签请用英文逗号分隔；留空将默认使用“博客”。"

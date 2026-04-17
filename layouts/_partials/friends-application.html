@@ -1,0 +1,70 @@
+{{ $config := site.Params.friendsApplication }}
+{{ $fields := hugo.Data.friend_link_fields.fields | default (slice) }}
+
+{{ if $config }}
+  <friends-application class="friends-application" data-config='{{ $config | jsonify }}'>
+    <div class="friends-actions">
+      <button type="button" class="friends-apply-trigger" data-friends-open>
+        {{ $config.buttonLabel }}
+      </button>
+    </div>
+
+    <dialog class="friends-dialog" data-friends-dialog>
+      <div class="friends-dialog-panel">
+        <header class="friends-dialog-header">
+          <div>
+            <p class="friends-dialog-eyebrow">GitHub Issues</p>
+            <h2 class="friends-dialog-title">{{ $config.dialogTitle }}</h2>
+            <p class="friends-dialog-description">{{ $config.dialogDescription }}</p>
+          </div>
+          <button type="button" class="friends-dialog-close" data-friends-close aria-label="关闭友链申请表单">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M6.53 5.47a.75.75 0 0 1 1.06 0L12 9.88l4.41-4.4a.75.75 0 1 1 1.06 1.06L13.06 10.94l4.4 4.41a.75.75 0 0 1-1.06 1.06L12 12l-4.41 4.4a.75.75 0 0 1-1.06-1.06l4.4-4.4-4.4-4.41a.75.75 0 0 1 0-1.06Z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+        </header>
+
+        <form class="friends-form" data-friends-form>
+          {{ range $fields }}
+            <label class="friends-field">
+              <span class="friends-field-label">
+                {{ .label }}
+                {{ if .required }}
+                  <span class="friends-field-required">*</span>
+                {{ else }}
+                  <span class="friends-field-optional">可选</span>
+                {{ end }}
+              </span>
+              {{ if eq .inputType "textarea" }}
+                <textarea
+                  class="friends-field-control friends-field-textarea"
+                  name="{{ .key }}"
+                  placeholder="{{ .placeholder }}"
+                  rows="4"
+                  {{ if .required }}required{{ end }}
+                ></textarea>
+              {{ else }}
+                <input
+                  class="friends-field-control"
+                  type="{{ .inputType }}"
+                  name="{{ .key }}"
+                  placeholder="{{ .placeholder }}"
+                  {{ if .required }}required{{ end }}
+                />
+              {{ end }}
+              {{ with .description }}<span class="friends-field-help">{{ . }}</span>{{ end }}
+            </label>
+          {{ end }}
+
+          <footer class="friends-form-actions">
+            <button type="button" class="friends-form-secondary" data-friends-close>{{ $config.cancelLabel }}</button>
+            <button type="submit" class="friends-form-primary">{{ $config.submitLabel }}</button>
+          </footer>
+        </form>
+      </div>
+    </dialog>
+  </friends-application>
+{{ end }}

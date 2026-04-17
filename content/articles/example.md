@@ -1,12 +1,12 @@
 ---
 title: "示例文章标题"
-pubDate: "2026-03-28T16:56:36+08:00"
+date: "2026-03-28T16:56:36+08:00"
 description: "这里是文章简介占位，后续可替换为真实摘要。"
-updated: "2026-03-29T09:18:00+08:00"
+lastmod: "2026-03-29T09:18:00+08:00"
 draft: false
 tags:
   - "示例标签"
-permalink: "example"
+slug: "example"
 ---
 
 在这里写文章内容。
@@ -21,9 +21,9 @@ permalink: "example"
 
 ###### 真的可以！
 
-:::note[真的吗]
+{{% admonition type="note" title="真的吗" %}}
 真的哟。
-:::
+{{% /admonition %}}
 
 > [!NOTE]
 > 这是提示/笔记块。
@@ -40,6 +40,6 @@ permalink: "example"
 > [!CAUTION]
 > 这是小心一点的块。
 
-```javascript title="_files.js"
+```javascript {title="_files.js"}
 console.log("Hello, world!");
 ```

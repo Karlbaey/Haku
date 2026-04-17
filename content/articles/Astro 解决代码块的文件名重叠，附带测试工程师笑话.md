@@ -1,17 +1,13 @@
 ---
 title: Astro 解决代码块的文件名重叠，附带测试工程师笑话
-pubDate: 2026-02-22T18:22:47.123Z
+date: 2026-02-22T18:22:47.123Z
 description: "一个测试工程师走进一家酒吧，要了一杯啤酒；一个测试工程师走进一家酒吧，要了一杯咖啡……没完了？（附带绝赞调优记录）"
-updated: ""
 tags:
   - Astro
   - 前端
   - 胡言乱语
 draft: false
-pin: 0
-toc: true
-lang: ""
-permalink: "solving-a-duplicate-filename-bug-and-a-test-engineer-joke"
+slug: "solving-a-duplicate-filename-bug-and-a-test-engineer-joke"
 ---
 
 很久以前咱就听过一个测试工程师笑话。保守估计这笑话年纪比咱还大。
@@ -82,7 +78,7 @@ permalink: "solving-a-duplicate-filename-bug-and-a-test-engineer-joke"
 
 然后就是改呗。总之改完的 CSS 长这样。
 
-```css title="markdown.css"
+```css {title="markdown.css"}
 .markdown {
   /* 文件名标题栏 (自动生成的 figcaption) */
   figure[data-rehype-pretty-code-figure] figcaption {
@@ -127,7 +123,7 @@ permalink: "solving-a-duplicate-filename-bug-and-a-test-engineer-joke"
 
 但是如果有个天才，想出一门新语言，标记 ID 叫做 `objective-javascript-based-on-type-challenges-of-typescript`，那我又该怎么办呢。
 
-:::fold[我真这么搞了]
+{{% fold title="我真这么搞了" %}}
 
 ![_image](https://cdn.nodeimage.com/i/x3gO727Cw8lioOdOjbRUZTjvj40x6fF0.png)
 
@@ -137,6 +133,6 @@ permalink: "solving-a-duplicate-filename-bug-and-a-test-engineer-joke"
 
 想出一门这么牛逼的语言，该它崩溃。
 
-:::
+{{% /fold %}}
 
 嗯对，刚才想洗个澡，结果把水龙头拧开发现花洒不出水，真把我紧张坏了。然后把浴室里的另外几个水龙头也打开，发现有水啊。最后跟花洒大眼瞪小眼，发现是花洒上的龙头没有开。

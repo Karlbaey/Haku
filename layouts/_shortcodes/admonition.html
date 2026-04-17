@@ -1,0 +1,7 @@
+{{ $type := .Get "type" | default "note" }}
+{{ $title := .Get "title" | default (humanize $type) }}
+
+<blockquote class="admonition admonition-{{ $type }}">
+  <p class="admonition-title">{{ $title }}</p>
+  {{ .Inner | strings.TrimSpace | markdownify }}
+</blockquote>

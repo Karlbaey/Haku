@@ -1,0 +1,15 @@
+{{ $alt := .PlainText | default (.Text | plainify) }}
+{{ $caption := "" }}
+{{ if and $alt (ne $alt "_image") }}
+  {{ $caption = $alt }}
+{{ end }}
+{{ $img := printf `<img src="%s" alt="%s" loading="lazy" decoding="async">` (.Destination | safeURL) ($alt | default "" | htmlEscape) }}
+
+{{ if .IsBlock }}
+  <figure class="md-image-figure">
+    {{ $img | safeHTML }}
+    {{ with $caption }}<figcaption>{{ . }}</figcaption>{{ end }}
+  </figure>
+{{ else }}
+  {{ $img | safeHTML }}
+{{ end }}

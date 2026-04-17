@@ -1,0 +1,18 @@
+{{ $terms := .terms | default (slice) }}
+{{ $activeTag := .activeTag | default "" }}
+
+<ul class="tag-directory" aria-label="标签列表">
+  {{ range $terms }}
+    {{ $name := .name | default .Page.Title }}
+    {{ $href := .href | default .Page.RelPermalink }}
+    <li class="tag-directory-item">
+      <a
+        class="tag-directory-link{{ if eq $activeTag $name }} tag-directory-link--active{{ end }}"
+        href="{{ $href }}"
+        {{ if eq $activeTag $name }}aria-current="page"{{ end }}
+      >
+        <span>#{{ $name }}</span>
+      </a>
+    </li>
+  {{ end }}
+</ul>

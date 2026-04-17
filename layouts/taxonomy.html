@@ -1,0 +1,28 @@
+{{ define "meta" }}
+  {{ partial "head.html" (dict
+    "page" .
+    "title" (printf "标签 | %s" site.Title)
+    "description" (printf "%s 的标签归档" site.Title)
+  ) }}
+{{ end }}
+
+{{ define "main" }}
+  {{ $terms := slice }}
+  {{ range .Data.Terms.ByCount }}
+    {{ $terms = $terms | append (dict "name" .Page.Title "href" .Page.RelPermalink "count" .Count) }}
+  {{ end }}
+  <main class="page-main tag-page-main">
+    <a class="article-back-link" href="/">← 返回首页</a>
+
+    <header class="tag-page-header">
+      <h1>标签</h1>
+      <p class="tag-page-description">共 {{ len $terms }} 个标签</p>
+    </header>
+
+    {{ if gt (len $terms) 0 }}
+      {{ partial "tag-directory.html" (dict "terms" $terms) }}
+    {{ else }}
+      <p class="empty-state">暂时还没有可浏览的标签。</p>
+    {{ end }}
+  </main>
+{{ end }}

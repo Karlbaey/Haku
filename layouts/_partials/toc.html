@@ -1,0 +1,24 @@
+{{ $page := .page }}
+{{ $toc := $page.TableOfContents }}
+
+{{ if gt (len (findRE "<a[^>]+href=" $toc)) 0 }}
+  <aside class="article-toc" data-article-toc>
+    <input id="article-toc-toggle" class="article-toc-toggle" type="checkbox" checked />
+
+    <div class="article-toc-head">
+      <h2 class="article-toc-title">目录</h2>
+
+      <label class="article-toc-switch article-toc-switch--text" for="article-toc-toggle">目录</label>
+
+      <label class="article-toc-switch article-toc-switch--icon" for="article-toc-toggle" aria-label="切换目录">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+          <path fill="currentColor" d="M5 6h14v2H5zm0 5h14v2H5zm0 5h10v2H5z" />
+        </svg>
+      </label>
+    </div>
+
+    <nav class="article-toc-body" aria-label="文章目录" data-toc-scroll>
+      {{ $toc | safeHTML }}
+    </nav>
+  </aside>
+{{ end }}

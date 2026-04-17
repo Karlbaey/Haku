@@ -1,0 +1,11 @@
+{{ .Page.Store.Set "hasMermaid" true }}
+{{ $title := index .Attributes "title" }}
+
+{{ if $title }}
+  <figure data-rehype-pretty-code-figure>
+    <figcaption data-rehype-pretty-code-title data-language="mermaid">{{ $title }}</figcaption>
+    <div class="mermaid mermaid-block">{{ .Inner | htmlEscape | safeHTML }}</div>
+  </figure>
+{{ else }}
+  <div class="mermaid mermaid-block">{{ .Inner | htmlEscape | safeHTML }}</div>
+{{ end }}

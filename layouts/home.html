@@ -1,0 +1,27 @@
+{{ define "main" }}
+  {{ $pages := where site.RegularPages "Section" "articles" }}
+  {{ $paginator := .Paginate ($pages.ByDate.Reverse) }}
+  <main class="page-main home-main">
+    <header class="site-header">
+      <div class="site-header-top">
+        <h1 class="site-title">
+          <a href="/">{{ site.Title }}</a>
+        </h1>
+      </div>
+      <p class="site-subtitle">{{ site.Params.subtitle }}</p>
+      {{ partial "nav.html" (dict "page" . "currentPath" "/") }}
+    </header>
+
+    {{ if gt (len $paginator.Pages) 0 }}
+      <section class="article-list" aria-label="文章列表">
+        {{ range $paginator.Pages }}
+          {{ partial "article-card.html" (dict "page" .) }}
+        {{ end }}
+      </section>
+
+      {{ partial "pagination.html" (dict "paginator" $paginator) }}
+    {{ else }}
+      <p class="empty-state">暂时还没有可浏览的文章。</p>
+    {{ end }}
+  </main>
+{{ end }}

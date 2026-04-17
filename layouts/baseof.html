@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="{{ or .Params.lang .Site.Language.LanguageCode .Site.Language.Lang "zh-CN" }}">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content="Hugo {{ hugo.Version }}" />
+    {{ block "meta" . }}
+      {{ partial "head.html" (dict "page" .) }}
+    {{ end }}
+    {{ $styles := slice
+      (resources.Get "css/global.css")
+      (resources.Get "css/tags.css")
+      (resources.Get "css/markdown.css")
+      (resources.Get "css/ext.css")
+      (resources.Get "css/toc.css")
+      (resources.Get "css/friends.css")
+      (resources.Get "css/comments.css")
+    }}
+    {{ $styleBundle := $styles | resources.Concat "css/site.css" | minify | fingerprint }}
+    <link rel="stylesheet" href="{{ $styleBundle.RelPermalink }}" integrity="{{ $styleBundle.Data.Integrity }}" />
+    {{ block "extra_head" . }}{{ end }}
+  </head>
+  <body>
+    {{ block "main" . }}{{ end }}
+    <footer>
+      <div class="site-footer-inner">
+        <a href="https://icp.gov.moe/?keyword=20255566" target="_blank" rel="noreferrer">萌 ICP 备 20255566 号</a>
+      </div>
+    </footer>
+    {{ if .Store.Get "hasMermaid" }}
+      <script type="module">
+        import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+        mermaid.initialize({ startOnLoad: true, securityLevel: "loose", theme: "neutral" });
+      </script>
+    {{ end }}
+    {{ block "scripts" . }}{{ end }}
+  </body>
+</html>

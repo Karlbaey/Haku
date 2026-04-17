@@ -1,0 +1,7 @@
+[[links]]
+name = "示例朋友"
+url = "https://example.com"
+description = "这里写一小段站点介绍，后续可直接替换成真实友链信息。"
+site = "example.com"
+avatar = "https://example.com/avatar.png"
+tags = ["博客"]

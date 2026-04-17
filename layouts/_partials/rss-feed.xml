@@ -1,0 +1,46 @@
+{{ printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>\n" | safeHTML }}
+{{ printf "<?xml-stylesheet type=\"text/xsl\" href=%q?>\n" ("feed.xsl" | absURL) | safeHTML }}
+{{- $page := . -}}
+{{- $site := .Site -}}
+{{- $pages := cond $page.IsHome $site.RegularPages $page.RegularPages -}}
+{{- $pages = $pages.ByDate.Reverse -}}
+{{- $title := cond $page.IsHome $site.Title (printf "%s | %s" $page.Title $site.Title) -}}
+{{- $description := $page.Description | default (cond $page.IsHome ($site.Params.description | default $site.Title) (printf "%s 的最新内容" $page.Title)) -}}
+{{- $self := "" -}}
+{{- with $page.OutputFormats.Get "RSS" -}}
+  {{- $self = .Permalink -}}
+{{- end -}}
+{{- $lastBuildDate := "" -}}
+{{- with index $pages 0 -}}
+  {{- $lastBuildDate = (.Lastmod | default .Date).Format "Mon, 02 Jan 2006 15:04:05 -0700" -}}
+{{- end -}}
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ $title }}</title>
+    <link>{{ $page.Permalink }}</link>
+    <description>{{ $description }}</description>
+    <generator>Hugo</generator>
+    <language>{{ $site.Language.LanguageCode | default $site.Language.Lang | default "zh-CN" }}</language>
+    {{- with $lastBuildDate }}
+    <lastBuildDate>{{ . }}</lastBuildDate>
+    {{- end }}
+    {{- with $self }}
+    <atom:link href="{{ . }}" rel="self" type="application/rss+xml" />
+    {{- end }}
+    {{- range $pages }}
+    <item>
+      <title>{{ .Title }}</title>
+      <link>{{ .Permalink }}</link>
+      <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" }}</pubDate>
+      <guid>{{ .Permalink }}</guid>
+      {{- $itemDescription := .Description | default .Summary | plainify | htmlUnescape | strings.TrimSpace -}}
+      {{- with $itemDescription }}
+      <description>{{ . | transform.XMLEscape }}</description>
+      {{- end }}
+      {{- range .GetTerms "tags" }}
+      <category>{{ .LinkTitle }}</category>
+      {{- end }}
+    </item>
+    {{- end }}
+  </channel>
+</rss>

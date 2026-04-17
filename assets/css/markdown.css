@@ -249,6 +249,17 @@
   font-size: 0.86rem;
 }
 
+.markdown figure[data-rehype-pretty-code-figure] .mermaid-block {
+  margin: 0;
+  padding: 1rem;
+  overflow-x: auto;
+  background: transparent;
+}
+
+.markdown .mermaid-block {
+  display: block;
+}
+
 .markdown figure[data-rehype-pretty-code-figure] pre [data-line] {
   display: block;
 }

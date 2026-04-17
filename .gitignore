@@ -1,1 +1,4 @@
 .codex
+.hugo-build
+.hugo_build.lock
+public/

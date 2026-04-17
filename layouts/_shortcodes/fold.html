@@ -1,0 +1,6 @@
+{{ $title := .Get "title" | default "展开" }}
+
+<details>
+  <summary>{{ $title }}</summary>
+  {{ .Inner | strings.TrimSpace | markdownify }}
+</details>

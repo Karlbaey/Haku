@@ -1,0 +1,60 @@
+{{ $page := .page | default . }}
+{{ $site := $page.Site }}
+{{ $defaultTitle := cond $page.IsHome $site.Title (printf "%s | %s" $page.Title $site.Title) }}
+{{ $title := .title | default $defaultTitle }}
+{{ $description := .description | default ($page.Description | default (cond $page.IsHome ($site.Params.description | default $site.Title) ($page.Summary | plainify | strings.TrimSpace | truncate 140))) }}
+{{ $canonicalURL := .canonicalURL | default $page.Permalink }}
+{{ $ogImageURL := .ogImageURL | default (absURL "favicon.png") }}
+{{ $ogType := .ogType | default "website" }}
+{{ $author := .author | default ($page.Params.author | default $site.Params.author.name) }}
+{{ $publishedTime := .publishedTime | default (cond (and (eq $ogType "article") (not $page.Date.IsZero)) ($page.Date.Format "2006-01-02T15:04:05Z07:00") "") }}
+{{ $modifiedTime := .modifiedTime | default (cond (and (eq $ogType "article") (not $page.Lastmod.IsZero)) ($page.Lastmod.Format "2006-01-02T15:04:05Z07:00") "") }}
+{{ $ogLocale := replace ($site.Language.LanguageCode | default "zh-CN") "-" "_" }}
+{{ $googleAnalyticsMeasurementID := $site.Params.analytics.googleAnalytics.measurementId }}
+{{ $umamiWebsiteID := $site.Params.analytics.umami.websiteId }}
+
+<title>{{ $title }}</title>
+{{ with $description }}<meta name="description" content="{{ . }}" />{{ end }}
+{{ with $canonicalURL }}<link rel="canonical" href="{{ . }}" />{{ end }}
+<link rel="alternate" type="application/rss+xml" title="{{ $site.Title }} RSS" href="/rss.xml" />
+<meta property="og:title" content="{{ $title }}" />
+{{ with $description }}<meta property="og:description" content="{{ . }}" />{{ end }}
+<meta property="og:type" content="{{ $ogType }}" />
+{{ with $canonicalURL }}<meta property="og:url" content="{{ . }}" />{{ end }}
+<meta property="og:image" content="{{ $ogImageURL }}" />
+<meta property="og:site_name" content="{{ $site.Title }}" />
+<meta property="og:locale" content="{{ $ogLocale }}" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="{{ $title }}" />
+{{ with $description }}<meta name="twitter:description" content="{{ . }}" />{{ end }}
+<meta name="twitter:image" content="{{ $ogImageURL }}" />
+{{ if eq $ogType "article" }}
+  {{ with $publishedTime }}<meta property="article:published_time" content="{{ . }}" />{{ end }}
+  {{ with $modifiedTime }}<meta property="article:modified_time" content="{{ . }}" />{{ end }}
+  {{ with $author }}<meta property="article:author" content="{{ . }}" />{{ end }}
+{{ end }}
+
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link rel="preconnect" href="https://fonts.loli.net" />
+<link rel="preconnect" href="https://gstatic.loli.net" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://fonts.loli.net/css2?family=SN+Pro:wght@400;500;700&display=swap" />
+<link
+  rel="stylesheet"
+  href="https://fonts.loli.net/css2?family=Noto+Sans+SC:wght@400;500;700&family=Fira+Code:wght@400;500;700&display=swap"
+/>
+
+{{ with $googleAnalyticsMeasurementID }}
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ . }}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "{{ . }}");
+  </script>
+{{ end }}
+
+{{ with $umamiWebsiteID }}
+  <script async defer src="https://cloud.umami.is/script.js" data-website-id="{{ . }}"></script>
+{{ end }}

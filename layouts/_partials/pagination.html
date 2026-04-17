@@ -1,0 +1,31 @@
+{{ $paginator := .paginator | default . }}
+
+{{ if gt $paginator.TotalPages 1 }}
+  <nav class="pagination" aria-label="文章分页">
+    <p class="pagination-summary">
+      第 {{ $paginator.PageNumber }} 页，共 {{ $paginator.TotalPages }} 页
+    </p>
+
+    <div class="pagination-links">
+      {{ with $paginator.Prev }}
+        <a class="pagination-link pagination-link--arrow" href="{{ .URL }}" rel="prev">上一页</a>
+      {{ else }}
+        <span class="pagination-link pagination-link--disabled pagination-link--arrow" aria-disabled="true">上一页</span>
+      {{ end }}
+
+      {{ range $paginator.Pagers }}
+        {{ if eq .PageNumber $paginator.PageNumber }}
+          <span class="pagination-link pagination-link--current" aria-current="page">{{ .PageNumber }}</span>
+        {{ else }}
+          <a class="pagination-link" href="{{ .URL }}">{{ .PageNumber }}</a>
+        {{ end }}
+      {{ end }}
+
+      {{ with $paginator.Next }}
+        <a class="pagination-link pagination-link--arrow" href="{{ .URL }}" rel="next">下一页</a>
+      {{ else }}
+        <span class="pagination-link pagination-link--disabled pagination-link--arrow" aria-disabled="true">下一页</span>
+      {{ end }}
+    </div>
+  </nav>
+{{ end }}

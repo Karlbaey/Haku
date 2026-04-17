@@ -1,21 +1,17 @@
 ---
 title: 各 Markdown 编辑器的使用体验
-pubDate: 2026-03-20T16:32:07.805Z
+date: 2026-03-20T16:32:07.805Z
 description: ""
-updated: ""
 tags:
   - Markdown
   - 笔记
 draft: false
-pin: 0
-toc: true
-lang: ""
-permalink: "markdown-editors-recommend"
+slug: "markdown-editors-recommend"
 ---
 
-:::note[前情提要]
+{{% admonition type="note" title="前情提要" %}}
 以前写过一篇 Markdown 编辑器推荐（已经删了，换成了这一篇）。因为以前用的图床爆炸了，里面的图片荡然无存。思来想去，换了个更稳的图床，重新写一篇。
-:::
+{{% /admonition %}}
 
 本篇评测采用 Notepad4 写成。正经人谁用 Markdown 编辑器写博客啊。
 
@@ -49,9 +45,9 @@ permalink: "markdown-editors-recommend"
 
 缺点也很明显：太贵了，为了一个编辑器花 USD 15（2026 年 3 月 29 日汇率来看大概是 104 人民币）在我看来一点都不值得。而且我很讨厌 Electron 构建的软件，虽然确实是让开发者舒心了，但像我一样的低配电脑，浏览器开了几个标签页都费劲，更何况是塞了整个 Chromium 内核和 Node.js 环境的软件呢？哪怕是没有那么多方便的热键可以用，我还是更偏好像 Notepad4 这种纯文本编辑器。
 
-:::tip
+{{% admonition type="tip" %}}
 Typora 的破解版满天飞，怕 DMCA 就不在这儿放了。
-:::
+{{% /admonition %}}
 
 ## Obsidian
 
@@ -111,7 +107,7 @@ Emacs China 论坛上有一个[讨论](https://emacs-china.org/t/emacs-markdown/
 
 比如，我打开一个页面（<https://note.ms/skca>），这样写
 
-````markdown title="test.md"
+````markdown {title="test.md"}
 在 example 里面我这样写：
 
 ```markdown

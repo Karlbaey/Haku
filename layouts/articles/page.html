@@ -1,0 +1,34 @@
+{{ define "meta" }}
+  {{ $description := .Description | default (.Summary | plainify | strings.TrimSpace | truncate 140) | default site.Params.description }}
+  {{ partial "head.html" (dict
+    "page" .
+    "title" (printf "%s | %s" .Title site.Title)
+    "description" $description
+    "ogType" "article"
+    "author" (.Params.author | default site.Params.author.name)
+  ) }}
+{{ end }}
+
+{{ define "main" }}
+  <main class="page-main article-main">
+    <a class="article-back-link" href="/">← 返回首页</a>
+    <header class="article-header">
+      <h1>{{ .Title }}</h1>
+      {{ partial "article-meta.html" (dict "page" . "variant" "flow") }}
+    </header>
+    {{ if ne .Params.toc false }}
+      {{ partial "toc.html" (dict "page" .) }}
+    {{ end }}
+    <article class="markdown">
+      {{ .Content }}
+    </article>
+    {{ partial "copyright.html" (dict "page" .) }}
+  </main>
+{{ end }}
+
+{{ define "scripts" }}
+  {{ if and (ne .Params.toc false) (gt (len (findRE "<a[^>]+href=" .TableOfContents)) 0) }}
+    {{ $tocScript := resources.Get "js/toc.js" | minify | fingerprint }}
+    <script src="{{ $tocScript.RelPermalink }}" integrity="{{ $tocScript.Data.Integrity }}" defer></script>
+  {{ end }}
+{{ end }}
