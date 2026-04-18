@@ -28,6 +28,9 @@
 }
 
 .comments-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   appearance: none;
   border: 1px solid var(--line);
   background: var(--surface);
@@ -59,9 +62,10 @@
   display: none;
 }
 
-.comments-panel :global(.giscus),
-.comments-panel :global(.wl-editor),
-.comments-panel :global(.wl-card) {
+.comments-panel .giscus,
+.comments-panel .wl-container,
+.comments-panel .wl-editor,
+.comments-panel .wl-card {
   margin-top: 0;
 }
 

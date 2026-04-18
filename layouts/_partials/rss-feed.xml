@@ -6,6 +6,7 @@
 {{- $pages = $pages.ByDate.Reverse -}}
 {{- $title := cond $page.IsHome $site.Title (printf "%s | %s" $page.Title $site.Title) -}}
 {{- $description := $page.Description | default (cond $page.IsHome ($site.Params.description | default $site.Title) (printf "%s 的最新内容" $page.Title)) -}}
+{{- $excerptLength := $site.Params.posts.excerptLength | default 140 -}}
 {{- $self := "" -}}
 {{- with $page.OutputFormats.Get "RSS" -}}
   {{- $self = .Permalink -}}
@@ -33,7 +34,7 @@
       <link>{{ .Permalink }}</link>
       <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" }}</pubDate>
       <guid>{{ .Permalink }}</guid>
-      {{- $itemDescription := .Description | default .Summary | plainify | htmlUnescape | strings.TrimSpace -}}
+      {{- $itemDescription := .Description | default (.Summary | plainify | htmlUnescape | strings.TrimSpace | truncate $excerptLength) -}}
       {{- with $itemDescription }}
       <description>{{ . | transform.XMLEscape }}</description>
       {{- end }}

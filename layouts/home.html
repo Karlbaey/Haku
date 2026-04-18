@@ -1,7 +1,7 @@
 {{ define "main" }}
   {{ $pages := where site.RegularPages "Section" "articles" }}
   {{ $paginator := .Paginate ($pages.ByDate.Reverse) }}
-  <main class="page-main home-main">
+  <main class="page-main home-main" data-pagefind-ignore="all">
     <header class="site-header">
       <div class="site-header-top">
         <h1 class="site-title">

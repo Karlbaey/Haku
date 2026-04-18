@@ -69,6 +69,10 @@
   backdrop-filter: blur(12px);
 }
 
+.search-overlay[hidden] {
+  display: none;
+}
+
 .search-panel {
   width: min(100%, 860px);
   height: 100%;

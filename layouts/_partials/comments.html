@@ -1,0 +1,101 @@
+{{ $page := .page }}
+{{ $comments := site.Params.comments }}
+{{ $providers := slice }}
+{{ $giscus := $comments.giscus }}
+{{ $waline := $comments.waline }}
+
+{{ if and $giscus (ne $giscus.enabled false) $giscus.repo $giscus.repoId $giscus.category $giscus.categoryId }}
+  {{ $providers = $providers | append "giscus" }}
+{{ end }}
+
+{{ if and $waline (ne $waline.enabled false) $waline.serverUrl }}
+  {{ $providers = $providers | append "waline" }}
+{{ end }}
+
+{{ if gt (len $providers) 0 }}
+  {{ $defaultProvider := cond (and $comments.defaultProvider (in $providers $comments.defaultProvider)) $comments.defaultProvider (index $providers 0) }}
+  {{ if and (gt (len $providers) 1) (ne (index $providers 0) $defaultProvider) }}
+    {{ $ordered := slice $defaultProvider }}
+    {{ range $providers }}
+      {{ if ne . $defaultProvider }}
+        {{ $ordered = $ordered | append . }}
+      {{ end }}
+    {{ end }}
+    {{ $providers = $ordered }}
+  {{ end }}
+
+  {{ $config := dict
+    "defaultProvider" $defaultProvider
+    "providers" $providers
+    "article" (dict
+      "id" (replaceRE "^/|/$" "" $page.RelPermalink)
+      "title" $page.Title
+      "pathname" $page.RelPermalink
+      "url" $page.Permalink
+    )
+  }}
+  {{ if in $providers "giscus" }}
+    {{ $config = merge $config (dict "giscus" (dict
+      "repo" $giscus.repo
+      "repoId" $giscus.repoId
+      "category" $giscus.category
+      "categoryId" $giscus.categoryId
+      "mapping" ($giscus.mapping | default "pathname")
+      "strict" ($giscus.strict | default "0")
+      "reactionsEnabled" ($giscus.reactionsEnabled | default "1")
+      "inputPosition" ($giscus.inputPosition | default "top")
+      "theme" ($giscus.theme | default "preferred_color_scheme")
+      "lang" ($giscus.lang | default "zh-CN")
+    )) }}
+  {{ end }}
+  {{ if in $providers "waline" }}
+    {{ $config = merge $config (dict "waline" (dict
+      "serverUrl" $waline.serverUrl
+      "turnstileKey" $waline.turnstileKey
+      "lang" ($waline.lang | default "zh-CN")
+      "emoji" ($waline.emoji | default (slice))
+      "requiredMeta" ($waline.requiredMeta | default (slice "nick" "mail"))
+      "login" ($waline.login | default "enable")
+      "pageSize" ($waline.pageSize | default 10)
+      "commentSorting" ($waline.commentSorting | default "latest")
+    )) }}
+  {{ end }}
+
+  <section class="comments-section" data-comments-root>
+    <div class="comments-section-head">
+      <h2>评论</h2>
+      <p>支持两套评论系统，按需切换加载。</p>
+    </div>
+    <div class="comments-tabs" role="tablist" aria-label="评论系统切换">
+      {{ range $providers }}
+        {{ $provider := . }}
+        {{ $label := cond (eq $provider "giscus") "Giscus" "Waline" }}
+        <button
+          class="comments-tab{{ if eq $defaultProvider $provider }} is-active{{ end }}"
+          type="button"
+          role="tab"
+          aria-selected="{{ if eq $defaultProvider $provider }}true{{ else }}false{{ end }}"
+          aria-controls="comments-panel-{{ $provider }}"
+          id="comments-tab-{{ $provider }}"
+          data-comments-tab="{{ $provider }}"
+        >
+          {{ $label }}
+        </button>
+      {{ end }}
+    </div>
+    {{ range $providers }}
+      {{ $provider := . }}
+      <section
+        class="comments-panel"
+        role="tabpanel"
+        aria-labelledby="comments-tab-{{ $provider }}"
+        id="comments-panel-{{ $provider }}"
+        {{ if ne $defaultProvider $provider }}hidden{{ end }}
+        data-comments-panel="{{ $provider }}"
+      >
+        <div class="{{ if eq $provider "giscus" }}giscus{{ end }}" data-comments-mount="{{ $provider }}"></div>
+      </section>
+    {{ end }}
+    <script type="application/json" data-comments-config>{{ $config | jsonify | safeHTML }}</script>
+  </section>
+{{ end }}

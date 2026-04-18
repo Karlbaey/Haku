@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ or .Params.lang .Site.Language.LanguageCode .Site.Language.Lang "zh-CN" }}">
   <head>
+    {{ $noop := .WordCount }}
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content="Hugo {{ hugo.Version }}" />
@@ -15,24 +16,30 @@
       (resources.Get "css/toc.css")
       (resources.Get "css/friends.css")
       (resources.Get "css/comments.css")
+      (resources.Get "css/search.css")
+      (resources.Get "css/article-enhance.css")
     }}
     {{ $styleBundle := $styles | resources.Concat "css/site.css" | minify | fingerprint }}
     <link rel="stylesheet" href="{{ $styleBundle.RelPermalink }}" integrity="{{ $styleBundle.Data.Integrity }}" />
+    {{ if .Page.Store.Get "hasMath" }}
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+        integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+        crossorigin="anonymous"
+      />
+    {{ end }}
     {{ block "extra_head" . }}{{ end }}
   </head>
   <body>
     {{ block "main" . }}{{ end }}
-    <footer>
+    <footer data-pagefind-ignore="all">
       <div class="site-footer-inner">
         <a href="https://icp.gov.moe/?keyword=20255566" target="_blank" rel="noreferrer">萌 ICP 备 20255566 号</a>
       </div>
     </footer>
-    {{ if .Store.Get "hasMermaid" }}
-      <script type="module">
-        import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-        mermaid.initialize({ startOnLoad: true, securityLevel: "loose", theme: "neutral" });
-      </script>
-    {{ end }}
+    {{ $searchScript := resources.Get "js/search-overlay.js" | minify | fingerprint }}
+    <script src="{{ $searchScript.RelPermalink }}" integrity="{{ $searchScript.Data.Integrity }}" defer></script>
     {{ block "scripts" . }}{{ end }}
   </body>
 </html>

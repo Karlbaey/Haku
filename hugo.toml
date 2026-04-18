@@ -21,6 +21,9 @@ baseName = "rss"
 subtitle = "卡尔白的纸箱📦"
 description = "卡尔白的纸箱📦"
 
+[params.posts]
+excerptLength = 60
+
 [params.author]
 name = "Karlbaey"
 
@@ -47,12 +50,45 @@ cancelLabel = "取消"
 owner = "Karlbaey"
 repo = "Karlblogs-Comments"
 
+[params.comments]
+defaultProvider = "giscus"
+
+[params.comments.giscus]
+enabled = true
+repo = "Karlbaey/Karlblogs-Comments"
+repoId = "R_kgDON2YNqA"
+category = "Announcements"
+categoryId = "DIC_kwDON2YNqM4Cm0iB"
+mapping = "pathname"
+strict = "0"
+reactionsEnabled = "1"
+inputPosition = "top"
+theme = "preferred_color_scheme"
+lang = "zh-CN"
+
+[params.comments.waline]
+enabled = true
+serverUrl = "https://wa.karlbaey.top"
+turnstileKey = "0x4AAAAAACjZ2i92lseLg6_w"
+lang = "zh"
+login = "enable"
+requiredMeta = ["nick", "mail"]
+emoji = []
+pageSize = 10
+commentSorting = "latest"
+
 [markup]
   [markup.tableOfContents]
   startLevel = 2
   endLevel = 4
   ordered = false
   [markup.goldmark]
+    [markup.goldmark.extensions]
+      [markup.goldmark.extensions.passthrough]
+        enable = true
+        [markup.goldmark.extensions.passthrough.delimiters]
+          block = [['\[', '\]'], ['$$', '$$']]
+          inline = [['\(', '\)']]
     [markup.goldmark.parser]
     wrapStandAloneImageWithinParagraph = false
       [markup.goldmark.parser.attribute]

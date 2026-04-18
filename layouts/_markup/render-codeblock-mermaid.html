@@ -1,11 +1,16 @@
 {{ .Page.Store.Set "hasMermaid" true }}
 {{ $title := index .Attributes "title" }}
-
-{{ if $title }}
-  <figure data-rehype-pretty-code-figure>
-    <figcaption data-rehype-pretty-code-title data-language="mermaid">{{ $title }}</figcaption>
-    <div class="mermaid mermaid-block">{{ .Inner | htmlEscape | safeHTML }}</div>
-  </figure>
-{{ else }}
-  <div class="mermaid mermaid-block">{{ .Inner | htmlEscape | safeHTML }}</div>
+{{ $alt := "Mermaid 图表" }}
+{{ with $title }}
+  {{ $alt = . }}
 {{ end }}
+
+<figure data-rehype-pretty-code-figure data-mermaid-figure>
+  {{ with $title }}
+    <figcaption data-rehype-pretty-code-title data-language="mermaid">{{ . }}</figcaption>
+  {{ end }}
+  <div class="mermaid-block" data-mermaid-root data-mermaid-alt="{{ $alt }}">
+    <div data-mermaid-stage></div>
+    <script type="text/plain" data-mermaid-source>{{ .Inner | htmlEscape | safeHTML }}</script>
+  </div>
+</figure>

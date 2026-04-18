@@ -11,7 +11,7 @@
   {{ range .Data.Terms.ByCount }}
     {{ $terms = $terms | append (dict "name" .Page.Title "href" .Page.RelPermalink "count" .Count) }}
   {{ end }}
-  <main class="page-main tag-page-main">
+  <main class="page-main tag-page-main" data-pagefind-ignore="all">
     <a class="article-back-link" href="/">← 返回首页</a>
 
     <header class="tag-page-header">

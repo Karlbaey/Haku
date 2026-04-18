@@ -1,4 +1,5 @@
 .codex
 .hugo-build
 .hugo_build.lock
+node_modules/
 public/
