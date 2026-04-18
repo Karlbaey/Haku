@@ -92,33 +92,6 @@
   right: 0.8rem;
 }
 
-.markdown [data-mermaid-root] {
-  display: block;
-}
-
-.markdown [data-mermaid-stage] {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 4rem;
-}
-
-.markdown [data-mermaid-stage] > img[data-mermaid-image="true"] {
-  margin: 0 auto;
-  width: auto;
-  max-width: 100%;
-  height: auto;
-}
-
-.markdown .mermaid-render-error {
-  width: 100%;
-  margin: 0;
-  color: #ffd9de;
-  font-size: 0.85rem;
-  line-height: 1.7;
-  white-space: pre-wrap;
-}
-
 body.image-zoom-active {
   overflow: hidden;
 }
@@ -159,23 +132,10 @@ body.image-zoom-active::before {
   transition: none;
 }
 
-.markdown img.is-zoomed[data-mermaid-image="true"] {
-  max-width: none;
-  max-height: none;
-}
-
-.markdown figure[data-rehype-pretty-code-figure] img:not([data-mermaid-image="true"]) {
+.markdown figure[data-rehype-pretty-code-figure] img {
   cursor: default;
   transition: none;
   transform: none;
-}
-
-.markdown figure[data-rehype-pretty-code-figure] img[data-mermaid-image="true"] {
-  cursor: zoom-in;
-}
-
-.markdown figure[data-rehype-pretty-code-figure] img[data-mermaid-image="true"].is-zoomed {
-  cursor: zoom-out;
 }
 
 body.footnote-preview-mobile-open {

@@ -16,10 +16,17 @@
   {{ end }}
 {{ end }}
 
+{{ define "styles" }}
+  {{ partial "style-bundle.html" (dict
+    "paths" (slice "css/tags.css" "css/markdown.css" "css/ext.css" "css/comments.css" "css/article-enhance.css")
+    "target" "css/bundles/article.css"
+  ) }}
+{{ end }}
+
 {{ define "main" }}
   {{ $searchDescription := .Description | default (.Summary | plainify | strings.TrimSpace | truncate 140) }}
   {{ $searchTags := delimit (.Params.tags | default (slice)) ", " }}
-  <main class="page-main article-main" data-pagefind-body>
+  <main class="page-main" data-pagefind-body>
     <a class="article-back-link" href="/">← 返回首页</a>
     <header class="article-header">
       <h1>{{ .Title }}</h1>

@@ -1,9 +1,4 @@
 (() => {
-  const DARK_MODE_QUERY = "(prefers-color-scheme: dark)";
-  const MERMAID_MODULE_SRC = "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-  const WHEEL_SCALE_STEP = 0.1;
-  const MIN_ZOOM_SCALE = 0.5;
-  const MAX_ZOOM_SCALE = 6;
   const MARKDOWN_SELECTOR = ".markdown";
   const FOOTNOTE_REF_SELECTOR = `${MARKDOWN_SELECTOR} a.footnote-ref`;
   const FOOTNOTE_DESKTOP_MEDIA_QUERY = "(hover: hover) and (pointer: fine)";
@@ -13,7 +8,6 @@
   const FIGURE_SELECTOR = 'figure[data-rehype-pretty-code-figure]';
   const BUTTON_SELECTOR = "[data-code-copy-button]";
   const RESET_DELAY = 1800;
-  const darkModeMedia = window.matchMedia(DARK_MODE_QUERY);
   const footnoteDesktopMedia = window.matchMedia(FOOTNOTE_DESKTOP_MEDIA_QUERY);
   const resetTimers = new WeakMap();
 
@@ -30,8 +24,6 @@
   let footnoteHideTimer = 0;
   let footnoteCloseTimer = 0;
   let previousBodyPaddingRight = null;
-  let renderIndex = 0;
-  let mermaidPromise;
 
   function getButtonLabel(state) {
     if (state === "success") {
@@ -150,7 +142,7 @@
       return;
     }
 
-    if (pre.closest(FIGURE_SELECTOR) || pre.closest("[data-mermaid-root]")) {
+    if (pre.closest(FIGURE_SELECTOR)) {
       return;
     }
 
@@ -201,7 +193,7 @@
       return false;
     }
 
-    if (node.closest(FIGURE_SELECTOR) && node.dataset.mermaidImage !== "true") {
+    if (node.closest(FIGURE_SELECTOR)) {
       return false;
     }
 
@@ -303,40 +295,6 @@
     updateZoomSize(activeImage);
     activeImage.classList.add("is-zoomed");
     lockBodyScroll();
-  }
-
-  function getActiveZoomedMermaidImage() {
-    return document.querySelector('img[data-mermaid-image="true"].is-zoomed');
-  }
-
-  function syncZoomSize(image, width, height) {
-    image.style.setProperty("--image-zoom-width", `${Math.round(width)}px`);
-    image.style.setProperty("--image-zoom-height", `${Math.round(height)}px`);
-  }
-
-  function handleWheelZoom(event) {
-    const zoomedMermaidImage = getActiveZoomedMermaidImage();
-    if (!zoomedMermaidImage) {
-      return;
-    }
-
-    event.preventDefault();
-
-    const naturalWidth = zoomedMermaidImage.naturalWidth || zoomedMermaidImage.width;
-    const naturalHeight = zoomedMermaidImage.naturalHeight || zoomedMermaidImage.height;
-    if (!naturalWidth || !naturalHeight) {
-      return;
-    }
-
-    const currentWidth =
-      Number.parseFloat(zoomedMermaidImage.style.getPropertyValue("--image-zoom-width")) ||
-      zoomedMermaidImage.getBoundingClientRect().width ||
-      naturalWidth;
-    const currentScale = currentWidth / naturalWidth;
-    const scaleDelta = event.deltaY < 0 ? 1 + WHEEL_SCALE_STEP : 1 - WHEEL_SCALE_STEP;
-    const nextScale = Math.min(MAX_ZOOM_SCALE, Math.max(MIN_ZOOM_SCALE, currentScale * scaleDelta));
-
-    syncZoomSize(zoomedMermaidImage, naturalWidth * nextScale, naturalHeight * nextScale);
   }
 
   function clearFootnoteHideTimer() {
@@ -671,92 +629,6 @@
     });
   }
 
-  async function loadMermaid() {
-    if (!mermaidPromise) {
-      mermaidPromise = import(MERMAID_MODULE_SRC).then((module) => module.default || module);
-    }
-
-    return mermaidPromise;
-  }
-
-  function getMermaidTheme() {
-    return darkModeMedia.matches ? "dark" : "default";
-  }
-
-  function createSvgDataUrl(svg) {
-    return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
-  }
-
-  async function renderMermaidRoot(root) {
-    if (!(root instanceof HTMLElement)) {
-      return;
-    }
-
-    const stage = root.querySelector("[data-mermaid-stage]");
-    const sourceNode = root.querySelector("[data-mermaid-source]");
-    const source = sourceNode ? (sourceNode.textContent || "").trim() : "";
-    const theme = getMermaidTheme();
-
-    if (!(stage instanceof HTMLElement) || !source) {
-      return;
-    }
-
-    if (
-      root.dataset.mermaidReady === "true" &&
-      root.dataset.mermaidSource === source &&
-      root.dataset.mermaidTheme === theme
-    ) {
-      return;
-    }
-
-    stage.replaceChildren();
-
-    try {
-      const mermaid = await loadMermaid();
-      mermaid.initialize({
-        startOnLoad: false,
-        securityLevel: "loose",
-        theme,
-      });
-
-      const { svg } = await mermaid.render(`mermaid-diagram-${renderIndex++}`, source);
-      const image = document.createElement("img");
-      image.src = createSvgDataUrl(svg);
-      image.alt = root.getAttribute("data-mermaid-alt") || "Mermaid 图表";
-      image.decoding = "async";
-      image.loading = "lazy";
-      image.dataset.mermaidImage = "true";
-
-      stage.replaceChildren(image);
-      root.dataset.mermaidReady = "true";
-      root.dataset.mermaidSource = source;
-      root.dataset.mermaidTheme = theme;
-    } catch (error) {
-      const message = error instanceof Error ? error.message : "Mermaid render failed";
-      const errorBlock = document.createElement("pre");
-      errorBlock.className = "mermaid-render-error";
-      errorBlock.textContent = message;
-      stage.replaceChildren(errorBlock);
-      root.dataset.mermaidReady = "false";
-      root.dataset.mermaidTheme = theme;
-    }
-  }
-
-  async function renderAllMermaid() {
-    const roots = Array.from(document.querySelectorAll("[data-mermaid-root]"));
-    if (roots.length === 0) {
-      return;
-    }
-
-    if (activeImage && activeImage.dataset.mermaidImage === "true") {
-      cleanupZoom();
-    }
-
-    for (const root of roots) {
-      await renderMermaidRoot(root);
-    }
-  }
-
   function handleDocumentClick(event) {
     const target = event.target;
     if (!(target instanceof Element)) {
@@ -787,21 +659,6 @@
     }
   }
 
-  function handleThemeChange() {
-    void renderAllMermaid();
-  }
-
-  function bindThemeListener() {
-    if (typeof darkModeMedia.addEventListener === "function") {
-      darkModeMedia.addEventListener("change", handleThemeChange);
-      return;
-    }
-
-    if (typeof darkModeMedia.addListener === "function") {
-      darkModeMedia.addListener(handleThemeChange);
-    }
-  }
-
   function init() {
     if (initialized) {
       return;
@@ -817,15 +674,12 @@
     window.addEventListener("resize", handleResize);
     window.addEventListener("resize", handleFootnoteViewportChange);
     window.addEventListener("scroll", handleFootnoteViewportChange, { passive: true });
-    window.addEventListener("wheel", handleWheelZoom, { passive: false });
     if (typeof footnoteDesktopMedia.addEventListener === "function") {
       footnoteDesktopMedia.addEventListener("change", handleFootnoteMediaChange);
     } else if (typeof footnoteDesktopMedia.addListener === "function") {
       footnoteDesktopMedia.addListener(handleFootnoteMediaChange);
     }
-    bindThemeListener();
     initFootnotes();
-    void renderAllMermaid();
   }
 
   if (document.readyState === "loading") {

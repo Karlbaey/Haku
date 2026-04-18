@@ -7,6 +7,13 @@
   ) }}
 {{ end }}
 
+{{ define "styles" }}
+  {{ partial "style-bundle.html" (dict
+    "paths" (slice "css/tags.css")
+    "target" "css/bundles/section.css"
+  ) }}
+{{ end }}
+
 {{ define "main" }}
   <main class="page-main" data-pagefind-ignore="all">
     <a class="article-back-link" href="/">← 返回首页</a>

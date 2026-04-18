@@ -6,12 +6,19 @@
   ) }}
 {{ end }}
 
+{{ define "styles" }}
+  {{ partial "style-bundle.html" (dict
+    "paths" (slice "css/tags.css")
+    "target" "css/bundles/term.css"
+  ) }}
+{{ end }}
+
 {{ define "main" }}
   {{ $terms := slice }}
   {{ range site.Taxonomies.tags.ByCount }}
     {{ $terms = $terms | append (dict "name" .Page.Title "href" .Page.RelPermalink "count" .Count) }}
   {{ end }}
-  <main class="page-main tag-page-main" data-pagefind-ignore="all">
+  <main class="page-main" data-pagefind-ignore="all">
     <a class="article-back-link" href="/">← 返回首页</a>
 
     <header class="tag-page-header">

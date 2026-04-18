@@ -3,13 +3,12 @@
 {{ if and $alt (ne $alt "_image") }}
   {{ $caption = $alt }}
 {{ end }}
-{{ $img := printf `<img src="%s" alt="%s" loading="lazy" decoding="async">` (.Destination | safeURL) ($alt | default "" | htmlEscape) }}
 
 {{ if .IsBlock }}
   <figure class="md-image-figure">
-    {{ $img | safeHTML }}
+    <img src="{{ .Destination | safeURL }}" alt="{{ $alt | default "" }}" loading="lazy" decoding="async" />
     {{ with $caption }}<figcaption>{{ . }}</figcaption>{{ end }}
   </figure>
 {{ else }}
-  {{ $img | safeHTML }}
+  <img src="{{ .Destination | safeURL }}" alt="{{ $alt | default "" }}" loading="lazy" decoding="async" />
 {{ end }}

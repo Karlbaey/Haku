@@ -25,10 +25,6 @@
   margin-top: 0;
 }
 
-.tag-page-main {
-  max-width: 760px;
-}
-
 .tag-page-header h1 {
   margin: 0;
   font-size: clamp(1.8rem, 1.55rem + 1vw, 2.2rem);

@@ -1,7 +1,14 @@
+{{ define "styles" }}
+  {{ partial "style-bundle.html" (dict
+    "paths" (slice "css/tags.css" "css/search.css")
+    "target" "css/bundles/home.css"
+  ) }}
+{{ end }}
+
 {{ define "main" }}
   {{ $pages := where site.RegularPages "Section" "articles" }}
   {{ $paginator := .Paginate ($pages.ByDate.Reverse) }}
-  <main class="page-main home-main" data-pagefind-ignore="all">
+  <main class="page-main" data-pagefind-ignore="all">
     <header class="site-header">
       <div class="site-header-top">
         <h1 class="site-title">
@@ -24,4 +31,9 @@
       <p class="empty-state">暂时还没有可浏览的文章。</p>
     {{ end }}
   </main>
+{{ end }}
+
+{{ define "scripts" }}
+  {{ $searchScript := resources.Get "js/search-overlay.js" | minify | fingerprint }}
+  <script src="{{ $searchScript.RelPermalink }}" integrity="{{ $searchScript.Data.Integrity }}" defer></script>
 {{ end }}
