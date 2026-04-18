@@ -45,11 +45,13 @@ slug: "to-let-your-vs-code-support-cpp"
 接着继续按下 <kbd>F1</kbd> 搜索 `Preferences: Open User Settings (JSON)`。<kbd>Ctrl</kbd>+<kbd>F</kbd> 搜索 `code-runner.executorMap`，如下面所示修改。
 
 ```json {title="settings.json"}
-"code-runner.executorMap": {
+{
+  "code-runner.executorMap": {
         // 其余省略
         //其他地方不要动！
         "c": "cd $dir && gcc -fexec-charset=GBK $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
         "cpp": "cd /d $dir && g++ -fexec-charset=GBK $fileName -o $fileNameWithoutExt && .\\$fileNameWithoutExt.exe",
+  }
 }
 ```
 
@@ -71,7 +73,9 @@ int main() {
 其实 Code Runner 的配置也可以为 Golang 修改。
 
 ```json
-"go": "cd /d $dir && go build $fileName && .\\$fileNameWithoutExt.exe"
+{
+  "go": "cd /d $dir && go build $fileName && .\\$fileNameWithoutExt.exe"
+}
 ```
 
 这样在 <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>N</kbd> 启动 Code Runner 后，它就会自动编译好 Golang 代码并且执行了。
