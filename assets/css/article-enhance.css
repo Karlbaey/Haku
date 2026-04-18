@@ -8,21 +8,49 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 3.15rem;
-  height: 1.7rem;
-  padding: 0 0.55rem;
+  width: 2rem;
+  min-width: 2rem;
+  height: 2rem;
+  padding: 0;
   border: 1px solid #31476b;
-  border-radius: 999px;
+  border-radius: 0;
   background: #142033;
   color: #dbe4f0;
-  font-size: 0.72rem;
   line-height: 1;
   cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
   transition:
     background-color 0.2s ease,
     border-color 0.2s ease,
     color 0.2s ease,
+    opacity 0.2s ease,
     transform 0.2s ease;
+}
+
+.markdown .code-copy-icon {
+  display: block;
+  width: 1.2rem;
+  height: 1.2rem;
+  flex-shrink: 0;
+  background-color: currentColor;
+  -webkit-mask-image: url("/icons/paste.svg");
+  mask-image: url("/icons/paste.svg");
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+.markdown figure[data-rehype-pretty-code-figure]:hover pre[data-copy-toolbar] .code-copy-button,
+.markdown figure[data-rehype-pretty-code-figure]:focus-within pre[data-copy-toolbar] .code-copy-button,
+.markdown pre[data-copy-toolbar]:hover .code-copy-button,
+.markdown pre[data-copy-toolbar]:focus-within .code-copy-button,
+.markdown .code-copy-button:focus-visible {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .markdown .code-copy-button:hover {
@@ -40,6 +68,11 @@
   background: #173726;
   border-color: #2f7d57;
   color: #cbffe3;
+}
+
+.markdown .code-copy-button[data-copy-state="success"] .code-copy-icon {
+  -webkit-mask-image: url("/icons/success.svg");
+  mask-image: url("/icons/success.svg");
 }
 
 .markdown .code-copy-button[data-copy-state="error"] {

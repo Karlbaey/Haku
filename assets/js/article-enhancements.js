@@ -35,19 +35,21 @@
 
   function getButtonLabel(state) {
     if (state === "success") {
-      return "已复制";
+      return "复制成功";
     }
 
     if (state === "error") {
       return "复制失败";
     }
 
-    return "复制";
+    return "复制代码";
   }
 
   function setButtonState(button, state) {
     button.dataset.copyState = state;
-    button.textContent = getButtonLabel(state);
+    const label = getButtonLabel(state);
+    button.setAttribute("aria-label", label);
+    button.setAttribute("title", label);
   }
 
   function scheduleReset(button) {
@@ -114,10 +116,16 @@
 
   function createCopyButton() {
     const button = document.createElement("button");
+    const icon = document.createElement("span");
+
     button.type = "button";
     button.className = "code-copy-button";
     button.dataset.codeCopyButton = "true";
-    button.setAttribute("aria-label", "复制代码");
+    icon.className = "code-copy-icon";
+    icon.dataset.codeCopyIcon = "true";
+    icon.setAttribute("aria-hidden", "true");
+
+    button.append(icon);
     setButtonState(button, "idle");
     return button;
   }

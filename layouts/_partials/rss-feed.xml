@@ -1,5 +1,5 @@
 {{ printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>\n" | safeHTML }}
-{{ printf "<?xml-stylesheet type=\"text/xsl\" href=%q?>\n" ("feed.xsl" | absURL) | safeHTML }}
+{{ printf "<?xml-stylesheet type=\"text/xsl\" href=%q?>\n" ("feed.xsl" | relURL) | safeHTML }}
 {{- $page := . -}}
 {{- $site := .Site -}}
 {{- $pages := cond $page.IsHome $site.RegularPages $page.RegularPages -}}
