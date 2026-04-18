@@ -1,30 +1,40 @@
 {{ $page := .page | default . }}
+{{ $homePath := $page.Site.Home.RelPermalink }}
 {{ $currentPath := .currentPath | default $page.RelPermalink }}
-{{ $isHomePage := eq $currentPath "/" }}
+{{ $isHomePage := eq $currentPath $homePath }}
+{{ $tagsPage := $page.Site.GetPage "/tags" }}
+{{ $friendsPage := $page.Site.GetPage "/friends" }}
+{{ $rssFeed := $page.Site.Home.OutputFormats.Get "RSS" }}
 
 <nav class="site-navigation" aria-label="站点导航">
   {{ if not $isHomePage }}
-    <a class="site-nav-link site-nav-link--muted" href="/">
+    <a class="site-nav-link site-nav-link--muted" href="{{ $homePath }}">
       ← 返回首页
     </a>
   {{ end }}
 
   <div class="site-nav-links">
-    <a href="/tags/" class="site-nav-link">所有标签</a>
-    <a href="/friends/" class="site-nav-link">友情链接</a>
-    <a href="/rss.xml" class="site-nav-link site-nav-link--icon" aria-label="订阅 RSS" title="RSS 订阅">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
-        <path
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M4 19a1 1 0 1 0 2 0a1 1 0 1 0-2 0M4 4a16 16 0 0 1 16 16M4 11a9 9 0 0 1 9 9"
-        />
-      </svg>
-      <span class="site-nav-link-label">RSS</span>
-    </a>
+    {{ with $tagsPage }}
+      <a href="{{ .RelPermalink }}" class="site-nav-link">所有标签</a>
+    {{ end }}
+    {{ with $friendsPage }}
+      <a href="{{ .RelPermalink }}" class="site-nav-link">友情链接</a>
+    {{ end }}
+    {{ with $rssFeed }}
+      <a href="{{ .RelPermalink }}" class="site-nav-link site-nav-link--icon" aria-label="订阅 RSS" title="RSS 订阅">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 19a1 1 0 1 0 2 0a1 1 0 1 0-2 0M4 4a16 16 0 0 1 16 16M4 11a9 9 0 0 1 9 9"
+          />
+        </svg>
+        <span class="site-nav-link-label">RSS</span>
+      </a>
+    {{ end }}
     {{ partial "search.html" . }}
   </div>
 </nav>

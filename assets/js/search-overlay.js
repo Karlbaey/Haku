@@ -7,7 +7,6 @@
   };
   const RESULT_LIMIT = 8;
   const FETCH_LIMIT = 24;
-  const ARTICLE_PATH_PREFIX = "/articles/";
   const IDLE_STATUS = "输入关键词开始搜索，按 Esc 退出。";
   const HTML_ESCAPE_MAP = {
     "&": "&amp;",
@@ -82,11 +81,29 @@
     return "body";
   }
 
-  function isArticleUrl(url) {
+  function parseSearchSections(value) {
+    return String(value || "")
+      .split(",")
+      .map((section) => section.trim())
+      .filter(Boolean)
+      .map((section) => "/" + section.replace(/^\/+|\/+$/g, "") + "/");
+  }
+
+  function isSearchTargetUrl(url, sectionPrefixes) {
     try {
-      return new URL(String(url || ""), window.location.origin).pathname.startsWith(ARTICLE_PATH_PREFIX);
+      const pathname = new URL(String(url || ""), window.location.origin).pathname;
+      if (sectionPrefixes.length === 0) {
+        return true;
+      }
+
+      return sectionPrefixes.some((prefix) => pathname.startsWith(prefix));
     } catch (error) {
-      return String(url || "").startsWith(ARTICLE_PATH_PREFIX);
+      const fallbackPath = String(url || "");
+      if (sectionPrefixes.length === 0) {
+        return true;
+      }
+
+      return sectionPrefixes.some((prefix) => fallbackPath.startsWith(prefix));
     }
   }
 
@@ -100,6 +117,7 @@
       this.status = null;
       this.results = null;
       this.pagefind = null;
+      this.searchSectionPrefixes = [];
       this.searchToken = 0;
 
       this.handleOpen = this.handleOpen.bind(this);
@@ -121,6 +139,7 @@
       this.input = this.querySelector("[data-search-input]");
       this.status = this.querySelector("[data-search-status]");
       this.results = this.querySelector("[data-search-results]");
+      this.searchSectionPrefixes = parseSearchSections(this.dataset.searchSections);
 
       if (!this.overlay || !this.trigger || !this.closeButton || !this.input || !this.status || !this.results) {
         return;
@@ -240,7 +259,7 @@
 
         const handles = search.results.slice(0, FETCH_LIMIT);
         const entries = (await Promise.all(handles.map((result) => result.data())))
-          .filter((entry) => isArticleUrl(entry.url))
+          .filter((entry) => isSearchTargetUrl(entry.url, this.searchSectionPrefixes))
           .slice(0, RESULT_LIMIT);
 
         if (searchToken !== this.searchToken) {
@@ -275,7 +294,7 @@
       }
 
       if (entries.length === 0) {
-        this.status.textContent = `没有找到和“${query}”相关的文章。`;
+        this.status.textContent = `没有找到和“${query}”相关的内容。`;
         this.results.innerHTML = "";
         return;
       }
@@ -291,7 +310,7 @@
     }
 
     renderResultItem(query, entry) {
-      const title = String((entry.meta && entry.meta.title) || "未命名文章");
+      const title = String((entry.meta && entry.meta.title) || "未命名内容");
       const description = String((entry.meta && entry.meta.description) || "");
       const tags = String((entry.meta && entry.meta.tags) || "")
         .split(",")

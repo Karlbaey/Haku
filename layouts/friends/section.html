@@ -17,7 +17,7 @@
 {{ define "main" }}
   {{ $friends := hugo.Data.friends.links | default (slice) }}
   <main class="page-main friends-main" data-pagefind-ignore="all">
-    <a class="article-back-link" href="/">← 返回首页</a>
+    <a class="article-back-link" href="{{ site.Home.RelPermalink }}">← 返回首页</a>
 
     <header class="friends-header">
       <h1 class="site-title">{{ .Title }}</h1>
@@ -30,38 +30,42 @@
 
     {{ partial "friends-application.html" . }}
 
-    <section class="friends-grid" aria-label="友情链接卡片">
-      {{ range $friends }}
-        {{ $friend := . }}
-        {{ $hostname := $friend.site | default ((urls.Parse $friend.url).Host) }}
-        <article class="friend-card">
-          <a class="friend-card-link" href="{{ $friend.url }}" target="_blank" rel="noreferrer">
-            <div class="friend-card-top">
-              {{ with $friend.avatar }}
-                <img class="friend-card-avatar" src="{{ . }}" alt="{{ $friend.name }} 的头像" loading="lazy" decoding="async" />
-              {{ else }}
-                <div class="friend-card-avatar friend-card-avatar-fallback" aria-hidden="true">{{ slicestr $friend.name 0 1 }}</div>
-              {{ end }}
-
-              <div class="friend-card-heading">
-                <h2 class="friend-card-title">{{ $friend.name }}</h2>
-                <p class="friend-card-site">{{ $hostname }}</p>
-              </div>
-            </div>
-
-            <p class="friend-card-description">{{ $friend.description }}</p>
-
-            {{ with $friend.tags }}
-              <ul class="friend-card-tags" aria-label="{{ $friend.name }} 的标签">
-                {{ range . }}
-                  <li>{{ . }}</li>
+    {{ if gt (len $friends) 0 }}
+      <section class="friends-grid" aria-label="友情链接卡片">
+        {{ range $friends }}
+          {{ $friend := . }}
+          {{ $hostname := $friend.site | default ((urls.Parse $friend.url).Host) }}
+          <article class="friend-card">
+            <a class="friend-card-link" href="{{ $friend.url }}" target="_blank" rel="noreferrer">
+              <div class="friend-card-top">
+                {{ with $friend.avatar }}
+                  <img class="friend-card-avatar" src="{{ . }}" alt="{{ $friend.name }} 的头像" loading="lazy" decoding="async" />
+                {{ else }}
+                  <div class="friend-card-avatar friend-card-avatar-fallback" aria-hidden="true">{{ slicestr $friend.name 0 1 }}</div>
                 {{ end }}
-              </ul>
-            {{ end }}
-          </a>
-        </article>
-      {{ end }}
-    </section>
+
+                <div class="friend-card-heading">
+                  <h2 class="friend-card-title">{{ $friend.name }}</h2>
+                  <p class="friend-card-site">{{ $hostname }}</p>
+                </div>
+              </div>
+
+              <p class="friend-card-description">{{ $friend.description }}</p>
+
+              {{ with $friend.tags }}
+                <ul class="friend-card-tags" aria-label="{{ $friend.name }} 的标签">
+                  {{ range . }}
+                    <li>{{ . }}</li>
+                  {{ end }}
+                </ul>
+              {{ end }}
+            </a>
+          </article>
+        {{ end }}
+      </section>
+    {{ else }}
+      <p class="empty-state">暂时还没有展示的友情链接。</p>
+    {{ end }}
   </main>
 {{ end }}
 

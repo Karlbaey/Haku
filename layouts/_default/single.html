@@ -27,7 +27,7 @@
   {{ $searchDescription := .Description | default (.Summary | plainify | strings.TrimSpace | truncate 140) }}
   {{ $searchTags := delimit (.Params.tags | default (slice)) ", " }}
   <main class="page-main" data-pagefind-body>
-    <a class="article-back-link" href="/">← 返回首页</a>
+    <a class="article-back-link" href="{{ site.Home.RelPermalink }}">← 返回首页</a>
     <header class="article-header">
       <h1>{{ .Title }}</h1>
       {{ with $searchDescription }}

@@ -12,11 +12,12 @@
 {{ $ogLocale := replace ($site.Language.LanguageCode | default "zh-CN") "-" "_" }}
 {{ $googleAnalyticsMeasurementID := $site.Params.analytics.googleAnalytics.measurementId }}
 {{ $umamiWebsiteID := $site.Params.analytics.umami.websiteId }}
+{{ $rssFeed := $site.Home.OutputFormats.Get "RSS" }}
 
 <title>{{ $title }}</title>
 {{ with $description }}<meta name="description" content="{{ . }}" />{{ end }}
 {{ with $canonicalURL }}<link rel="canonical" href="{{ . }}" />{{ end }}
-<link rel="alternate" type="application/rss+xml" title="{{ $site.Title }} RSS" href="/rss.xml" />
+{{ with $rssFeed }}<link rel="alternate" type="application/rss+xml" title="{{ $site.Title }} RSS" href="{{ .RelPermalink }}" />{{ end }}
 <meta property="og:title" content="{{ $title }}" />
 {{ with $description }}<meta property="og:description" content="{{ . }}" />{{ end }}
 <meta property="og:type" content="{{ $ogType }}" />

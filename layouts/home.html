@@ -6,17 +6,18 @@
 {{ end }}
 
 {{ define "main" }}
-  {{ $pages := where site.RegularPages "Section" "articles" }}
+  {{ $mainSections := site.Params.mainSections | default site.MainSections | default (slice "articles") }}
+  {{ $pages := where site.RegularPages "Section" "in" $mainSections }}
   {{ $paginator := .Paginate ($pages.ByDate.Reverse) }}
   <main class="page-main" data-pagefind-ignore="all">
     <header class="site-header">
       <div class="site-header-top">
         <h1 class="site-title">
-          <a href="/">{{ site.Title }}</a>
+          <a href="{{ site.Home.RelPermalink }}">{{ site.Title }}</a>
         </h1>
       </div>
       <p class="site-subtitle">{{ site.Params.subtitle }}</p>
-      {{ partial "nav.html" (dict "page" . "currentPath" "/") }}
+      {{ partial "nav.html" (dict "page" . "currentPath" site.Home.RelPermalink) }}
     </header>
 
     {{ if gt (len $paginator.Pages) 0 }}

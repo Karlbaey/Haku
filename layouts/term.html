@@ -19,7 +19,7 @@
     {{ $terms = $terms | append (dict "name" .Page.Title "href" .Page.RelPermalink "count" .Count) }}
   {{ end }}
   <main class="page-main" data-pagefind-ignore="all">
-    <a class="article-back-link" href="/">← 返回首页</a>
+    <a class="article-back-link" href="{{ site.Home.RelPermalink }}">← 返回首页</a>
 
     <header class="tag-page-header">
       <h1>#{{ .Title }}</h1>

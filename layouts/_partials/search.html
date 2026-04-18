@@ -1,4 +1,6 @@
-<home-search class="home-search">
+{{ $mainSections := site.Params.mainSections | default site.MainSections | default (slice "articles") }}
+
+<home-search class="home-search" data-search-sections="{{ delimit $mainSections "," }}">
   <button
     type="button"
     class="search-trigger"
@@ -19,7 +21,7 @@
       <header class="search-panel-header">
         <div>
           <p class="search-eyebrow">站内搜索</p>
-          <h2 id="search-title" class="search-title">搜索文章</h2>
+          <h2 id="search-title" class="search-title">搜索内容</h2>
         </div>
         <button type="button" class="search-close" aria-label="关闭搜索" data-search-close>
           <svg viewBox="0 0 24 24" aria-hidden="true">

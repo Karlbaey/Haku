@@ -16,7 +16,7 @@
 
 {{ define "main" }}
   <main class="page-main" data-pagefind-ignore="all">
-    <a class="article-back-link" href="/">← 返回首页</a>
+    <a class="article-back-link" href="{{ site.Home.RelPermalink }}">← 返回首页</a>
     <header class="tag-page-header">
       <h1>{{ .Title }}</h1>
       {{ with .Description }}<p class="tag-page-description">{{ . }}</p>{{ end }}

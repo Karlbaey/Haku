@@ -2,9 +2,9 @@
   "name": "haku-hugo",
   "private": true,
   "scripts": {
-    "dev": "hugo server -D --disableFastRender",
-    "build:hugo": "hugo",
-    "build:search": "pagefind --site public",
+    "dev": "hugo server --source exampleSite --themesDir ../.. -D --disableFastRender",
+    "build:hugo": "hugo --source exampleSite --themesDir ../..",
+    "build:search": "pagefind --site exampleSite/public",
     "build": "npm run build:hugo && npm run build:search"
   },
   "devDependencies": {

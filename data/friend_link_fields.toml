@@ -3,7 +3,7 @@ key = "name"
 label = "站点名称"
 inputType = "text"
 required = true
-placeholder = "例如：卡尔白的纸箱"
+placeholder = "例如：你的博客"
 
 [[fields]]
 key = "url"

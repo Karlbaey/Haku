@@ -25,11 +25,18 @@
   </head>
   <body>
     {{ block "main" . }}{{ end }}
-    <footer data-pagefind-ignore="all">
-      <div class="site-footer-inner">
-        <a href="https://icp.gov.moe/?keyword=20255566" target="_blank" rel="noreferrer">萌 ICP 备 20255566 号</a>
-      </div>
-    </footer>
+    {{ $footer := .Site.Params.footer }}
+    {{ with $footer.text }}
+      <footer data-pagefind-ignore="all">
+        <div class="site-footer-inner">
+          {{ with $footer.link }}
+            <a href="{{ . }}" target="_blank" rel="noreferrer">{{ $footer.text }}</a>
+          {{ else }}
+            <span>{{ $footer.text }}</span>
+          {{ end }}
+        </div>
+      </footer>
+    {{ end }}
     {{ block "scripts" . }}{{ end }}
   </body>
 </html>
