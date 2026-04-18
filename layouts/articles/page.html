@@ -9,11 +9,33 @@
   ) }}
 {{ end }}
 
+{{ define "extra_head" }}
+  {{ $waline := site.Params.comments.waline }}
+  {{ if and $waline (ne $waline.enabled false) $waline.serverUrl }}
+    <link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css" />
+  {{ end }}
+{{ end }}
+
+{{ define "styles" }}
+  {{ partial "style-bundle.html" (dict
+    "paths" (slice "css/tags.css" "css/markdown.css" "css/ext.css" "css/comments.css" "css/article-enhance.css")
+    "target" "css/bundles/article.css"
+  ) }}
+{{ end }}
+
 {{ define "main" }}
-  <main class="page-main article-main">
+  {{ $searchDescription := .Description | default (.Summary | plainify | strings.TrimSpace | truncate 140) }}
+  {{ $searchTags := delimit (.Params.tags | default (slice)) ", " }}
+  <main class="page-main" data-pagefind-body>
     <a class="article-back-link" href="/">← 返回首页</a>
     <header class="article-header">
       <h1>{{ .Title }}</h1>
+      {{ with $searchDescription }}
+        <p class="visually-hidden" data-pagefind-meta="description">{{ . }}</p>
+      {{ end }}
+      {{ with $searchTags }}
+        <p class="visually-hidden" data-pagefind-meta="tags">{{ . }}</p>
+      {{ end }}
       {{ partial "article-meta.html" (dict "page" . "variant" "flow") }}
     </header>
     {{ if ne .Params.toc false }}
@@ -23,10 +45,15 @@
       {{ .Content }}
     </article>
     {{ partial "copyright.html" (dict "page" .) }}
+    {{ partial "comments.html" (dict "page" .) }}
   </main>
 {{ end }}
 
 {{ define "scripts" }}
+  {{ $articleScript := resources.Get "js/article-enhancements.js" | minify | fingerprint }}
+  <script src="{{ $articleScript.RelPermalink }}" integrity="{{ $articleScript.Data.Integrity }}" defer></script>
+  {{ $commentsScript := resources.Get "js/comments.js" | minify | fingerprint }}
+  <script src="{{ $commentsScript.RelPermalink }}" integrity="{{ $commentsScript.Data.Integrity }}" defer></script>
   {{ if and (ne .Params.toc false) (gt (len (findRE "<a[^>]+href=" .TableOfContents)) 0) }}
     {{ $tocScript := resources.Get "js/toc.js" | minify | fingerprint }}
     <script src="{{ $tocScript.RelPermalink }}" integrity="{{ $tocScript.Data.Integrity }}" defer></script>

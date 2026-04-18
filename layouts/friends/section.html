@@ -7,9 +7,16 @@
   ) }}
 {{ end }}
 
+{{ define "styles" }}
+  {{ partial "style-bundle.html" (dict
+    "paths" (slice "css/markdown.css" "css/friends.css")
+    "target" "css/bundles/friends.css"
+  ) }}
+{{ end }}
+
 {{ define "main" }}
   {{ $friends := hugo.Data.friends.links | default (slice) }}
-  <main class="page-main friends-main">
+  <main class="page-main friends-main" data-pagefind-ignore="all">
     <a class="article-back-link" href="/">← 返回首页</a>
 
     <header class="friends-header">

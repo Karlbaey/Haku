@@ -8,6 +8,8 @@
   --subtle: #9ca3af;
   --accent: #517ad1;
   --accent-soft: #4c7bdf;
+  --surface: #fffdfa;
+  --line: #d8d3cf;
   --inline-code-bg: #f0ece9;
   --code-bg: #172033;
   --selection: #c4826f47;
@@ -37,6 +39,8 @@
     --subtle: #6b7280;
     --accent: #a3ccf3;
     --accent-soft: #60aef7;
+    --surface: #121c2c;
+    --line: #2a3446;
     --inline-code-bg: #1f2937;
     --code-bg: #172033;
     --selection: #f2c4b84d;
@@ -240,23 +244,6 @@ nav {
   border: 0;
 }
 
-.site-nav {
-  margin-top: 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-
-.site-nav a {
-  color: var(--accent);
-  text-decoration: none;
-  font-size: 0.96rem;
-}
-
-.site-nav a:hover {
-  color: var(--accent-soft);
-}
-
 .article-list {
   margin-top: 2.7rem;
 }
@@ -385,10 +372,6 @@ nav {
   flex-wrap: wrap;
   align-items: baseline;
   gap: 0.1rem 0.85rem;
-}
-
-.article-main {
-  max-width: 760px;
 }
 
 .article-back-link {

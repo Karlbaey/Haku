@@ -1,6 +1,7 @@
 {{ $page := .page }}
 {{ $title := strings.TrimSpace ($page.Title | default "待补充文章标题") }}
-{{ $description := $page.Description | default ($page.Summary | plainify | strings.TrimSpace | truncate 140) | default "待补充文章简介" }}
+{{ $excerptLength := site.Params.posts.excerptLength | default 140 }}
+{{ $description := $page.Description | default ($page.Summary | plainify | strings.TrimSpace | truncate $excerptLength) | default "待补充文章简介" }}
 
 <article class="article-entry">
   <h2 class="article-title">
