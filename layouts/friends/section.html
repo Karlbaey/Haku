@@ -15,7 +15,8 @@
 {{ end }}
 
 {{ define "main" }}
-  {{ $friends := hugo.Data.friends.links | default (slice) }}
+  {{ $friendsData := index site.Data "friends" }}
+  {{ $friends := index $friendsData "links" | default (slice) }}
   <main class="page-main friends-main" data-pagefind-ignore="all">
     <a class="article-back-link" href="{{ site.Home.RelPermalink }}">← 返回首页</a>
 

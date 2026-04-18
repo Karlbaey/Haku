@@ -1,5 +1,6 @@
 {{ $config := site.Params.friendsApplication }}
-{{ $fields := hugo.Data.friend_link_fields.fields | default (slice) }}
+{{ $friendLinkFieldsData := index site.Data "friend_link_fields" }}
+{{ $fields := index $friendLinkFieldsData "fields" | default (slice) }}
 
 {{ if $config }}
   <friends-application class="friends-application" data-config='{{ $config | jsonify }}'>
