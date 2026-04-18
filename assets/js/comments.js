@@ -2,6 +2,13 @@
   const GISCUS_SCRIPT_SRC = "https://giscus.app/client.js";
   const WALINE_MODULE_SRC = "https://unpkg.com/@waline/client@v3/dist/waline.js";
   let walineInitPromise;
+  function getGiscusThemeUrl(config) {
+    if (window.location.protocol !== "https:") {
+      return config.giscus.theme || "preferred_color_scheme";
+    }
+
+    return new URL("/giscus-theme.css", window.location.origin).href;
+  }
 
   function applyTabState(root, provider) {
     root.querySelectorAll("[data-comments-tab]").forEach((tab) => {
@@ -33,7 +40,7 @@
     script.setAttribute("data-reactions-enabled", config.giscus.reactionsEnabled || "1");
     script.setAttribute("data-emit-metadata", "0");
     script.setAttribute("data-input-position", config.giscus.inputPosition || "top");
-    script.setAttribute("data-theme", config.giscus.theme || "preferred_color_scheme");
+    script.setAttribute("data-theme", getGiscusThemeUrl(config));
     script.setAttribute("data-lang", config.giscus.lang || "zh-CN");
     script.setAttribute("data-loading", "lazy");
 
@@ -72,6 +79,7 @@
       serverURL: config.waline.serverUrl,
       path: config.article.pathname,
       turnstileKey: config.waline.turnstileKey,
+      dark: "auto",
       lang: config.waline.lang || "zh-CN",
       emoji: config.waline.emoji || [],
       requiredMeta: config.waline.requiredMeta || ["nick", "mail"],

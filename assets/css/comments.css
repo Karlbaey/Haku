@@ -69,6 +69,27 @@
   margin-top: 0;
 }
 
+.comments-panel[data-comments-panel="waline"] {
+  --waline-font-size: 0.97rem;
+  --waline-theme-color: var(--accent);
+  --waline-active-color: var(--accent-soft);
+  --waline-color: var(--text);
+  --waline-bg-color: var(--surface);
+  --waline-bg-color-light: var(--tag-pill-bg);
+  --waline-bg-color-hover: var(--tag-pill-hover-bg);
+  --waline-border-color: var(--line);
+  --waline-disable-bg-color: var(--tag-pill-bg);
+  --waline-disable-color: var(--subtle);
+  --waline-code-bg-color: var(--inline-code-bg);
+  --waline-bq-color: var(--tag-pill-bg);
+  --waline-info-bg-color: var(--tag-pill-bg);
+  --waline-info-color: var(--muted);
+  --waline-border: 1px solid var(--line);
+  --waline-box-shadow: none;
+  --waline-avatar-size: 3rem;
+  --waline-m-avatar-size: 2.1rem;
+}
+
 @media (max-width: 767px) {
   .comments-section {
     margin-top: 2.5rem;
