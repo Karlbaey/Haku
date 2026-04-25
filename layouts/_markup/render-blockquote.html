@@ -1,6 +1,9 @@
 {{ if .AlertType }}
   <blockquote class="admonition admonition-{{ .AlertType }}">
-    <p class="admonition-title">{{ .AlertTitle | default (humanize .AlertType) }}</p>
+    <p class="admonition-title">
+      {{ partial "admonition-icon.html" (dict "type" .AlertType) }}
+      <span>{{ .AlertTitle | default (humanize .AlertType) }}</span>
+    </p>
     {{ .Text | safeHTML }}
   </blockquote>
 {{ else }}

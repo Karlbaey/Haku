@@ -63,8 +63,9 @@ html {
 }
 
 .article-toc-body {
-  max-height: 17rem;
-  overflow: auto;
+  max-height: 12.5rem;
+  overflow-y: auto;
+  overflow-x: hidden;
   -ms-overflow-style: none;
   scrollbar-width: none;
   opacity: 1;
@@ -105,6 +106,8 @@ html {
 }
 
 .article-toc-body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
   display: none;
 }
 
@@ -185,7 +188,7 @@ html {
   }
 
   .article-toc-body {
-    max-height: calc(100vh - 11rem);
+    max-height: min(15rem, calc(100vh - 15rem));
   }
 
   .article-toc-list {

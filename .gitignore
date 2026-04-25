@@ -6,3 +6,4 @@ node_modules/
 public/
 exampleSite/public/
 exampleSite/resources/
+.preview-site/

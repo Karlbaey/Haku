@@ -1,8 +1,11 @@
 .admonition {
+  --admonition-border-color: #4b6bfb;
+  --admonition-background-color: #f4f7ff;
+  --admonition-icon-color: #4b6bfb;
   margin: 1.25em 0;
   padding: 0.9rem 1rem 0.95rem;
-  border-left: 0.24rem solid #4b6bfb;
-  background: #f4f7ff;
+  border-left: 0.24rem solid var(--admonition-border-color);
+  background: var(--admonition-background-color);
   border-radius: 0.36rem;
   font-style: normal;
   color: var(--text);
@@ -33,13 +36,23 @@
   color: var(--heading);
 }
 
-.admonition .admonition-title::before {
-  content: "📝";
-  line-height: 1;
-  font-size: 1rem;
+.admonition .admonition-icon {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 1rem;
+  height: 1rem;
+  background-color: var(--admonition-icon-color);
+  -webkit-mask-image: var(--admonition-icon-url);
+  mask-image: var(--admonition-icon-url);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
 }
 
-.admonition p {
+.admonition p:not(.admonition-title) {
   color: var(--text);
 }
 
@@ -49,75 +62,77 @@
   font-weight: 700;
 }
 
-.admonition-note .admonition-title::before {
-  content: "📝";
-}
-
 .admonition-note {
-  border-left-color: #4b6bfb;
-  background: #d9e5ff;
-}
-
-.admonition-tip .admonition-title::before {
-  content: "💡";
+  --admonition-border-color: #4b6bfb;
+  --admonition-background-color: #d9e5ff;
+  --admonition-icon-color: #4b6bfb;
 }
 
 .admonition-tip {
-  border-left-color: #15803d;
-  background: #cbeed8;
-}
-
-.admonition-important .admonition-title::before {
-  content: "⭐";
+  --admonition-border-color: #15803d;
+  --admonition-background-color: #cbeed8;
+  --admonition-icon-color: #15803d;
 }
 
 .admonition-important {
-  border-left-color: #7c3aed;
-  background: #e4d2ff;
-}
-
-.admonition-warning .admonition-title::before {
-  content: "⚠️";
+  --admonition-border-color: #7c3aed;
+  --admonition-background-color: #e4d2ff;
+  --admonition-icon-color: #7c3aed;
 }
 
 .admonition-warning {
-  border-left-color: #c2410c;
-  background: #ffd8be;
-}
-
-.admonition-caution .admonition-title::before {
-  content: "🚫";
+  --admonition-border-color: #c2410c;
+  --admonition-background-color: #ffd8be;
+  --admonition-icon-color: #c2410c;
 }
 
 .admonition-caution {
-  border-left-color: #b91c1c;
-  background: #ffcfd5;
+  --admonition-border-color: #b91c1c;
+  --admonition-background-color: #ffcfd5;
+  --admonition-icon-color: #b91c1c;
+}
+
+.admonition-quote {
+  --admonition-border-color: #64748b;
+  --admonition-background-color: #eef2f7;
+  --admonition-icon-color: #64748b;
 }
 
 @media (prefers-color-scheme: dark) {
   .admonition-note {
-    border-left-color: #8aa5ff;
-    background: #19253d;
+    --admonition-border-color: #8aa5ff;
+    --admonition-background-color: #19253d;
+    --admonition-icon-color: #8aa5ff;
   }
 
   .admonition-tip {
-    border-left-color: #4ade80;
-    background: #15291f;
+    --admonition-border-color: #4ade80;
+    --admonition-background-color: #15291f;
+    --admonition-icon-color: #4ade80;
   }
 
   .admonition-important {
-    border-left-color: #c4b5fd;
-    background: #2a1f46;
+    --admonition-border-color: #c4b5fd;
+    --admonition-background-color: #2a1f46;
+    --admonition-icon-color: #c4b5fd;
   }
 
   .admonition-warning {
-    border-left-color: #fdba74;
-    background: #3e2818;
+    --admonition-border-color: #fdba74;
+    --admonition-background-color: #3e2818;
+    --admonition-icon-color: #fdba74;
   }
 
   .admonition-caution {
-    border-left-color: #fca5a5;
-    background: #3d1a22;
+    --admonition-border-color: #fca5a5;
+    --admonition-background-color: #3d1a22;
+    --admonition-icon-color: #fca5a5;
+  }
+
+  .admonition-quote {
+    --admonition-border-color: #94a3b8;
+    --admonition-background-color: #1e293b;
+    --admonition-icon-color: #94a3b8;
   }
 }
 

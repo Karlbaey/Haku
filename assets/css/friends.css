@@ -65,18 +65,12 @@
   background: transparent;
   color: inherit;
   overflow: auto;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
 }
 
 .friends-dialog[open] {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.friends-dialog::-webkit-scrollbar {
-  display: none;
 }
 
 .friends-dialog::backdrop {
@@ -97,12 +91,6 @@
   backdrop-filter: blur(22px);
   box-shadow: 0 30px 80px #1d140f30;
   overflow: auto;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.friends-dialog-panel::-webkit-scrollbar {
-  display: none;
 }
 
 .friends-dialog-header {

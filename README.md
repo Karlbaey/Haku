@@ -24,10 +24,10 @@ hugo server -D
 
 ## 在 Hugo 站点中使用
 
-把仓库放到你的站点 `themes/Haku-Hugo` 下，然后在站点配置中启用：
+把仓库放到你的站点 `themes/Haku` 下，然后在站点配置中启用：
 
 ```toml
-theme = "Haku-Hugo"
+theme = "Haku"
 ```
 
 建议至少合并这些配置：
@@ -133,10 +133,12 @@ link = "https://example.org"
 搜索依赖 Pagefind，但这个主题不再通过 npm 引入它。生产构建时，先执行 Hugo，再对生成目录运行：
 
 ```bash
-./themes/Haku-Hugo/scripts/pagefind.sh --site public
+./themes/Haku/scripts/pagefind.sh --site public
 ```
 
 `scripts/pagefind.sh` 会优先使用系统里的 `pagefind` / `pagefind_extended`，也支持读取主题目录下的 `./.tools/pagefind/` 本地二进制。推荐使用 `pagefind_extended`，它包含中日韩语言支持。
+
+Windows 原生环境请改用 `scripts/pagefind.ps1`。它会优先查找系统里的 `pagefind` / `pagefind_extended`，否则再查找主题目录下的 `.tools/pagefind/pagefind_extended.exe`。
 
 如果运行环境是 Cloudflare Pages，脚本会在构建时自动通过官方 Python 包安装 `pagefind[extended]`，不需要你把二进制提交到仓库，也不需要额外启用 Node。
 
@@ -149,7 +151,7 @@ pipx install pagefind
 或者下载官方独立二进制到下面这个路径，并给它可执行权限：
 
 ```text
-themes/Haku-Hugo/.tools/pagefind/pagefind_extended
+themes/Haku/.tools/pagefind/pagefind_extended
 ```
 
 `.tools/` 已加入 `.gitignore`，不会被误提交到 GitHub。
@@ -159,10 +161,10 @@ themes/Haku-Hugo/.tools/pagefind/pagefind_extended
 Cloudflare Pages 的 v3 build image 运行在 Linux x86_64，并预装了 Python。对于接入这个主题的 Hugo 站点，推荐直接把构建命令设成：
 
 ```bash
-hugo && ./themes/Haku-Hugo/scripts/pagefind.sh --site public
+hugo && ./themes/Haku/scripts/pagefind.sh --site public
 ```
 
-如果你的主题目录不叫 `themes/Haku-Hugo`，把路径改成实际位置即可。
+如果你的主题目录不叫 `themes/Haku`，把路径改成实际位置即可。
 
 脚本检测到 `CF_PAGES=1` 后，会自动执行官方 Python 方案来下载匹配平台的 Pagefind 二进制。默认固定到 `1.5.2`，也可以在 Pages 的环境变量里覆盖：
 
@@ -171,3 +173,30 @@ PAGEFIND_VERSION=1.5.2
 ```
 
 主题首页默认从 `params.mainSections` 中抓取内容；未设置时，会退回到 Hugo 的主分区推断结果。
+
+#### Windows
+
+如果你在 Windows 上本地构建 Hugo 站点，推荐流程是：
+
+```powershell
+hugo
+.\themes\Haku\scripts\pagefind.ps1 --site public
+```
+
+可选安装方式：
+
+```powershell
+pipx install pagefind
+```
+
+或者把官方独立二进制放到：
+
+```text
+themes\Haku\.tools\pagefind\pagefind_extended.exe
+```
+
+如果你使用 Git Bash，也可以继续运行：
+
+```bash
+./themes/Haku/scripts/pagefind.sh --site public
+```

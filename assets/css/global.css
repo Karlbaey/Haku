@@ -22,6 +22,11 @@
   --tag-pill-active-bg: #e6dfda;
   --tag-pill-active-border: #c8bdb7;
   --tag-pill-active-text: #1f1713;
+  --focus-ring: #9db5e8;
+  --scrollbar-track: #f0ece9;
+  --scrollbar-thumb: #cfc7c1;
+  --scrollbar-thumb-hover: #c8bdb7;
+  --scrollbar-thumb-active: #bdb1ab;
 
   --font-title: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", "Georgia", "Times New Roman", serif;
   --font-body-zh: "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
@@ -53,6 +58,11 @@
     --tag-pill-active-bg: #263244;
     --tag-pill-active-border: #465165;
     --tag-pill-active-text: #ffffff;
+    --focus-ring: #5578b5;
+    --scrollbar-track: #1a2232;
+    --scrollbar-thumb: #3a4556;
+    --scrollbar-thumb-hover: #465165;
+    --scrollbar-thumb-active: #55708f;
   }
 }
 
@@ -67,6 +77,58 @@ html {
   line-height: 1.75;
   -webkit-text-size-adjust: 100%;
   text-rendering: optimizeLegibility;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+body,
+.search-results,
+.article-toc-body,
+.friends-dialog,
+.friends-dialog-panel,
+.footnote-preview-card {
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+@supports selector(::-webkit-scrollbar) {
+  html::-webkit-scrollbar-track,
+  body::-webkit-scrollbar-track,
+  .search-results::-webkit-scrollbar-track,
+  .article-toc-body::-webkit-scrollbar-track,
+  .friends-dialog::-webkit-scrollbar-track,
+  .friends-dialog-panel::-webkit-scrollbar-track,
+  .footnote-preview-card::-webkit-scrollbar-track {
+    background-color: var(--scrollbar-track);
+  }
+
+  html::-webkit-scrollbar-thumb,
+  body::-webkit-scrollbar-thumb,
+  .search-results::-webkit-scrollbar-thumb,
+  .article-toc-body::-webkit-scrollbar-thumb,
+  .friends-dialog::-webkit-scrollbar-thumb,
+  .friends-dialog-panel::-webkit-scrollbar-thumb,
+  .footnote-preview-card::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb);
+  }
+
+  html::-webkit-scrollbar-thumb:hover,
+  body::-webkit-scrollbar-thumb:hover,
+  .search-results::-webkit-scrollbar-thumb:hover,
+  .article-toc-body::-webkit-scrollbar-thumb:hover,
+  .friends-dialog::-webkit-scrollbar-thumb:hover,
+  .friends-dialog-panel::-webkit-scrollbar-thumb:hover,
+  .footnote-preview-card::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scrollbar-thumb-hover);
+  }
+
+  html::-webkit-scrollbar-thumb:active,
+  body::-webkit-scrollbar-thumb:active,
+  .search-results::-webkit-scrollbar-thumb:active,
+  .article-toc-body::-webkit-scrollbar-thumb:active,
+  .friends-dialog::-webkit-scrollbar-thumb:active,
+  .friends-dialog-panel::-webkit-scrollbar-thumb:active,
+  .footnote-preview-card::-webkit-scrollbar-thumb:active {
+    background-color: var(--scrollbar-thumb-active);
+  }
 }
 
 @media (max-width: 767px) {
@@ -102,7 +164,7 @@ a:hover {
 }
 
 a:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--accent) 42%, transparent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 

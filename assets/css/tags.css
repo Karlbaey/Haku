@@ -18,7 +18,7 @@
 }
 
 .article-tag-list a:hover {
-  color: color-mix(in srgb, var(--meta) 78%, var(--text));
+  color: var(--text);
 }
 
 .article-tag-list--flow {
