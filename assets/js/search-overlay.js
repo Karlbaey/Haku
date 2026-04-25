@@ -184,7 +184,7 @@
         this.status.textContent = IDLE_STATUS;
       } catch (error) {
         console.error(error);
-        this.status.textContent = "搜索索引尚未生成。请先执行 `npm run build` 后再试。";
+        this.status.textContent = "搜索索引尚未生成。请先执行 Hugo 构建，并对输出目录运行 Pagefind。";
       }
     }
 

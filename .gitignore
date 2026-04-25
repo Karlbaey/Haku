@@ -1,6 +1,7 @@
 .codex
 .hugo-build
 .hugo_build.lock
+.tools/
 node_modules/
 public/
 exampleSite/public/
