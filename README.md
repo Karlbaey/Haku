@@ -12,14 +12,20 @@ Haku 是一个内容优先的 Hugo 主题，内置：
 ## 目录结构
 
 - 主题资源位于仓库根目录
-- 仓库不内置 `exampleSite/`，请在你自己的 Hugo 站点中接入预览
+- `exampleSite/` 提供了一个最小可运行示例站点，方便验证主题和 shortcode
 
 ## 本地预览
 
-在接入该主题的 Hugo 站点根目录执行：
+预览你自己的 Hugo 站点时，在站点根目录执行：
 
 ```bash
 hugo server -D
+```
+
+预览仓库内置示例站点时，在主题仓库根目录执行：
+
+```bash
+/snap/hugo/current/bin/hugo server --source exampleSite --themesDir .. -D
 ```
 
 ## 在 Hugo 站点中使用
@@ -200,3 +206,43 @@ themes\Haku\.tools\pagefind\pagefind_extended.exe
 ```bash
 ./themes/Haku/scripts/pagefind.sh --site public
 ```
+
+## 内容组件
+
+### MediaWiki 风格图片框
+
+主题内置了 `mwfigure` shortcode，用来做“浮动图文环绕 + 轻微破边”的图片框。它不会改动默认 Markdown 图片，只在你显式调用时生效。
+
+基础用法：
+
+```go-html-template
+{{< mwfigure
+  src="/images/example.jpg"
+  side="right"
+  width="300px"
+  title="示意图"
+  caption="这段说明文字会跟图片一起进入浮动框，正文会自然环绕它。"
+/>}}
+```
+
+也可以把说明写成 shortcode 内文，这样可以直接用 Markdown：
+
+```go-html-template
+{{< mwfigure src="/images/example.jpg" side="left" width="18rem" title="示意图" >}}
+说明里可以包含 **强调**、[链接](https://example.org) 或更长的补充文字。
+{{< /mwfigure >}}
+```
+
+可用参数：
+
+- `src`：图片地址，也支持当前 page bundle 里的资源名
+- `side`：`left` 或 `right`，默认 `right`
+- `width`：浮动框宽度，默认 `18rem`
+- `bleed`：向正文外侧突破的最大距离，默认 `4rem`
+- `title`：图片框标题
+- `caption`：说明文字；如果写了 shortcode 内文，会优先使用内文
+- `alt`：图片替代文本；不传时会退回到 `title` 或 `caption`
+- `link`：给图片包一层链接
+- `class`：附加自定义类名
+
+它在移动端会自动取消浮动，改为正常块级布局，避免窄屏上的环绕阅读体验变差。

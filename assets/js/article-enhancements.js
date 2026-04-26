@@ -1,5 +1,10 @@
 (() => {
   const MARKDOWN_SELECTOR = ".markdown";
+  const IMAGE_SELECTOR = `${MARKDOWN_SELECTOR} img`;
+  const ZOOMABLE_IMAGE_SELECTOR = `${IMAGE_SELECTOR}.is-zoomable`;
+  const HEADING_SELECTOR = `${MARKDOWN_SELECTOR} h1[id], ${MARKDOWN_SELECTOR} h2[id], ${MARKDOWN_SELECTOR} h3[id], ${MARKDOWN_SELECTOR} h4[id], ${MARKDOWN_SELECTOR} h5[id], ${MARKDOWN_SELECTOR} h6[id]`;
+  const HEADING_ANCHOR_SELECTOR = "[data-heading-anchor-link]";
+  const SVG_NAMESPACE = "http://www.w3.org/2000/svg";
   const FOOTNOTE_REF_SELECTOR = `${MARKDOWN_SELECTOR} a.footnote-ref`;
   const FOOTNOTE_DESKTOP_MEDIA_QUERY = "(hover: hover) and (pointer: fine)";
   const FOOTNOTE_MOBILE_OPEN_CLASS = "footnote-preview-mobile-open";
@@ -7,6 +12,7 @@
   const FOOTNOTE_MOBILE_CLOSE_DURATION = 280;
   const FIGURE_SELECTOR = 'figure[data-rehype-pretty-code-figure]';
   const BUTTON_SELECTOR = "[data-code-copy-button]";
+  const MIN_ZOOMABLE_IMAGE_SIZE = 64;
   const RESET_DELAY = 1800;
   const footnoteDesktopMedia = window.matchMedia(FOOTNOTE_DESKTOP_MEDIA_QUERY);
   const resetTimers = new WeakMap();
@@ -160,6 +166,68 @@
     });
   }
 
+  function createHeadingAnchorLink(heading) {
+    const id = heading.getAttribute("id");
+    if (!id) {
+      return null;
+    }
+
+    const link = document.createElement("a");
+    const icon = document.createElementNS(SVG_NAMESPACE, "svg");
+    const path = document.createElementNS(SVG_NAMESPACE, "path");
+    const label = heading.textContent ? heading.textContent.trim() : id;
+
+    link.className = "heading-anchor-link";
+    link.href = `#${id}`;
+    link.draggable = false;
+    link.dataset.headingAnchorLink = "true";
+    link.setAttribute("aria-label", `跳转到标题：${label}`);
+    link.setAttribute("title", "跳转到这个标题");
+    icon.classList.add("heading-anchor-icon");
+    icon.setAttribute("viewBox", "0 0 24 24");
+    icon.setAttribute("fill", "none");
+    icon.setAttribute("stroke", "currentColor");
+    icon.setAttribute("stroke-width", "2");
+    icon.setAttribute("stroke-linecap", "round");
+    icon.setAttribute("stroke-linejoin", "round");
+    icon.setAttribute("aria-hidden", "true");
+    path.setAttribute(
+      "d",
+      "M13 6l2 -2c1 -1 3 -1 4 0l1 1c1 1 1 3 0 4l-5 5c-1 1 -3 1 -4 0M11 18l-2 2c-1 1 -3 1 -4 0l-1 -1c-1 -1 -1 -3 0 -4l5 -5c1 -1 3 -1 4 0"
+    );
+    icon.append(path);
+    link.append(icon);
+    return link;
+  }
+
+  function installHeadingAnchors() {
+    document.querySelectorAll(HEADING_SELECTOR).forEach((heading) => {
+      if (!(heading instanceof HTMLElement) || heading.dataset.headingAnchorBound === "true") {
+        return;
+      }
+
+      if (heading.querySelector(HEADING_ANCHOR_SELECTOR)) {
+        heading.dataset.headingAnchorBound = "true";
+        return;
+      }
+
+      const anchor = createHeadingAnchorLink(heading);
+      if (!anchor) {
+        return;
+      }
+
+      const content = document.createElement("span");
+      content.className = "heading-anchor-text";
+
+      while (heading.firstChild) {
+        content.append(heading.firstChild);
+      }
+
+      heading.dataset.headingAnchorBound = "true";
+      heading.append(content, anchor);
+    });
+  }
+
   async function handleCopyButtonClick(event) {
     const button = event.target instanceof Element ? event.target.closest(BUTTON_SELECTOR) : null;
     if (!(button instanceof HTMLButtonElement)) {
@@ -184,20 +252,77 @@
     scheduleReset(button);
   }
 
-  function isZoomableImage(node) {
-    if (!(node instanceof HTMLImageElement)) {
+  function getImageDimension(...dimensions) {
+    const positiveDimensions = dimensions.filter((dimension) => {
+      return Number.isFinite(dimension) && dimension > 0;
+    });
+
+    if (positiveDimensions.length === 0) {
+      return 0;
+    }
+
+    return Math.min(...positiveDimensions);
+  }
+
+  function isSmallImage(image) {
+    const rect = image.getBoundingClientRect();
+    const width = getImageDimension(rect.width, image.width, image.naturalWidth);
+    const height = getImageDimension(rect.height, image.height, image.naturalHeight);
+
+    return !width || !height || width < MIN_ZOOMABLE_IMAGE_SIZE || height < MIN_ZOOMABLE_IMAGE_SIZE;
+  }
+
+  function shouldZoomImage(image) {
+    if (!(image instanceof HTMLImageElement)) {
       return false;
     }
 
-    if (!node.closest(MARKDOWN_SELECTOR)) {
+    if (!image.closest(MARKDOWN_SELECTOR)) {
       return false;
     }
 
-    if (node.closest(FIGURE_SELECTOR)) {
+    if (image.closest(FIGURE_SELECTOR) || image.closest("a")) {
+      return false;
+    }
+
+    if (image.getAttribute("role") === "presentation" || image.getAttribute("aria-hidden") === "true") {
+      return false;
+    }
+
+    if (isSmallImage(image)) {
       return false;
     }
 
     return true;
+  }
+
+  function syncZoomableImage(image) {
+    if (!(image instanceof HTMLImageElement)) {
+      return;
+    }
+
+    image.classList.toggle("is-zoomable", shouldZoomImage(image));
+  }
+
+  function bindZoomableImage(image) {
+    if (!(image instanceof HTMLImageElement) || image.dataset.imageZoomBound === "true") {
+      return;
+    }
+
+    image.dataset.imageZoomBound = "true";
+    image.addEventListener("load", () => {
+      syncZoomableImage(image);
+    });
+    image.addEventListener("error", () => {
+      image.classList.remove("is-zoomable");
+    });
+  }
+
+  function installZoomableImages() {
+    document.querySelectorAll(IMAGE_SELECTOR).forEach((image) => {
+      bindZoomableImage(image);
+      syncZoomableImage(image);
+    });
   }
 
   function lockBodyScroll() {
@@ -635,8 +760,8 @@
       return;
     }
 
-    const image = target.closest("img");
-    if (isZoomableImage(image)) {
+    const image = target.closest(ZOOMABLE_IMAGE_SELECTOR);
+    if (image instanceof HTMLImageElement) {
       event.preventDefault();
       zoomImage(image);
       return;
@@ -654,6 +779,8 @@
   }
 
   function handleResize() {
+    installZoomableImages();
+
     if (activeImage) {
       updateZoomSize(activeImage);
     }
@@ -666,6 +793,8 @@
 
     initialized = true;
     installCopyButtons();
+    installHeadingAnchors();
+    installZoomableImages();
     document.addEventListener("click", handleCopyButtonClick);
     document.addEventListener("click", handleDocumentClick);
     document.addEventListener("pointerdown", handleFootnotePointerDown);

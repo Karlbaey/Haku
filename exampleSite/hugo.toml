@@ -1,0 +1,51 @@
+theme = "Haku"
+baseURL = "https://example.org/"
+languageCode = "zh-CN"
+title = "Haku Example"
+disablePathToLower = true
+
+[taxonomies]
+tag = "tags"
+
+[pagination]
+pagerSize = 7
+path = "page"
+
+[outputs]
+home = ["HTML", "RSS"]
+
+[outputFormats.RSS]
+baseName = "rss"
+
+[params]
+subtitle = "Theme preview"
+description = "Example site for the Haku theme"
+mainSections = ["posts"]
+
+[params.posts]
+excerptLength = 60
+
+[params.author]
+name = "Haku"
+
+[params.copyright]
+enabled = false
+
+[markup]
+  [markup.tableOfContents]
+  startLevel = 2
+  endLevel = 4
+  ordered = false
+  [markup.goldmark]
+    [markup.goldmark.parser]
+    wrapStandAloneImageWithinParagraph = false
+      [markup.goldmark.parser.attribute]
+      block = true
+      title = true
+    [markup.goldmark.renderer]
+    unsafe = true
+  [markup.highlight]
+  codeFences = true
+  guessSyntax = true
+  lineNos = false
+  noClasses = true

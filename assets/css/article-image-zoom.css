@@ -1,0 +1,44 @@
+:root {
+  --article-image-zoom-overlay: #00000099;
+  --article-image-zoom-shadow: 0 24px 52px #0000006b;
+}
+
+body.image-zoom-active {
+  overflow: hidden;
+}
+
+body.image-zoom-active::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  background: var(--article-image-zoom-overlay);
+}
+
+.markdown .image-zoom-placeholder {
+  display: block;
+}
+
+.markdown img.is-zoomable {
+  position: relative;
+  z-index: 1;
+  cursor: zoom-in;
+  transition: box-shadow 0.25s ease;
+}
+
+.markdown img.is-zoomed {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 130;
+  width: min(var(--image-zoom-width, 92vw), min(92vw, 1500px));
+  height: min(var(--image-zoom-height, 92vh), 92vh);
+  max-width: min(92vw, 1500px);
+  max-height: 92vh;
+  margin: 0;
+  object-fit: contain;
+  cursor: zoom-out;
+  box-shadow: var(--article-image-zoom-shadow);
+  transform: translate(-50%, -50%);
+  transition: none;
+}

@@ -1,0 +1,105 @@
+:root {
+  --article-code-copy-bg: #142033;
+  --article-code-copy-border: #31476b;
+  --article-code-copy-text: #dbe4f0;
+  --article-code-copy-bg-hover: #1c2b43;
+  --article-code-copy-border-hover: #46618d;
+  --article-code-copy-success-bg: #173726;
+  --article-code-copy-success-border: #2f7d57;
+  --article-code-copy-success-text: #cbffe3;
+  --article-code-copy-error-bg: #3a1d24;
+  --article-code-copy-error-border: #8f3a4f;
+  --article-code-copy-error-text: #ffd9de;
+}
+
+.markdown pre[data-copy-toolbar] {
+  position: relative;
+}
+
+.markdown .code-copy-button {
+  position: absolute;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  min-width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 1px solid var(--article-code-copy-border);
+  border-radius: 0;
+  background: var(--article-code-copy-bg);
+  color: var(--article-code-copy-text);
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.markdown .code-copy-icon {
+  display: block;
+  width: 1.2rem;
+  height: 1.2rem;
+  flex-shrink: 0;
+  background-color: currentColor;
+  -webkit-mask-image: url("/icons/paste.svg");
+  mask-image: url("/icons/paste.svg");
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+.markdown figure[data-rehype-pretty-code-figure]:is(:hover, :focus-within) .code-copy-button,
+.markdown pre[data-copy-toolbar]:is(:hover, :focus-within) .code-copy-button,
+.markdown .code-copy-button:focus-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.markdown .code-copy-button:hover {
+  background: var(--article-code-copy-bg-hover);
+  border-color: var(--article-code-copy-border-hover);
+  color: #ffffff;
+}
+
+.markdown .code-copy-button:focus-visible {
+  outline: 2px solid #7dd3fc;
+  outline-offset: 2px;
+}
+
+.markdown .code-copy-button[data-copy-state="success"] {
+  background: var(--article-code-copy-success-bg);
+  border-color: var(--article-code-copy-success-border);
+  color: var(--article-code-copy-success-text);
+}
+
+.markdown .code-copy-button[data-copy-state="success"] .code-copy-icon {
+  -webkit-mask-image: url("/icons/success.svg");
+  mask-image: url("/icons/success.svg");
+}
+
+.markdown .code-copy-button[data-copy-state="error"] {
+  background: var(--article-code-copy-error-bg);
+  border-color: var(--article-code-copy-error-border);
+  color: var(--article-code-copy-error-text);
+}
+
+.markdown pre[data-copy-toolbar="titled"] .code-copy-button {
+  top: 0.75rem;
+  right: 0.9rem;
+}
+
+.markdown pre[data-copy-toolbar="untitled"] .code-copy-button,
+.markdown pre[data-copy-toolbar="plain"] .code-copy-button {
+  top: 0.8rem;
+  right: 0.8rem;
+}

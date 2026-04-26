@@ -136,6 +136,17 @@
   list-style: decimal;
 }
 
+.markdown .footnotes hr {
+  height: 0;
+  margin: 2.2rem 0 0;
+  border: 0;
+  border-top: 1px solid var(--subtle);
+}
+
+.markdown .footnotes h2 {
+  margin-top: 1rem;
+}
+
 .markdown blockquote:not(.admonition) {
   margin-inline: 0;
   padding-inline-start: 1rem;

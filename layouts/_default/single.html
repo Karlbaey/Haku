@@ -18,7 +18,17 @@
 
 {{ define "styles" }}
   {{ partial "style-bundle.html" (dict
-    "paths" (slice "css/tags.css" "css/markdown.css" "css/ext.css" "css/comments.css" "css/article-enhance.css")
+    "paths" (slice
+      "css/tags.css"
+      "css/markdown.css"
+      "css/article-mw-figure.css"
+      "css/ext.css"
+      "css/comments.css"
+      "css/article-code-copy.css"
+      "css/article-heading-anchor.css"
+      "css/article-image-zoom.css"
+      "css/article-footnote-preview.css"
+    )
     "target" "css/bundles/article.css"
   ) }}
 {{ end }}
@@ -42,7 +52,9 @@
       {{ partial "toc.html" (dict "page" .) }}
     {{ end }}
     <article class="markdown">
-      {{ .Content }}
+      {{- $content := .Content -}}
+      {{- $content = replaceRE `<div class="footnotes"([^>]*)>\s*<hr>` `<div class="footnotes"$1 aria-labelledby="footnote-label"><hr><h2 id="footnote-label">脚注</h2>` $content 1 -}}
+      {{- $content | safeHTML -}}
     </article>
     {{ partial "copyright.html" (dict "page" .) }}
     {{ partial "comments.html" (dict "page" .) }}

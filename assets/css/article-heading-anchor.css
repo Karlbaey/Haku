@@ -1,0 +1,70 @@
+.markdown :is(h1, h2, h3, h4, h5, h6)[data-heading-anchor-bound="true"] {
+  position: relative;
+  margin-left: -1.45em;
+  padding-left: 1.45em;
+}
+
+.markdown .heading-anchor-text {
+  display: inline;
+}
+
+.markdown .heading-anchor-link {
+  position: absolute;
+  top: 0.12em;
+  left: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1em;
+  height: 1em;
+  color: var(--muted);
+  opacity: 0;
+  pointer-events: none;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  transition:
+    color 0.18s ease,
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+.markdown .heading-anchor-link:focus-visible {
+  color: var(--accent);
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(-0.03em);
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: 0.2rem;
+}
+
+.markdown .heading-anchor-icon {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .markdown .heading-anchor-link:hover,
+  .markdown :is(h1, h2, h3, h4, h5, h6)[data-heading-anchor-bound="true"]:is(:hover, :focus-within) > .heading-anchor-link {
+    color: var(--accent);
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(-0.03em);
+  }
+}
+
+@media (max-width: 767px) {
+  .markdown :is(h1, h2, h3, h4, h5, h6)[data-heading-anchor-bound="true"] {
+    margin-left: -1.25em;
+    padding-left: 1.25em;
+  }
+
+  .markdown .heading-anchor-link {
+    top: 0.1em;
+    width: 0.94em;
+    height: 0.94em;
+  }
+}
