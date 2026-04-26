@@ -2,8 +2,8 @@
   --admonition-border-color: #4b6bfb;
   --admonition-background-color: #f4f7ff;
   --admonition-icon-color: #4b6bfb;
-  margin: 1.25em 0;
-  padding: 0.9rem 1rem 0.95rem;
+  margin: 0rem 0 0.9rem;
+  padding: 0.9rem 1rem;
   border-left: 0.24rem solid var(--admonition-border-color);
   background: var(--admonition-background-color);
   border-radius: 0.36rem;
@@ -28,7 +28,7 @@
   display: flex;
   align-items: center;
   gap: 0.38rem;
-  margin: 0 0 0.34rem;
+  padding: 0.6rem 0;
   font-size: 0.9rem;
   line-height: 1.45;
   font-weight: 700;
@@ -222,7 +222,7 @@
 
 @media (max-width: 767px) {
   .markdown details > summary {
-    padding: 0.56rem 0.85rem;
+    padding: 0.56rem 0.85rem 0.56rem 1.9rem;
   }
 }
 
@@ -249,9 +249,5 @@
 
   .markdown details:not([open]) > summary:hover {
     border-radius: 0.5rem;
-  }
-
-  .markdown details[open] > summary:hover {
-    border-radius: 0.5rem 0.5rem 0 0;
   }
 }

@@ -2,9 +2,9 @@
 {{ $title := .Get "title" | default (humanize $type) }}
 
 <blockquote class="admonition admonition-{{ $type }}">
-  <p class="admonition-title">
+  <span class="admonition-title">
     {{ partial "admonition-icon.html" (dict "type" $type) }}
     <span>{{ $title }}</span>
-  </p>
+  </span>
   {{ .Inner | strings.TrimSpace | markdownify }}
 </blockquote>
