@@ -1,0 +1,80 @@
+.markdown::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.markdown .mw-figure {
+  --mw-figure-width: 18rem;
+  --mw-figure-bleed: 4rem;
+  --mw-figure-gap: 1.35rem;
+  width: min(100%, var(--mw-figure-width));
+  max-width: min(100%, 24rem);
+  margin-block: 0.35rem 1.25rem;
+  padding: 0.55rem;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.markdown .mw-figure--right {
+  float: right;
+  clear: right;
+  margin-inline: var(--mw-figure-gap)
+    calc(clamp(0rem, calc((100vw - 760px) / 2 - 1rem), var(--mw-figure-bleed)) * -1);
+}
+
+.markdown .mw-figure--left {
+  float: left;
+  clear: left;
+  margin-inline: calc(clamp(0rem, calc((100vw - 760px) / 2 - 1rem), var(--mw-figure-bleed)) * -1)
+    var(--mw-figure-gap);
+}
+
+.markdown .mw-figure__media {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.markdown .mw-figure img {
+  width: 100%;
+  margin: 0;
+}
+
+.markdown .mw-figure figcaption {
+  margin-top: 0.7rem;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: var(--muted);
+  text-align: left;
+}
+
+.markdown .mw-figure__title {
+  display: block;
+  margin-bottom: 0.22rem;
+  color: var(--heading);
+  font-family: var(--font-title);
+  font-size: 0.94rem;
+  font-weight: 650;
+  line-height: 1.45;
+}
+
+.markdown .mw-figure figcaption > :first-child {
+  margin-top: 0;
+}
+
+.markdown .mw-figure figcaption > :last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 767px) {
+  .markdown .mw-figure,
+  .markdown .mw-figure--left,
+  .markdown .mw-figure--right {
+    float: none;
+    clear: none;
+    width: 100%;
+    max-width: none;
+    margin: 1.35rem 0;
+  }
+}

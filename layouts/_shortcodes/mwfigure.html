@@ -1,0 +1,71 @@
+{{ $src := "" }}
+{{ $side := "right" }}
+{{ $width := "18rem" }}
+{{ $bleed := "4rem" }}
+{{ $title := "" }}
+{{ $link := "" }}
+{{ $class := "" }}
+{{ $alt := "" }}
+{{ $captionSource := "" }}
+
+{{ if .IsNamedParams }}
+  {{ $src = .Get "src" }}
+  {{ $side = lower (.Get "side" | default "right") }}
+  {{ $width = .Get "width" | default "18rem" }}
+  {{ $bleed = .Get "bleed" | default "4rem" }}
+  {{ $title = .Get "title" | default "" }}
+  {{ $link = .Get "link" | default "" }}
+  {{ $class = .Get "class" | default "" }}
+  {{ $alt = .Get "alt" | default "" }}
+  {{ with .Inner }}
+    {{ $captionSource = . | strings.TrimSpace }}
+  {{ end }}
+  {{ if not $captionSource }}
+    {{ $captionSource = .Get "caption" | default "" }}
+  {{ end }}
+{{ else }}
+  {{ $src = .Get 0 }}
+  {{ $side = lower (.Get 1 | default "right") }}
+  {{ $width = .Get 2 | default "18rem" }}
+  {{ $captionSource = .Get 3 | default "" }}
+  {{ with .Inner }}
+    {{ $captionSource = . | strings.TrimSpace }}
+  {{ end }}
+{{ end }}
+
+{{ if not $src }}
+  {{ errorf "The %q shortcode requires a src parameter: see %s" .Name .Position }}
+{{ end }}
+
+{{ if not (in (slice "left" "right") $side) }}
+  {{ $side = "right" }}
+{{ end }}
+
+{{ $resolvedSrc := $src }}
+{{ with .Page.Resources.GetMatch $src }}
+  {{ $resolvedSrc = .RelPermalink }}
+{{ end }}
+
+{{ if not $alt }}
+  {{ $alt = ($title | default $captionSource) | plainify }}
+{{ end }}
+
+{{ $style := printf "--mw-figure-width: %s; --mw-figure-bleed: %s;" $width $bleed | safeCSS }}
+
+<figure class="mw-figure mw-figure--{{ $side }}{{ with $class }} {{ . }}{{ end }}" style="{{ $style }}">
+  {{ if $link }}
+    <a class="mw-figure__media" href="{{ $link | safeURL }}">
+      <img src="{{ $resolvedSrc | safeURL }}" alt="{{ $alt }}" loading="lazy" decoding="async" />
+    </a>
+  {{ else }}
+    <div class="mw-figure__media">
+      <img src="{{ $resolvedSrc | safeURL }}" alt="{{ $alt }}" loading="lazy" decoding="async" />
+    </div>
+  {{ end }}
+  {{ if or $title $captionSource }}
+    <figcaption>
+      {{ with $title }}<strong class="mw-figure__title">{{ . }}</strong>{{ end }}
+      {{ with $captionSource }}{{ $.Page.RenderString (dict "display" "block") . }}{{ end }}
+    </figcaption>
+  {{ end }}
+</figure>
