@@ -13,7 +13,7 @@
   {{ $comments := site.Params.comments }}
   {{ $sodesu := $comments.sodesu }}
   {{ if and $sodesu (ne $sodesu.enabled false) $sodesu.serverUrl }}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sodesu-comment@0.5.1/dist/sodesu-comment.css" />
+    <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/sodesu-comment@0.5.1/dist/sodesu-comment.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-material-dark.min.css" />
   {{ end }}
   {{ partial "style-bundle.html" (dict
