@@ -31,6 +31,20 @@ name = "Haku"
 [params.copyright]
 enabled = false
 
+[params.comments]
+defaultProvider = "sodesu"
+
+[params.comments.sodesu]
+enabled = true
+serverUrl = "https://wa.karlbaey.top"
+turnstileKey = "0x4AAAAAACjZ2i92lseLg6_w"
+lang = "zh"
+login = "enable"
+requiredMeta = ["nick", "mail"]
+emoji = []
+pageSize = 10
+commentSorting = "latest"
+
 [markup]
   [markup.tableOfContents]
   startLevel = 2

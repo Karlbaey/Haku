@@ -1,7 +1,7 @@
 (() => {
   const GISCUS_SCRIPT_SRC = "https://giscus.app/client.js";
-  const WALINE_MODULE_SRC = "https://unpkg.com/@waline/client@v3/dist/waline.js";
-  let walineInitPromise;
+  const SODESU_SCRIPT_SRC = "https://cdn.jsdelivr.net/npm/sodesu-comment@0.5.1/dist/sodesu.aio.umd.js";
+  let sodesuInitPromise;
   function getGiscusThemeUrl(config) {
     if (window.location.protocol !== "https:") {
       return config.giscus.theme || "preferred_color_scheme";
@@ -60,32 +60,55 @@
     mount.dataset.loaded = "true";
   }
 
-  async function loadWalineInit() {
-    if (!walineInitPromise) {
-      walineInitPromise = import(WALINE_MODULE_SRC).then((module) => module.init);
-    }
+  function loadScript(src) {
+    return new Promise((resolve, reject) => {
+      const existing = document.querySelector(`script[src="${src}"]`);
+      if (existing) {
+        existing.addEventListener("load", resolve, { once: true });
+        existing.addEventListener("error", reject, { once: true });
+        return;
+      }
 
-    return walineInitPromise;
+      const script = document.createElement("script");
+      script.src = src;
+      script.async = true;
+      script.addEventListener("load", resolve, { once: true });
+      script.addEventListener("error", reject, { once: true });
+      document.head.append(script);
+    });
   }
 
-  async function mountWaline(mount, config) {
-    if (mount.dataset.loaded === "true" || !config.waline) {
+  async function loadSodesuInit() {
+    if (window.Sodesu && typeof window.Sodesu.init === "function") {
+      return window.Sodesu.init;
+    }
+
+    if (!sodesuInitPromise) {
+      sodesuInitPromise = loadScript(SODESU_SCRIPT_SRC).then(() => {
+        if (!window.Sodesu || typeof window.Sodesu.init !== "function") {
+          throw new Error("Sodesu CDN loaded, but window.Sodesu.init is unavailable.");
+        }
+
+        return window.Sodesu.init;
+      });
+    }
+
+    return sodesuInitPromise;
+  }
+
+  async function mountSodesu(mount, config) {
+    if (mount.dataset.loaded === "true" || !config.sodesu) {
       return;
     }
 
-    const init = await loadWalineInit();
+    const init = await loadSodesuInit();
+    const { serverUrl, ...sodesuOptions } = config.sodesu;
     init({
       el: mount,
-      serverURL: config.waline.serverUrl,
-      path: config.article.pathname,
-      turnstileKey: config.waline.turnstileKey,
+      serverURL: serverUrl,
       dark: "auto",
-      lang: config.waline.lang || "zh-CN",
-      emoji: config.waline.emoji || [],
-      requiredMeta: config.waline.requiredMeta || ["nick", "mail"],
-      login: config.waline.login || "enable",
-      pageSize: config.waline.pageSize || 10,
-      commentSorting: config.waline.commentSorting || "latest",
+      ...sodesuOptions,
+      path: config.article.pathname,
     });
     mount.dataset.loaded = "true";
   }
@@ -103,8 +126,8 @@
         return;
       }
 
-      if (provider === "waline") {
-        await mountWaline(mount, config);
+      if (provider === "sodesu") {
+        await mountSodesu(mount, config);
       }
     } catch (error) {
       console.error(error);

@@ -5,7 +5,7 @@ Haku 是一个内容优先的 Hugo 主题，内置：
 - 首页文章流和分页
 - 标签归档
 - Pagefind 站内搜索
-- Giscus / Waline 评论切换
+- Giscus / Sodesu 评论切换
 - 友情链接页面和申请表单
 - Hugo Pipes 资源打包
 
@@ -106,11 +106,11 @@ lastmod = ["lastmod", "modified", "updated"]
 按需配置 `params.comments`：
 
 - `params.comments.giscus`
-- `params.comments.waline`
+- `params.comments.sodesu`
 
 未配置时，文章页不会渲染评论区。
 
-Waline 前端默认通过 CDN 加载，不需要在站点里额外安装 `@waline/client`。你只需要提供可用的 `serverUrl`。
+Sodesu 前端默认通过 CDN 加载，不需要在站点里额外安装任何包。你只需要提供可用的 `serverUrl`。
 
 ### 友情链接
 

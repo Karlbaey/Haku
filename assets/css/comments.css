@@ -39,7 +39,10 @@
   padding: 0.45rem 0.95rem;
   font: inherit;
   cursor: pointer;
-  transition: border-color 160ms ease, color 160ms ease, background-color 160ms ease;
+  transition:
+    border-color 160ms ease,
+    color 160ms ease,
+    background-color 160ms ease;
 }
 
 .comments-tab:hover {
@@ -62,32 +65,34 @@
   display: none;
 }
 
-.comments-panel .giscus,
-.comments-panel .wl-container,
-.comments-panel .wl-editor,
-.comments-panel .wl-card {
+.comments-panel > div {
   margin-top: 0;
 }
 
-.comments-panel[data-comments-panel="waline"] {
-  --waline-font-size: 0.97rem;
-  --waline-theme-color: var(--accent);
-  --waline-active-color: var(--accent-soft);
-  --waline-color: var(--text);
-  --waline-bg-color: var(--surface);
-  --waline-bg-color-light: var(--tag-pill-bg);
-  --waline-bg-color-hover: var(--tag-pill-hover-bg);
-  --waline-border-color: var(--line);
-  --waline-disable-bg-color: var(--tag-pill-bg);
-  --waline-disable-color: var(--subtle);
-  --waline-code-bg-color: var(--inline-code-bg);
-  --waline-bq-color: var(--tag-pill-bg);
-  --waline-info-bg-color: var(--tag-pill-bg);
-  --waline-info-color: var(--muted);
-  --waline-border: 1px solid var(--line);
-  --waline-box-shadow: none;
-  --waline-avatar-size: 3rem;
-  --waline-m-avatar-size: 2.1rem;
+.comments-panel[data-comments-panel="sodesu"] {
+  --sds-font-size: 0.97rem;
+  --sds-theme-color: var(--accent);
+  --sds-active-color: var(--accent-soft);
+  --sds-color: var(--text);
+  --sds-bg-color: var(--surface);
+  --sds-bg-color-light: var(--tag-pill-bg);
+  --sds-bg-color-hover: var(--tag-pill-hover-bg);
+  --sds-border-color: var(--line);
+  --sds-disable-bg-color: var(--tag-pill-bg);
+  --sds-disable-color: var(--subtle);
+  --sds-code-bg-color: var(--inline-code-bg);
+  --sds-bq-color: var(--tag-pill-bg);
+  --sds-info-bg-color: var(--tag-pill-bg);
+  --sds-info-color: var(--muted);
+  --sds-border: 1px solid var(--line);
+  --sds-box-shadow: none;
+  --sds-avatar-size: 3rem;
+  --sds-m-avatar-size: 2.1rem;
+}
+
+/* 卧槽她到底是有多喜欢系统默认字体 */
+.font-sans {
+  font-family: var(--font-body-en), var(--font-body-zh);
 }
 
 @media (max-width: 767px) {

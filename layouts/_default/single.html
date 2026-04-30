@@ -9,14 +9,13 @@
   ) }}
 {{ end }}
 
-{{ define "extra_head" }}
-  {{ $waline := site.Params.comments.waline }}
-  {{ if and $waline (ne $waline.enabled false) $waline.serverUrl }}
-    <link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css" />
-  {{ end }}
-{{ end }}
-
 {{ define "styles" }}
+  {{ $comments := site.Params.comments }}
+  {{ $sodesu := $comments.sodesu }}
+  {{ if and $sodesu (ne $sodesu.enabled false) $sodesu.serverUrl }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sodesu-comment@0.5.1/dist/sodesu-comment.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-material-dark.min.css" />
+  {{ end }}
   {{ partial "style-bundle.html" (dict
     "paths" (slice
       "css/tags.css"
