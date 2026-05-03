@@ -1,0 +1,67 @@
+{{- $page := .page | default . -}}
+{{- $site := $page.Site -}}
+{{- $defaultTitle := cond $page.IsHome $site.Title (printf "%s | %s" $page.Title $site.Title) -}}
+{{- $pageSEO := $page.Params.seo | default (dict) -}}
+{{- $siteSEO := $site.Params.seo | default (dict) -}}
+{{- $pageSEOTitle := strings.TrimSpace (printf "%v" ($pageSEO.title | default "")) -}}
+{{- $pageSEODescription := strings.TrimSpace (printf "%v" ($pageSEO.description | default "")) -}}
+{{- $pageSEOCanonical := strings.TrimSpace (printf "%v" ($pageSEO.canonical | default "")) -}}
+{{- $summaryFallback := $page.Summary | plainify | htmlUnescape | strings.TrimSpace | truncate 140 -}}
+{{- $defaultDescription := cond $page.IsHome ($site.Params.description | default $site.Title) $summaryFallback -}}
+{{- $title := strings.TrimSpace (printf "%v" (.title | default ($pageSEOTitle | default $defaultTitle))) -}}
+{{- $description := strings.TrimSpace (printf "%v" (.description | default ($pageSEODescription | default ($page.Description | default $defaultDescription)))) -}}
+{{- $canonicalCandidate := .canonicalURL | default ($pageSEOCanonical | default $page.Permalink) -}}
+{{- $canonicalURL := partial "seo-abs-url.html" (dict "value" $canonicalCandidate) -}}
+{{- $ogType := .ogType | default (cond $page.IsPage "article" "website") -}}
+{{- $author := strings.TrimSpace (printf "%v" (.author | default ($page.Params.author | default ($site.Params.author.name | default "")))) -}}
+{{- $publishedTime := .publishedTime | default (cond (and (eq $ogType "article") (not $page.Date.IsZero)) ($page.Date.Format "2006-01-02T15:04:05Z07:00") "") -}}
+{{- $modifiedTime := .modifiedTime | default (cond (and (eq $ogType "article") (not $page.Lastmod.IsZero)) ($page.Lastmod.Format "2006-01-02T15:04:05Z07:00") "") -}}
+{{- $languageCode := $site.Language.Locale | default $site.Language.Lang | default "zh-CN" -}}
+{{- $ogLocale := replace $languageCode "-" "_" -}}
+{{- $faviconURL := partial "seo-favicon.html" (dict "page" $page) -}}
+{{- $defaultImageAlt := cond $page.IsHome $site.Title $page.Title -}}
+{{- $resolvedImage := partial "seo-image.html" (dict "page" $page "defaultAlt" $defaultImageAlt) | transform.Unmarshal -}}
+{{- $ogImageURL := .ogImageURL | default $resolvedImage.url -}}
+{{- $ogImageAlt := strings.TrimSpace (printf "%v" (.ogImageAlt | default ($resolvedImage.alt | default ""))) -}}
+{{- $twitterSite := strings.TrimSpace (printf "%v" ($siteSEO.twitterSite | default "")) -}}
+{{- $logoURL := "" -}}
+{{- with $siteSEO.logo -}}
+  {{- $logoURL = partial "seo-abs-url.html" (dict "value" .) -}}
+{{- end -}}
+{{- $rssFeedURL := "" -}}
+{{- with $site.Home.OutputFormats.Get "RSS" -}}
+  {{- $rssFeedURL = .RelPermalink -}}
+{{- end -}}
+{{- $noindex := false -}}
+{{- if or $page.Params.noindex $pageSEO.noindex -}}
+  {{- $noindex = true -}}
+{{- end -}}
+{{- $robots := cond $noindex "noindex,nofollow" "index,follow,max-image-preview:large" -}}
+{{- $keywords := slice -}}
+{{- range $page.Params.tags | default (slice) -}}
+  {{- $tag := strings.TrimSpace (printf "%v" .) -}}
+  {{- if $tag -}}
+    {{- $keywords = $keywords | append $tag -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $context := dict
+  "title" $title
+  "description" $description
+  "canonicalURL" $canonicalURL
+  "ogType" $ogType
+  "author" $author
+  "publishedTime" $publishedTime
+  "modifiedTime" $modifiedTime
+  "languageCode" $languageCode
+  "ogLocale" $ogLocale
+  "faviconURL" $faviconURL
+  "ogImageURL" $ogImageURL
+  "ogImageAlt" $ogImageAlt
+  "twitterSite" $twitterSite
+  "logoURL" $logoURL
+  "rssFeedURL" $rssFeedURL
+  "robots" $robots
+  "keywords" $keywords
+-}}
+{{- $context | jsonify -}}

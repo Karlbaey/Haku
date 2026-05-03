@@ -1,0 +1,83 @@
+{{- $page := .page -}}
+{{- $defaultAlt := strings.TrimSpace (printf "%v" (.defaultAlt | default "")) -}}
+{{- $src := "" -}}
+{{- $alt := "" -}}
+{{- $candidate := dict "src" "" "alt" "" -}}
+
+{{- with $page.Params.seo -}}
+  {{- if not $src -}}
+    {{- $candidate = partial "seo-image-candidate.html" (dict "value" .images) | transform.Unmarshal -}}
+    {{- with $candidate.src -}}
+      {{- $src = partial "seo-image-source.html" (dict "page" $page "src" .) -}}
+      {{- $alt = $candidate.alt -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if not $src -}}
+  {{- $candidate = partial "seo-image-candidate.html" (dict "value" $page.Params.images) | transform.Unmarshal -}}
+  {{- with $candidate.src -}}
+    {{- $src = partial "seo-image-source.html" (dict "page" $page "src" .) -}}
+    {{- $alt = $candidate.alt -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if not $src -}}
+  {{- $candidate = partial "seo-image-candidate.html" (dict "value" $page.Params.cover) | transform.Unmarshal -}}
+  {{- with $candidate.src -}}
+    {{- $src = partial "seo-image-source.html" (dict "page" $page "src" .) -}}
+    {{- $alt = $candidate.alt -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if not $src -}}
+  {{- $candidate = partial "seo-image-candidate.html" (dict "value" $page.Params.featuredImage) | transform.Unmarshal -}}
+  {{- with $candidate.src -}}
+    {{- $src = partial "seo-image-source.html" (dict "page" $page "src" .) -}}
+    {{- $alt = $candidate.alt -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if not $src -}}
+  {{- $candidate = partial "seo-image-candidate.html" (dict "value" $page.Params.featured) | transform.Unmarshal -}}
+  {{- with $candidate.src -}}
+    {{- $src = partial "seo-image-source.html" (dict "page" $page "src" .) -}}
+    {{- $alt = $candidate.alt -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if and (not $src) $page.Resources -}}
+  {{- $patterns := slice "cover.*" "featured.*" "og.*" "cover*" "featured*" "og*" -}}
+  {{- $resource := false -}}
+  {{- range $patterns -}}
+    {{- if not $resource -}}
+      {{- with $page.Resources.GetMatch . -}}
+        {{- $resource = . -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with $resource -}}
+    {{- $src = .Permalink -}}
+    {{- $alt = .Title | default (strings.TrimSuffix (path.Ext .Name) .Name) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if not $src -}}
+  {{- with $page.Site.Params.seo -}}
+    {{- $candidate = partial "seo-image-candidate.html" (dict "value" .defaultImage) | transform.Unmarshal -}}
+    {{- with $candidate.src -}}
+      {{- $src = partial "seo-image-source.html" (dict "page" $page "src" .) -}}
+      {{- $alt = $candidate.alt -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if not $src -}}
+  {{- $src = partial "seo-favicon.html" (dict "page" $page) -}}
+{{- end -}}
+
+{{- if not $alt -}}
+  {{- $alt = $defaultAlt -}}
+{{- end -}}
+
+{{- dict "url" $src "alt" $alt | jsonify -}}

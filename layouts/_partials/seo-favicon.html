@@ -1,0 +1,16 @@
+{{- $page := .page | default . -}}
+{{- $favicon := "" -}}
+{{- with $page.Site.Params.seo -}}
+  {{- with .favicon -}}
+    {{- $favicon = . -}}
+  {{- end -}}
+{{- end -}}
+{{- if not $favicon -}}
+  {{- with $page.Site.Params.favicon -}}
+    {{- $favicon = . -}}
+  {{- end -}}
+{{- end -}}
+{{- if not $favicon -}}
+  {{- $favicon = "favicon.png" -}}
+{{- end -}}
+{{- partial "seo-abs-url.html" (dict "value" $favicon) -}}

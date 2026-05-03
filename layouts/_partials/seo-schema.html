@@ -1,0 +1,71 @@
+{{- $page := .page | default . -}}
+{{- $seo := .seo | default (partial "seo-context.html" (dict "page" $page) | transform.Unmarshal) -}}
+{{- $site := $page.Site -}}
+{{- $schema := dict
+  "@context" "https://schema.org"
+  "inLanguage" $seo.languageCode
+  "url" $seo.canonicalURL
+  "name" $seo.title
+-}}
+
+{{- if $page.IsHome -}}
+  {{- $schema = merge $schema (dict "@type" "WebSite") -}}
+  {{- if $site.Title -}}
+    {{- $schema = merge $schema (dict "headline" $site.Title) -}}
+  {{- end -}}
+  {{- if $seo.description -}}
+    {{- $schema = merge $schema (dict "description" $seo.description) -}}
+  {{- end -}}
+  {{- if $seo.ogImageURL -}}
+    {{- $schema = merge $schema (dict "image" $seo.ogImageURL) -}}
+  {{- end -}}
+{{- else if $page.IsPage -}}
+  {{- $schema = merge $schema (dict
+    "@type" "BlogPosting"
+    "headline" $page.Title
+    "mainEntityOfPage" (dict "@type" "WebPage" "@id" $seo.canonicalURL)
+    "publisher" (dict "@type" "Organization" "name" $site.Title)
+  ) -}}
+  {{- if $seo.description -}}
+    {{- $schema = merge $schema (dict "description" $seo.description) -}}
+  {{- end -}}
+  {{- if $seo.ogImageURL -}}
+    {{- $schema = merge $schema (dict "image" $seo.ogImageURL) -}}
+  {{- end -}}
+  {{- if $seo.author -}}
+    {{- $schema = merge $schema (dict "author" (dict "@type" "Person" "name" $seo.author)) -}}
+  {{- end -}}
+  {{- if $seo.publishedTime -}}
+    {{- $schema = merge $schema (dict "datePublished" $seo.publishedTime) -}}
+  {{- end -}}
+  {{- if $seo.modifiedTime -}}
+    {{- $schema = merge $schema (dict "dateModified" $seo.modifiedTime) -}}
+  {{- end -}}
+  {{- if gt $page.WordCount 0 -}}
+    {{- $schema = merge $schema (dict "wordCount" $page.WordCount) -}}
+  {{- end -}}
+  {{- if gt (len $seo.keywords) 0 -}}
+    {{- $schema = merge $schema (dict "keywords" (delimit $seo.keywords ", ")) -}}
+  {{- end -}}
+  {{- if $seo.logoURL -}}
+    {{- $publisher := dict
+      "@type" "Organization"
+      "name" $site.Title
+      "logo" (dict "@type" "ImageObject" "url" $seo.logoURL)
+    -}}
+    {{- $schema = merge $schema (dict "publisher" $publisher) -}}
+  {{- end -}}
+{{- else -}}
+  {{- $schema = merge $schema (dict
+    "@type" "CollectionPage"
+    "headline" $page.Title
+  ) -}}
+  {{- if $seo.description -}}
+    {{- $schema = merge $schema (dict "description" $seo.description) -}}
+  {{- end -}}
+  {{- if gt (len $page.Pages) 0 -}}
+    {{- $schema = merge $schema (dict "numberOfItems" (len $page.Pages)) -}}
+  {{- end -}}
+{{- end -}}
+
+<script type="application/ld+json">{{ $schema | jsonify | safeJS }}</script>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ or .Params.lang .Site.Language.LanguageCode .Site.Language.Lang "zh-CN" }}">
+<html lang="{{ or .Params.lang .Site.Language.Locale .Site.Language.Lang "zh-CN" }}">
   <head>
     {{ $noop := .WordCount }}
     <meta charset="utf-8" />

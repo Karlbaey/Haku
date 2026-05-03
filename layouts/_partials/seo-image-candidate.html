@@ -1,0 +1,18 @@
+{{- $value := .value -}}
+{{- $src := "" -}}
+{{- $alt := "" -}}
+{{- if $value -}}
+  {{- if reflect.IsMap $value -}}
+    {{- $src = strings.TrimSpace (printf "%v" (or $value.src $value.image $value.url $value.path "")) -}}
+    {{- $alt = strings.TrimSpace (printf "%v" (or $value.alt $value.title "")) -}}
+  {{- else if reflect.IsSlice $value -}}
+    {{- if gt (len $value) 0 -}}
+      {{- $nested := partial "seo-image-candidate.html" (dict "value" (index $value 0)) | transform.Unmarshal -}}
+      {{- $src = $nested.src -}}
+      {{- $alt = $nested.alt -}}
+    {{- end -}}
+  {{- else -}}
+    {{- $src = strings.TrimSpace (printf "%v" $value) -}}
+  {{- end -}}
+{{- end -}}
+{{- dict "src" $src "alt" $alt | jsonify -}}

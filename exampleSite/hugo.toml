@@ -1,7 +1,8 @@
 theme = "Haku"
 baseURL = "https://example.org/"
-languageCode = "zh-CN"
+locale = "zh-CN"
 title = "Haku Example"
+enableRobotsTXT = true
 disablePathToLower = true
 
 [taxonomies]
@@ -21,6 +22,11 @@ baseName = "rss"
 subtitle = "Theme preview"
 description = "Example site for the Haku theme"
 mainSections = ["posts"]
+
+[params.seo]
+defaultImage = "/og-default.png"
+logo = "/favicon.png"
+favicon = "/favicon.png"
 
 [params.posts]
 excerptLength = 60

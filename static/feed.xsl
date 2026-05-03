@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:atom="http://www.w3.org/2005/Atom">
   <xsl:output method="html" version="1.0" encoding="UTF-8" indent="yes" />
 
   <xsl:template match="/">
@@ -8,6 +8,9 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title><xsl:value-of select="/rss/channel/title" /> RSS</title>
+        <xsl:if test="string-length(/rss/channel/image/url) &gt; 0">
+          <link rel="icon" href="{/rss/channel/image/url}" />
+        </xsl:if>
         <style>
           :root {
             color-scheme: light dark;
@@ -221,7 +224,7 @@
           <p class="description"><xsl:value-of select="/rss/channel/description" /></p>
 
           <div class="meta">
-            <span>订阅地址：<a href="{/rss/channel/link}rss.xml"><xsl:value-of select="/rss/channel/link" />rss.xml</a></span>
+            <span>订阅地址：<a href="{/rss/channel/atom:link/@href}"><xsl:value-of select="/rss/channel/atom:link/@href" /></a></span>
             <span>主页：<a href="{/rss/channel/link}"><xsl:value-of select="/rss/channel/link" /></a></span>
           </div>
 

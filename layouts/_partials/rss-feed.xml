@@ -2,10 +2,11 @@
 {{ printf "<?xml-stylesheet type=\"text/xsl\" href=%q?>\n" ("feed.xsl" | relURL) | safeHTML }}
 {{- $page := . -}}
 {{- $site := .Site -}}
+{{- $seo := partial "seo-context.html" (dict "page" $page) | transform.Unmarshal -}}
 {{- $pages := cond $page.IsHome $site.RegularPages $page.RegularPages -}}
 {{- $pages = $pages.ByDate.Reverse -}}
-{{- $title := cond $page.IsHome $site.Title (printf "%s | %s" $page.Title $site.Title) -}}
-{{- $description := $page.Description | default (cond $page.IsHome ($site.Params.description | default $site.Title) (printf "%s 的最新内容" $page.Title)) -}}
+{{- $title := $seo.title -}}
+{{- $description := $seo.description -}}
 {{- $excerptLength := $site.Params.posts.excerptLength | default 140 -}}
 {{- $self := "" -}}
 {{- with $page.OutputFormats.Get "RSS" -}}
@@ -21,12 +22,19 @@
     <link>{{ $page.Permalink }}</link>
     <description>{{ $description }}</description>
     <generator>Hugo</generator>
-    <language>{{ $site.Language.LanguageCode | default $site.Language.Lang | default "zh-CN" }}</language>
+    <language>{{ $seo.languageCode }}</language>
     {{- with $lastBuildDate }}
     <lastBuildDate>{{ . }}</lastBuildDate>
     {{- end }}
     {{- with $self }}
     <atom:link href="{{ . }}" rel="self" type="application/rss+xml" />
+    {{- end }}
+    {{- with $seo.faviconURL }}
+    <image>
+      <url>{{ . }}</url>
+      <title>{{ $site.Title }}</title>
+      <link>{{ $site.Home.Permalink }}</link>
+    </image>
     {{- end }}
     {{- range $pages }}
     <item>

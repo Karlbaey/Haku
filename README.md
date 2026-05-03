@@ -39,6 +39,7 @@ theme = "Haku"
 建议至少合并这些配置：
 
 ```toml
+enableRobotsTXT = true
 disablePathToLower = true
 
 [taxonomies]
@@ -58,6 +59,12 @@ baseName = "rss"
 subtitle = "站点副标题"
 description = "站点描述"
 mainSections = ["posts"]
+
+[params.seo]
+defaultImage = "/images/og-default.png"
+logo = "/favicon.png"
+favicon = "/favicon.png"
+twitterSite = "@example"
 
 [params.posts]
 excerptLength = 60
@@ -98,6 +105,53 @@ license = "cc-by-nc-sa-4.0"
 date = ["date", "publishDate", "publishdate", "pubDate", "pubdate"]
 lastmod = ["lastmod", "modified", "updated"]
 ```
+
+### SEO
+
+主题默认会输出：
+
+- canonical URL
+- Open Graph / Twitter Card 元数据
+- `BlogPosting` / `CollectionPage` / `WebSite` JSON-LD
+- `robots` meta
+- 自定义 `robots.txt` 模板
+- RSS 浏览器视图和 RSS `<image>` 共用站点 favicon
+
+推荐至少配置：
+
+```toml
+[params.seo]
+defaultImage = "/images/og-default.png"
+logo = "/favicon.png"
+favicon = "/favicon.png"
+```
+
+文章页分享图按下面顺序解析：
+
+- `seo.images[0]`
+- `images[0]`
+- `cover`
+- `featuredImage`
+- `featured`
+- page bundle 中命名匹配 `cover*` / `featured*` / `og*` 的资源
+- `params.seo.defaultImage`
+- 站点 favicon
+
+页面级 SEO 覆盖支持这些 front matter：
+
+```toml
+description = "文章摘要"
+images = ["/images/post-cover.png"]
+
+[seo]
+title = "自定义 SEO 标题"
+description = "覆盖默认描述"
+canonical = "https://example.org/custom-url/"
+noindex = true
+images = ["/images/post-og.png"]
+```
+
+默认情况下，首页、文章页、section、taxonomy / term 和友链页都会保持可索引；只有显式设置 `seo.noindex = true` 时才会输出 `noindex,nofollow`。
 
 ## 可选功能
 
@@ -206,6 +260,8 @@ themes\Haku\.tools\pagefind\pagefind_extended.exe
 ```bash
 ./themes/Haku/scripts/pagefind.sh --site public
 ```
+
+如果你启用了 `enableRobotsTXT = true`，构建产物里还会包含主题提供的 `robots.txt`，并自动指向 `sitemap.xml`。
 
 ## 内容组件
 
