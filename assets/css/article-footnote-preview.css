@@ -33,12 +33,22 @@ body.footnote-preview-mobile-open {
   transition:
     background-color 160ms ease,
     color 160ms ease,
-    box-shadow 160ms ease;
+    box-shadow 160ms ease,
+    transform 180ms ease;
+  scroll-margin-top: 6rem;
 }
 
 .markdown a.footnote-ref:is(:hover, :focus-visible, [data-footnote-preview-active="true"]) {
   background: var(--article-footnote-ref-bg);
   box-shadow: 0 0 0 1px var(--article-footnote-ref-ring);
+}
+
+.markdown a.footnote-ref[data-footnote-returned="true"] {
+  background: color-mix(in srgb, var(--article-footnote-ref-bg) 88%, transparent);
+  box-shadow:
+    0 0 0 1px var(--article-footnote-ref-ring),
+    0 0 0 0.35rem color-mix(in srgb, var(--article-footnote-ref-ring) 22%, transparent);
+  transform: translateY(-0.04em);
 }
 
 .footnote-preview-layer {
@@ -237,6 +247,16 @@ body.footnote-preview-mobile-open {
       0 22px 42px #03071266,
       0 8px 18px #03071252;
     --article-footnote-card-handle: #4b5a70;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .markdown a.footnote-ref {
+    transition:
+      background-color 1ms linear,
+      color 1ms linear,
+      box-shadow 1ms linear,
+      transform 1ms linear;
   }
 }
 

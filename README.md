@@ -178,6 +178,12 @@ data/friends.toml
 
 友链申请按钮需要配置 `params.friendsApplication`，并会读取主题内置的 `data/friend_link_fields.toml` 字段定义。你也可以在站点自己的 `data/friend_link_fields.toml` 中覆盖它。
 
+### 关于我
+
+创建 `content/about.md` 或 `content/about/index.md` 即可启用“关于我”页面。
+
+这个页面直接复用主题现有的文章页模板，因此正文样式、目录、版权区和评论区行为都和普通文章一致。只要页面存在，首页导航会自动显示“关于我”入口。
+
 ### 页脚
 
 可选配置：

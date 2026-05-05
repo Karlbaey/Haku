@@ -2,6 +2,7 @@
 {{ $homePath := $page.Site.Home.RelPermalink }}
 {{ $currentPath := .currentPath | default $page.RelPermalink }}
 {{ $isHomePage := eq $currentPath $homePath }}
+{{ $aboutPage := or ($page.Site.GetPage "/about") ($page.Site.GetPage "page" "about") }}
 {{ $tagsPage := $page.Site.GetPage "/tags" }}
 {{ $friendsPage := $page.Site.GetPage "/friends" }}
 {{ $rssFeed := $page.Site.Home.OutputFormats.Get "RSS" }}
@@ -14,6 +15,9 @@
   {{ end }}
 
   <div class="site-nav-links">
+    {{ with $aboutPage }}
+      <a href="{{ .RelPermalink }}" class="site-nav-link">关于我</a>
+    {{ end }}
     {{ with $tagsPage }}
       <a href="{{ .RelPermalink }}" class="site-nav-link">所有标签</a>
     {{ end }}
