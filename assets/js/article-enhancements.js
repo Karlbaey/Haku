@@ -6,15 +6,18 @@
   const HEADING_ANCHOR_SELECTOR = "[data-heading-anchor-link]";
   const SVG_NAMESPACE = "http://www.w3.org/2000/svg";
   const FOOTNOTE_REF_SELECTOR = `${MARKDOWN_SELECTOR} a.footnote-ref`;
+  const FOOTNOTE_BACKREF_SELECTOR = `${MARKDOWN_SELECTOR} .footnotes a.footnote-backref, ${MARKDOWN_SELECTOR} .footnotes a[role='doc-backlink']`;
   const FOOTNOTE_DESKTOP_MEDIA_QUERY = "(hover: hover) and (pointer: fine)";
   const FOOTNOTE_MOBILE_OPEN_CLASS = "footnote-preview-mobile-open";
   const FOOTNOTE_HIDE_DELAY = 140;
   const FOOTNOTE_MOBILE_CLOSE_DURATION = 280;
+  const FOOTNOTE_RETURN_HIGHLIGHT_DURATION = 1800;
   const FIGURE_SELECTOR = 'figure[data-rehype-pretty-code-figure]';
   const BUTTON_SELECTOR = "[data-code-copy-button]";
   const MIN_ZOOMABLE_IMAGE_SIZE = 64;
   const RESET_DELAY = 1800;
   const footnoteDesktopMedia = window.matchMedia(FOOTNOTE_DESKTOP_MEDIA_QUERY);
+  const reducedMotionMedia = window.matchMedia("(prefers-reduced-motion: reduce)");
   const resetTimers = new WeakMap();
 
   let initialized = false;
@@ -29,6 +32,8 @@
   let activeFootnoteRef = null;
   let footnoteHideTimer = 0;
   let footnoteCloseTimer = 0;
+  let activeFootnoteReturnTarget = null;
+  let footnoteReturnTimer = 0;
   let previousBodyPaddingRight = null;
 
   function getButtonLabel(state) {
@@ -440,6 +445,24 @@
     footnoteCloseTimer = 0;
   }
 
+  function clearFootnoteReturnTimer() {
+    if (!footnoteReturnTimer) {
+      return;
+    }
+
+    window.clearTimeout(footnoteReturnTimer);
+    footnoteReturnTimer = 0;
+  }
+
+  function clearFootnoteReturnHighlight() {
+    clearFootnoteReturnTimer();
+
+    if (activeFootnoteReturnTarget) {
+      activeFootnoteReturnTarget.removeAttribute("data-footnote-returned");
+      activeFootnoteReturnTarget = null;
+    }
+  }
+
   function getFootnoteItem(ref) {
     const href = ref.getAttribute("href");
     if (!href || !href.startsWith("#")) {
@@ -448,6 +471,73 @@
 
     const item = document.getElementById(decodeURIComponent(href.slice(1)));
     return item instanceof HTMLLIElement ? item : null;
+  }
+
+  function getFootnoteReturnReference(link) {
+    const href = link.getAttribute("href");
+    if (!href || !href.startsWith("#")) {
+      return null;
+    }
+
+    const target = document.getElementById(decodeURIComponent(href.slice(1)));
+    if (!(target instanceof HTMLElement)) {
+      return null;
+    }
+
+    if (target instanceof HTMLAnchorElement && target.matches("a.footnote-ref")) {
+      return target;
+    }
+
+    const nestedRef = target.querySelector("a.footnote-ref");
+    return nestedRef instanceof HTMLAnchorElement ? nestedRef : null;
+  }
+
+  function getFootnoteReturnScrollTarget(ref) {
+    return ref.closest("p, li, blockquote, td, th") || ref;
+  }
+
+  function getFootnoteReturnOffset() {
+    return Math.min(180, Math.max(72, window.innerHeight * 0.22));
+  }
+
+  function updateHashWithoutJump(hash) {
+    if (!hash) {
+      return;
+    }
+
+    const nextUrl = new URL(window.location.href);
+    nextUrl.hash = hash;
+
+    if (nextUrl.hash === window.location.hash) {
+      return;
+    }
+
+    window.history.pushState(null, "", nextUrl);
+  }
+
+  function flashFootnoteReturnTarget(target) {
+    clearFootnoteReturnHighlight();
+    activeFootnoteReturnTarget = target;
+    target.setAttribute("data-footnote-returned", "true");
+
+    footnoteReturnTimer = window.setTimeout(() => {
+      if (activeFootnoteReturnTarget === target) {
+        target.removeAttribute("data-footnote-returned");
+        activeFootnoteReturnTarget = null;
+      }
+
+      footnoteReturnTimer = 0;
+    }, FOOTNOTE_RETURN_HIGHLIGHT_DURATION);
+  }
+
+  function scrollToFootnoteReturnTarget(target) {
+    const scrollTarget = getFootnoteReturnScrollTarget(target);
+    const top = window.scrollY + scrollTarget.getBoundingClientRect().top - getFootnoteReturnOffset();
+
+    window.scrollTo({
+      top: Math.max(0, Math.round(top)),
+      behavior: reducedMotionMedia.matches ? "auto" : "smooth",
+    });
   }
 
   function ensureFootnoteUi() {
@@ -754,6 +844,40 @@
     });
   }
 
+  function handleFootnoteBackrefClick(event) {
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+      return;
+    }
+
+    const target = event.target;
+    if (!(target instanceof Element)) {
+      return;
+    }
+
+    const link = target.closest(FOOTNOTE_BACKREF_SELECTOR);
+    if (!(link instanceof HTMLAnchorElement)) {
+      return;
+    }
+
+    const returnTarget = getFootnoteReturnReference(link);
+    if (!returnTarget) {
+      return;
+    }
+
+    event.preventDefault();
+    closeFootnotePreview();
+    updateHashWithoutJump(link.getAttribute("href"));
+
+    try {
+      returnTarget.focus({ preventScroll: true });
+    } catch (error) {
+      returnTarget.focus();
+    }
+
+    scrollToFootnoteReturnTarget(returnTarget);
+    flashFootnoteReturnTarget(returnTarget);
+  }
+
   function handleDocumentClick(event) {
     const target = event.target;
     if (!(target instanceof Element)) {
@@ -796,6 +920,7 @@
     installHeadingAnchors();
     installZoomableImages();
     document.addEventListener("click", handleCopyButtonClick);
+    document.addEventListener("click", handleFootnoteBackrefClick);
     document.addEventListener("click", handleDocumentClick);
     document.addEventListener("pointerdown", handleFootnotePointerDown);
     document.addEventListener("keydown", handleEscape);

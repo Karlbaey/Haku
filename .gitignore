@@ -4,4 +4,4 @@
 .tools/
 node_modules/
 public/
-exampleSite/
+exampleSite/public/
