@@ -1,0 +1,29 @@
+{{ define "meta" }}
+  {{ partial "head.html" (dict
+    "page" .
+    "title" (printf "404 | %s" site.Title)
+    "description" "你来到了一片什么都没有的荒野。"
+    "ogType" "website"
+  ) }}
+{{ end }}
+
+{{ define "styles" }}
+  {{ partial "style-bundle.html" (dict
+    "paths" (slice "css/error-page.css")
+    "target" "css/bundles/404.css"
+  ) }}
+{{ end }}
+
+{{ define "main" }}
+  <main
+    class="page-main not-found-main"
+    style="--not-found-icon-url: url('{{ "icons/wilderness.svg" | relURL }}');"
+    data-pagefind-ignore="all"
+  >
+    <section class="not-found-page" aria-label="404">
+      <span class="not-found-icon" aria-hidden="true"></span>
+      <p class="not-found-message">你来到了一片什么都没有的荒野。</p>
+      <a class="not-found-home-link" href="{{ site.Home.RelPermalink }}">返回主页</a>
+    </section>
+  </main>
+{{ end }}
