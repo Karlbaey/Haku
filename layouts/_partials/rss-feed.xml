@@ -3,7 +3,8 @@
 {{- $page := . -}}
 {{- $site := .Site -}}
 {{- $seo := partial "seo-context.html" (dict "page" $page) | transform.Unmarshal -}}
-{{- $pages := cond $page.IsHome $site.RegularPages $page.RegularPages -}}
+{{- $mainSections := $site.Params.mainSections | default $site.MainSections | default (slice "articles") -}}
+{{- $pages := where (cond $page.IsHome $site.RegularPages $page.RegularPages) "Section" "in" $mainSections -}}
 {{- $pages = $pages.ByDate.Reverse -}}
 {{- $title := $seo.title -}}
 {{- $description := $seo.description -}}

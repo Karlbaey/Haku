@@ -18,24 +18,39 @@
   {{ range site.Taxonomies.tags.ByCount }}
     {{ $terms = $terms | append (dict "name" .Page.Title "href" .Page.RelPermalink "count" .Count) }}
   {{ end }}
+  {{ $pages := .Pages.ByDate.Reverse }}
+  {{ $paginator := .Paginate $pages }}
   <main class="page-main" data-pagefind-ignore="all">
-    <a class="article-back-link" href="{{ site.Home.RelPermalink }}">← 返回首页</a>
+    <div class="tag-page tag-page--term">
+      <a class="article-back-link" href="{{ site.Home.RelPermalink }}">← 返回首页</a>
 
-    <header class="tag-page-header">
-      <h1>#{{ .Title }}</h1>
-      <p class="tag-page-description">共 {{ len .Pages }} 篇文章</p>
-    </header>
+      <header class="tag-page-header">
+        <p class="tag-page-eyebrow">标签归档</p>
+        <div class="tag-page-heading">
+          <h1>#{{ .Title }}</h1>
+          <p class="tag-page-count">共 {{ len .Pages }} 篇文章</p>
+        </div>
+      </header>
 
-    {{ partial "tag-directory.html" (dict "terms" $terms "activeTag" .Title) }}
+      {{ partial "tag-directory.html" (dict
+        "terms" $terms
+        "activeTag" .Title
+        "collapsible" true
+        "title" "全部标签"
+        "summary" (printf "切换到其他标签，当前共 %d 个标签" (len $terms))
+      ) }}
 
-    {{ if gt (len .Pages) 0 }}
-      <section class="article-list" aria-label="{{ .Title }} 标签文章列表">
-        {{ range .Pages.ByDate.Reverse }}
-          {{ partial "article-card.html" (dict "page" .) }}
-        {{ end }}
-      </section>
-    {{ else }}
-      <p class="empty-state">这个标签下暂时还没有文章。</p>
-    {{ end }}
+      {{ if gt (len $paginator.Pages) 0 }}
+        <section class="article-list tag-article-list" aria-label="{{ .Title }} 标签文章列表">
+          {{ range $paginator.Pages }}
+            {{ partial "article-card.html" (dict "page" .) }}
+          {{ end }}
+        </section>
+
+        {{ partial "pagination.html" (dict "paginator" $paginator) }}
+      {{ else }}
+        <p class="empty-state">这个标签下暂时还没有文章。</p>
+      {{ end }}
+    </div>
   </main>
 {{ end }}

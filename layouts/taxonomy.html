@@ -19,17 +19,23 @@
     {{ $terms = $terms | append (dict "name" .Page.Title "href" .Page.RelPermalink "count" .Count) }}
   {{ end }}
   <main class="page-main" data-pagefind-ignore="all">
-    <a class="article-back-link" href="{{ site.Home.RelPermalink }}">← 返回首页</a>
+    <div class="tag-page tag-page--taxonomy">
+      <a class="article-back-link" href="{{ site.Home.RelPermalink }}">← 返回首页</a>
 
-    <header class="tag-page-header">
-      <h1>标签</h1>
-      <p class="tag-page-description">共 {{ len $terms }} 个标签</p>
-    </header>
+      <header class="tag-page-header">
+        <p class="tag-page-eyebrow">标签索引</p>
+        <div class="tag-page-heading">
+          <h1>标签</h1>
+          <p class="tag-page-count">共 {{ len $terms }} 个标签</p>
+        </div>
+        <p class="tag-page-description">按标签浏览站内内容，桌面端可直接使用 <kbd>Ctrl</kbd> + <kbd>F</kbd> 快速搜索标签。</p>
+      </header>
 
-    {{ if gt (len $terms) 0 }}
-      {{ partial "tag-directory.html" (dict "terms" $terms) }}
-    {{ else }}
-      <p class="empty-state">暂时还没有可浏览的标签。</p>
-    {{ end }}
+      {{ if gt (len $terms) 0 }}
+        {{ partial "tag-directory.html" (dict "terms" $terms) }}
+      {{ else }}
+        <p class="empty-state">暂时还没有可浏览的标签。</p>
+      {{ end }}
+    </div>
   </main>
 {{ end }}

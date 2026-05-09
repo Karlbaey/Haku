@@ -1,18 +1,51 @@
 {{ $terms := .terms | default (slice) }}
 {{ $activeTag := .activeTag | default "" }}
+{{ $isCollapsible := .collapsible | default false }}
+{{ $title := .title | default "标签列表" }}
+{{ $summary := .summary | default (printf "共 %d 个标签" (len $terms)) }}
 
-<ul class="tag-directory" aria-label="标签列表">
-  {{ range $terms }}
-    {{ $name := .name | default .Page.Title }}
-    {{ $href := .href | default .Page.RelPermalink }}
-    <li class="tag-directory-item">
-      <a
-        class="tag-directory-link{{ if eq $activeTag $name }} tag-directory-link--active{{ end }}"
-        href="{{ $href }}"
-        {{ if eq $activeTag $name }}aria-current="page"{{ end }}
-      >
-        <span>#{{ $name }}</span>
-      </a>
-    </li>
-  {{ end }}
-</ul>
+{{ if $isCollapsible }}
+  <details class="tag-directory-panel">
+    <summary class="tag-directory-summary">
+      <span class="tag-directory-summary-title">{{ $title }}</span>
+      <span class="tag-directory-summary-meta">{{ $summary }}</span>
+      <span class="tag-directory-summary-icon" aria-hidden="true"></span>
+    </summary>
+
+    <ul class="tag-directory" aria-label="{{ $title }}">
+      {{ range $terms }}
+        {{ $name := .name | default .Page.Title }}
+        {{ $href := .href | default .Page.RelPermalink }}
+        {{ $count := .count | default .Count }}
+        <li class="tag-directory-item">
+          <a
+            class="tag-directory-link{{ if eq $activeTag $name }} tag-directory-link--active{{ end }}"
+            href="{{ $href }}"
+            {{ if eq $activeTag $name }}aria-current="page"{{ end }}
+          >
+            <span class="tag-directory-link-name">#{{ $name }}</span>
+            {{ with $count }}<span class="tag-directory-link-count">{{ . }}</span>{{ end }}
+          </a>
+        </li>
+      {{ end }}
+    </ul>
+  </details>
+{{ else }}
+  <ul class="tag-directory" aria-label="{{ $title }}">
+    {{ range $terms }}
+      {{ $name := .name | default .Page.Title }}
+      {{ $href := .href | default .Page.RelPermalink }}
+      {{ $count := .count | default .Count }}
+      <li class="tag-directory-item">
+        <a
+          class="tag-directory-link{{ if eq $activeTag $name }} tag-directory-link--active{{ end }}"
+          href="{{ $href }}"
+          {{ if eq $activeTag $name }}aria-current="page"{{ end }}
+        >
+          <span class="tag-directory-link-name">#{{ $name }}</span>
+          {{ with $count }}<span class="tag-directory-link-count">{{ . }}</span>{{ end }}
+        </a>
+      </li>
+    {{ end }}
+  </ul>
+{{ end }}

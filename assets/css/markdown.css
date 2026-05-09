@@ -327,8 +327,3 @@
   font-weight: 640;
 }
 
-.markdown kbd {
-  background: var(--inline-code-bg);
-  padding: 0.1em 0.32em;
-  font-size: 0.82em;
-}

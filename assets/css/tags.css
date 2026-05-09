@@ -25,6 +25,17 @@
   margin-top: 0;
 }
 
+.tag-page {
+  display: grid;
+  gap: 1.6rem;
+  line-height: 1.8;
+}
+
+.tag-page-header {
+  display: grid;
+  gap: 0.75rem;
+}
+
 .tag-page-header h1 {
   margin: 0;
   font-size: clamp(1.8rem, 1.55rem + 1vw, 2.2rem);
@@ -36,18 +47,101 @@
 }
 
 .tag-page-description {
-  margin: 0.75rem 0 0;
+  margin: 0;
   color: var(--muted);
+  max-width: 42rem;
+  font-size: 1rem;
+  line-height: 1.9;
+}
+
+.tag-page-eyebrow {
+  margin: 0 0 0.7rem;
+  color: var(--muted);
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.tag-page-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem 1.2rem;
+}
+
+.tag-page-count {
+  margin: 0;
+  color: var(--meta);
+  font-size: 0.96rem;
+  line-height: 1.7;
+  white-space: nowrap;
+}
+
+.tag-directory-panel {
+  border: 1px solid var(--tag-pill-border);
+  border-radius: 1rem;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--surface) 92%, transparent) 0%, transparent 100%),
+    var(--surface);
+  overflow: hidden;
+}
+
+.tag-directory-summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  min-height: 3.25rem;
+  padding: 0.85rem 1rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.tag-directory-summary::-webkit-details-marker {
+  display: none;
+}
+
+.tag-directory-summary-title {
+  color: var(--heading);
+  font-family: var(--font-title);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.tag-directory-summary-meta {
+  flex: 1;
+  min-width: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.75;
+}
+
+.tag-directory-summary-icon {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  color: var(--muted);
+  transform: rotate(45deg) translateY(-0.1rem);
+  transition: transform 180ms ease;
+}
+
+.tag-directory-panel[open] .tag-directory-summary-icon {
+  transform: rotate(225deg) translateY(-0.04rem);
 }
 
 .tag-directory {
   list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
   gap: 0.75rem;
-  margin: 1.5rem 0 0;
+  margin: 0;
   padding: 0;
+}
+
+.tag-directory-panel .tag-directory {
+  padding: 0 1rem 1rem;
 }
 
 .tag-directory-item {
@@ -55,17 +149,39 @@
 }
 
 .tag-directory-link {
-  display: inline-flex;
-  min-height: 2.5rem;
+  display: flex;
+  min-height: 2.85rem;
   align-items: center;
-  justify-content: center;
-  padding: 0.55rem 1rem;
+  justify-content: space-between;
+  gap: 0.8rem;
+  width: 100%;
+  padding: 0.7rem 0.95rem;
   border: 1px solid var(--tag-pill-border);
   border-radius: 0.75rem;
   text-decoration: none;
   background: var(--tag-pill-bg);
   border-color: var(--tag-pill-border);
   color: var(--tag-pill-text);
+  line-height: 1.6;
+}
+
+.tag-directory-link-name {
+  min-width: 0;
+}
+
+.tag-directory-link-count {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.8rem;
+  min-height: 1.8rem;
+  padding: 0 0.45rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--tag-pill-active-bg) 70%, transparent);
+  color: var(--meta);
+  font-size: 0.84rem;
+  line-height: 1;
 }
 
 .tag-directory-link:hover {
@@ -79,4 +195,51 @@
   background: var(--tag-pill-active-bg);
   border-color: var(--tag-pill-active-border);
   color: var(--tag-pill-active-text);
+}
+
+.tag-directory-link--active .tag-directory-link-count,
+.tag-directory-link:hover .tag-directory-link-count {
+  color: inherit;
+}
+
+.tag-article-list {
+  margin-top: 0;
+}
+
+.tag-article-list .article-title {
+  line-height: 1.5;
+}
+
+.tag-article-list .article-description {
+  margin-top: 0.95rem;
+  line-height: 1.9;
+}
+
+.tag-article-list .article-meta {
+  margin-top: 0.9rem;
+  line-height: 1.85;
+}
+
+@media (max-width: 767px) {
+  .tag-page {
+    gap: 1.2rem;
+  }
+
+  .tag-page-heading {
+    align-items: flex-start;
+  }
+
+  .tag-directory-summary {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .tag-directory-summary-meta {
+    flex-basis: 100%;
+    order: 3;
+  }
+
+  .tag-directory {
+    grid-template-columns: repeat(auto-fit, minmax(8.6rem, 1fr));
+  }
 }
