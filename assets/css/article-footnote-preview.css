@@ -1,6 +1,7 @@
 :root {
   --article-footnote-ref-bg: #e7eef8;
   --article-footnote-ref-ring: #c3d1e7;
+  --article-footnote-ref-return-ring: #c3d1e738;
   --article-footnote-overlay-bg: #10182659;
   --article-footnote-card-border: #d8d3cf;
   --article-footnote-card-bg: #f8f4f1;
@@ -44,10 +45,10 @@ body.footnote-preview-mobile-open {
 }
 
 .markdown a.footnote-ref[data-footnote-returned="true"] {
-  background: color-mix(in srgb, var(--article-footnote-ref-bg) 88%, transparent);
+  background: var(--article-footnote-ref-bg);
   box-shadow:
     0 0 0 1px var(--article-footnote-ref-ring),
-    0 0 0 0.35rem color-mix(in srgb, var(--article-footnote-ref-ring) 22%, transparent);
+    0 0 0 0.35rem var(--article-footnote-ref-return-ring);
   transform: translateY(-0.04em);
 }
 
@@ -241,6 +242,7 @@ body.footnote-preview-mobile-open {
   :root {
     --article-footnote-ref-bg: #1f3047;
     --article-footnote-ref-ring: #3d5677;
+    --article-footnote-ref-return-ring: #3d567738;
     --article-footnote-card-border: #324152;
     --article-footnote-card-bg: #192230;
     --article-footnote-card-shadow:

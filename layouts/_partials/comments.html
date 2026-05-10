@@ -27,6 +27,7 @@
   {{ $config := dict
     "defaultProvider" $defaultProvider
     "providers" $providers
+    "giscusThemeUrl" ("giscus-theme.css" | relURL)
     "article" (dict
       "id" (replaceRE "^/|/$" "" $page.RelPermalink)
       "title" $page.Title

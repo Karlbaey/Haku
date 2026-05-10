@@ -7,7 +7,11 @@
       return config.giscus.theme || "preferred_color_scheme";
     }
 
-    return new URL("/giscus-theme.css", window.location.origin).href;
+    if (config.giscusThemeUrl) {
+      return new URL(config.giscusThemeUrl, window.location.href).href;
+    }
+
+    return config.giscus.theme || "preferred_color_scheme";
   }
 
   function applyTabState(root, provider) {

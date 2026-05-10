@@ -117,6 +117,7 @@
       this.status = null;
       this.results = null;
       this.pagefind = null;
+      this.pagefindUrl = "";
       this.searchSectionPrefixes = [];
       this.searchToken = 0;
 
@@ -140,6 +141,7 @@
       this.status = this.querySelector("[data-search-status]");
       this.results = this.querySelector("[data-search-results]");
       this.searchSectionPrefixes = parseSearchSections(this.dataset.searchSections);
+      this.pagefindUrl = this.dataset.pagefindUrl || "pagefind/pagefind.js";
 
       if (!this.overlay || !this.trigger || !this.closeButton || !this.input || !this.status || !this.results) {
         return;
@@ -278,8 +280,7 @@
         return this.pagefind;
       }
 
-      const loadPagefind = new Function("return import('/pagefind/pagefind.js');");
-      const pagefind = await loadPagefind();
+      const pagefind = await import(this.pagefindUrl);
       if (typeof pagefind.options === "function") {
         await pagefind.options({ excerptLength: 18 });
       }

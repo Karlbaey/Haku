@@ -1,6 +1,7 @@
 {{ $mainSections := site.Params.mainSections | default site.MainSections | default (slice "articles") }}
+{{ $pagefindURL := "pagefind/pagefind.js" | relURL }}
 
-<home-search class="home-search" data-search-sections="{{ delimit $mainSections "," }}">
+<home-search class="home-search" data-search-sections="{{ delimit $mainSections "," }}" data-pagefind-url="{{ $pagefindURL }}">
   <button
     type="button"
     class="search-trigger"
