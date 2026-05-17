@@ -1,6 +1,6 @@
 (() => {
   const GISCUS_SCRIPT_SRC = "https://giscus.app/client.js";
-  const SODESU_SCRIPT_SRC = "https://cdn.jsdelivr.net/npm/sodesu-comment@0.5.1/dist/sodesu.aio.umd.js";
+  const SODESU_SCRIPT_SRC = "https://cdn.jsdmirror.com/npm/@karlbaey/sodesu-for-haku@latest/dist/sodesu.aio.umd.js";
   let sodesuInitPromise;
   function getGiscusThemeUrl(config) {
     if (window.location.protocol !== "https:") {
