@@ -18,7 +18,7 @@
 
 ## 编码风格和命名约定
 
-保持与现有风格一致：模板、CSS 和 JavaScript 代码使用两个空格缩进；文件名（例如 `article-card.html`、`search-overlay.js`）和 CSS 类名使用 kebab-case 命名法。保持 Hugo 局部模板的作用域狭窄，并按关注点分组，尤其是在现有的 SEO 和文章相关局部模板下。目前没有提交格式化配置，因此请保留现有格式，而不是引入新的工具驱动格式。
+保持与现有风格一致：模板、CSS 和 JavaScript 代码使用两个空格缩进；文件名（例如 `article-card.html`、`search-overlay.js`）和 CSS 类名使用 kebab-case 命名法。保持 Hugo 局部模板的作用域狭窄，并按关注点分组，尤其是在现有的 SEO 和文章相关局部模板下。换行一律使用Windows CRLF。
 
 严禁使用任何 `color-mix()` 函数，需要使用颜色时优先调用 CSS 变量，其次调用 CSS 原生颜色，最后才使用 Hex 编码颜色。
 
