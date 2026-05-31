@@ -18,6 +18,11 @@ home = ["HTML", "RSS"]
 [outputFormats.RSS]
 baseName = "rss"
 
+[sitemap]
+changefreq = "weekly"
+filename = "sitemap.xml"
+priority = 0.5
+
 [params]
 subtitle = "Theme preview"
 description = "Example site for the Haku theme"
