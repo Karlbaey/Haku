@@ -27,7 +27,7 @@
     {{ block "main" . }}{{ end }}
     {{ $footer := .Site.Params.footer }}
     {{ with $footer.text }}
-      <footer data-pagefind-ignore="all">
+      <footer>
         <div class="site-footer-inner">
           {{ with $footer.link }}
             <a href="{{ . }}" target="_blank" rel="noreferrer">{{ $footer.text }}</a>

@@ -4,7 +4,7 @@ Haku 是一个内容优先的 Hugo 主题，内置：
 
 - 首页文章流和分页
 - 标签归档
-- Pagefind 站内搜索
+- Google 站点搜索
 - Giscus / Sodesu 评论切换
 - 友情链接页面和申请表单
 - Hugo Pipes 资源打包
@@ -196,76 +196,19 @@ link = "https://example.org"
 
 ### 搜索
 
-搜索依赖 Pagefind，但这个主题不再通过 npm 引入它。生产构建时，先执行 Hugo，再对生成目录运行：
+首页导航内置了一个 Google 站点搜索表单。用户输入关键词后，主题会把请求提交给 Google，并在提交时把查询改写成 `site:<configured-host> <keyword>`。
+
+搜索限制值直接从站点的 `baseURL` 推导，不需要额外的主题参数，也不会从浏览器当前地址推断。比如 `https://example.org/blog/` 会被规范成 `example.org`，然后拼进最终的 `q=site:example.org <keyword>` 查询。
+
+因此，主题本身只依赖 Google 搜索，不需要额外生成本地搜索索引。正常执行 Hugo 构建即可：
 
 ```bash
-./themes/Haku/scripts/pagefind.sh --site public
-```
-
-`scripts/pagefind.sh` 会优先使用系统里的 `pagefind` / `pagefind_extended`，也支持读取主题目录下的 `./.tools/pagefind/` 本地二进制。推荐使用 `pagefind_extended`，它包含中日韩语言支持。
-
-Windows 原生环境请改用 `scripts/pagefind.ps1`。它会优先查找系统里的 `pagefind` / `pagefind_extended`，否则再查找主题目录下的 `.tools/pagefind/pagefind_extended.exe`。
-
-如果运行环境是 Cloudflare Pages，脚本会在构建时自动通过官方 Python 包安装 `pagefind[extended]`，不需要你把二进制提交到仓库，也不需要额外启用 Node。
-
-不想安装 Node 时，可选做法：
-
-```bash
-pipx install pagefind
-```
-
-或者下载官方独立二进制到下面这个路径，并给它可执行权限：
-
-```text
-themes/Haku/.tools/pagefind/pagefind_extended
-```
-
-`.tools/` 已加入 `.gitignore`，不会被误提交到 GitHub。
-
-#### Cloudflare Pages
-
-Cloudflare Pages 的 v3 build image 运行在 Linux x86_64，并预装了 Python。对于接入这个主题的 Hugo 站点，推荐直接把构建命令设成：
-
-```bash
-hugo && ./themes/Haku/scripts/pagefind.sh --site public
-```
-
-如果你的主题目录不叫 `themes/Haku`，把路径改成实际位置即可。
-
-脚本检测到 `CF_PAGES=1` 后，会自动执行官方 Python 方案来下载匹配平台的 Pagefind 二进制。默认固定到 `1.5.2`，也可以在 Pages 的环境变量里覆盖：
-
-```text
-PAGEFIND_VERSION=1.5.2
-```
-
-主题首页默认从 `params.mainSections` 中抓取内容；未设置时，会退回到 Hugo 的主分区推断结果。
-
-#### Windows
-
-如果你在 Windows 上本地构建 Hugo 站点，推荐流程是：
-
-```powershell
 hugo
-.\themes\Haku\scripts\pagefind.ps1 --site public
 ```
 
-可选安装方式：
+请确保站点配置里的 `baseURL` 指向真实可访问的域名；如果它仍然指向示例域名或本地地址，Google 也会按那个 host 去限制搜索结果。
 
-```powershell
-pipx install pagefind
-```
-
-或者把官方独立二进制放到：
-
-```text
-themes\Haku\.tools\pagefind\pagefind_extended.exe
-```
-
-如果你使用 Git Bash，也可以继续运行：
-
-```bash
-./themes/Haku/scripts/pagefind.sh --site public
-```
+搜索结果由 Google 提供，所以它更适合已经公开、可被搜索引擎抓取的站点。尚未发布到公网的内容，或显式禁止索引的页面，不保证会出现在搜索结果里。
 
 如果你启用了 `enableRobotsTXT = true`，构建产物里还会包含主题提供的 `robots.txt`，并自动指向 `sitemap.xml`。
 
