@@ -200,7 +200,7 @@ link = "https://example.org"
 
 搜索限制值直接从站点的 `baseURL` 推导，不需要额外的主题参数，也不会从浏览器当前地址推断。比如 `https://example.org/blog/` 会被规范成 `example.org`，然后拼进最终的 `q=site:example.org <keyword>` 查询。
 
-因此，主题本身不再依赖 Pagefind，也不需要额外生成本地搜索索引。正常执行 Hugo 构建即可：
+因此，主题本身只依赖 Google 搜索，不需要额外生成本地搜索索引。正常执行 Hugo 构建即可：
 
 ```bash
 hugo

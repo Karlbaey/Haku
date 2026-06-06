@@ -8,7 +8,7 @@
   {{ $mainSections := site.Params.mainSections | default site.MainSections | default (slice "articles") }}
   {{ $pages := where site.RegularPages "Section" "in" $mainSections }}
   {{ $paginator := .Paginate ($pages.ByDate.Reverse) }}
-  <main class="page-main" data-pagefind-ignore="all">
+  <main class="page-main">
     <header class="site-header">
       <div class="site-header-top">
         <h1 class="site-title">
