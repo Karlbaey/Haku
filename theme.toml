@@ -5,7 +5,7 @@ description = "卡尔白的纸箱📦"
 homepage = "https://"
 demosite = ""
 tags = ["blog", "responsive", "search", "comments", "tags"]
-features = ["hugo-pipes", "giscus", "sodesu", "math", "rss"]
+features = ["hugo-pipes", "giscus", "sodesu", "math", "rss", "archiving"]
 min_version = "0.128.0"
 
 [author]

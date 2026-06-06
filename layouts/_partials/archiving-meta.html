@@ -1,0 +1,11 @@
+{{- $page := .page -}}
+{{- $platform := strings.TrimSpace (printf "%v" ($page.Params.platform | default "")) -}}
+{{- if not $platform -}}
+  {{- $platform = "未注明平台" -}}
+{{- end -}}
+{{- $originalDate := partial "archiving-original-date.html" (dict "page" $page) | transform.Unmarshal -}}
+
+<div class="archiving-meta" aria-label="归档元信息">
+  <span class="archiving-meta-platform">[{{ $platform }}]</span>
+  <span class="archiving-meta-date">原始发布于 {{ $originalDate.display }}</span>
+</div>

@@ -31,6 +31,14 @@
 {{- end -}}
 
 {{- if not $src -}}
+  {{- $candidate = partial "seo-image-candidate.html" (dict "value" $page.Params.coverImage) | transform.Unmarshal -}}
+  {{- with $candidate.src -}}
+    {{- $src = partial "seo-image-source.html" (dict "page" $page "src" .) -}}
+    {{- $alt = $candidate.alt -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if not $src -}}
   {{- $candidate = partial "seo-image-candidate.html" (dict "value" $page.Params.featuredImage) | transform.Unmarshal -}}
   {{- with $candidate.src -}}
     {{- $src = partial "seo-image-source.html" (dict "page" $page "src" .) -}}
