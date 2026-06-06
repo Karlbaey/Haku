@@ -1,14 +1,31 @@
-{{ $mainSections := site.Params.mainSections | default site.MainSections | default (slice "articles") }}
-{{ $pagefindURL := "pagefind/pagefind.js" | relURL }}
+{{ $baseURL := strings.TrimSpace (printf "%v" site.BaseURL) }}
+{{ $siteSearchTarget := $baseURL }}
+{{ with urls.Parse $baseURL }}
+  {{ with .Host }}
+    {{ $siteSearchTarget = . }}
+  {{ end }}
+{{ end }}
 
-<home-search class="home-search" data-search-sections="{{ delimit $mainSections "," }}" data-pagefind-url="{{ $pagefindURL }}">
-  <button
-    type="button"
-    class="search-trigger"
-    aria-label="打开搜索"
-    aria-expanded="false"
-    data-search-trigger
-  >
+<form
+  class="home-search"
+  action="https://www.google.com/search"
+  method="get"
+  data-search-form
+  data-search-site="{{ $siteSearchTarget }}"
+>
+  <label class="search-input-wrap home-search-input-wrap">
+    <span class="visually-hidden">Google 搜索本站</span>
+    <input
+      type="search"
+      name="q"
+      class="search-input home-search-input"
+      data-search-input
+      placeholder="Google 搜索本站"
+      autocomplete="off"
+      spellcheck="false"
+    />
+  </label>
+  <button type="submit" class="search-trigger" aria-label="使用 Google 搜索本站" title="Google 搜索本站">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
       <path
         fill="currentColor"
@@ -16,38 +33,4 @@
       />
     </svg>
   </button>
-
-  <div class="search-overlay" hidden data-search-overlay>
-    <div class="search-panel" role="dialog" aria-modal="true" aria-labelledby="search-title">
-      <header class="search-panel-header">
-        <div>
-          <p class="search-eyebrow">站内搜索</p>
-          <h2 id="search-title" class="search-title">搜索内容</h2>
-        </div>
-        <button type="button" class="search-close" aria-label="关闭搜索" data-search-close>
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              d="M6.53 5.47a.75.75 0 0 1 1.06 0L12 9.88l4.41-4.4a.75.75 0 1 1 1.06 1.06L13.06 10.94l4.4 4.41a.75.75 0 0 1-1.06 1.06L12 12l-4.41 4.4a.75.75 0 0 1-1.06-1.06l4.4-4.4-4.4-4.41a.75.75 0 0 1 0-1.06Z"
-              fill="currentColor"
-            />
-          </svg>
-        </button>
-      </header>
-
-      <label class="search-input-wrap">
-        <span class="visually-hidden">搜索关键词</span>
-        <input
-          type="search"
-          class="search-input"
-          placeholder="搜索标题、标签、摘要和正文"
-          autocomplete="off"
-          spellcheck="false"
-          data-search-input
-        />
-      </label>
-
-      <p class="search-hint" data-search-status>输入关键词开始搜索，按 Esc 退出。</p>
-      <ul class="search-results" aria-live="polite" data-search-results></ul>
-    </div>
-  </div>
-</home-search>
+</form>

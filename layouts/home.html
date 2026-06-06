@@ -4,7 +4,6 @@
     "target" "css/bundles/home.css"
   ) }}
 {{ end }}
-
 {{ define "main" }}
   {{ $mainSections := site.Params.mainSections | default site.MainSections | default (slice "articles") }}
   {{ $pages := where site.RegularPages "Section" "in" $mainSections }}
@@ -35,6 +34,6 @@
 {{ end }}
 
 {{ define "scripts" }}
-  {{ $searchScript := resources.Get "js/search-overlay.js" | minify | fingerprint }}
+  {{ $searchScript := resources.Get "js/search-form.js" | minify | fingerprint }}
   <script src="{{ $searchScript.RelPermalink }}" integrity="{{ $searchScript.Data.Integrity }}" defer></script>
 {{ end }}

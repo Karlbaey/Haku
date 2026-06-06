@@ -2,7 +2,7 @@
 
 ## Summary
 
-Replace the current homepage `pagefind` search overlay with a lightweight search form that submits user queries to Google and limits results to the current site.
+Replace the current homepage `pagefind` search overlay with a lightweight search form that submits Google queries in `site:example.com keyword` form, with the site restriction derived from Hugo configuration.
 
 ## Goals
 
@@ -10,6 +10,7 @@ Replace the current homepage `pagefind` search overlay with a lightweight search
 - Let users type a keyword before leaving the site.
 - Use Google search results instead of local `pagefind` indexing.
 - Derive the target site from Hugo configuration without adding a new theme parameter.
+- Encode the site restriction directly inside the submitted `q` value instead of using a separate Google parameter.
 - Remove the now-unused homepage search overlay script path.
 
 ## Non-Goals
@@ -22,10 +23,11 @@ Replace the current homepage `pagefind` search overlay with a lightweight search
 ## Current State
 
 - The homepage navigation renders `layouts/_partials/search.html`.
-- That partial currently mounts a `home-search` custom element and an overlay UI.
-- The homepage loads `assets/js/search-overlay.js`.
-- The homepage bundle includes `assets/css/search.css`, which contains both trigger styles and overlay/result styles.
-- The README documents `pagefind` as the theme search solution.
+- That partial already renders an inline Google search form.
+- The current form submits the user keyword as `q` and the site restriction separately as `as_sitesearch`.
+- The site restriction is already derived from Hugo configuration via `site.BaseURL`, not from the browser location.
+- The homepage bundle includes `assets/css/search.css` for the compact navigation search form.
+- The README already documents Google-based search, but it still describes the old `as_sitesearch`-style request shape rather than the desired `site:` syntax.
 
 ## Proposed Behavior
 
@@ -35,47 +37,51 @@ Replace the current homepage `pagefind` search overlay with a lightweight search
 - Instead of opening an overlay, the UI shows a small inline search form in the navigation.
 - Users enter a keyword and submit the form with Enter or a submit button.
 - Submission opens Google search results for the keyword, restricted to the current site.
+- The outgoing query format is `site:<configured-host> <keyword>`.
 
 ### Search Request Shape
 
 - The form submits a `GET` request to `https://www.google.com/search`.
-- The visible input uses the `q` parameter for the keyword.
-- A hidden input uses the `as_sitesearch` parameter to limit results to the current site host.
-- The hidden site value is derived from `site.BaseURL` and reduced to the host portion so Google receives a clean site restriction.
+- The outgoing request uses a single `q` parameter.
+- Before submission, the theme rewrites the outgoing `q` value to `site:<configured-host> <keyword>`.
+- The configured host is derived from `site.BaseURL` and reduced to the host portion so Google receives a clean site restriction.
+- The site restriction source is Hugo configuration only; the browser address bar is never used to infer the host.
 
 ## Template Changes
 
 ### `layouts/_partials/search.html`
 
 - Replace the `home-search` custom element markup with a standard HTML `<form>`.
-- Remove overlay-specific attributes and elements such as:
-  - trigger-only button wiring
-  - overlay container
-  - dialog header
-  - status text
-  - result list
-- Keep the form self-contained so it can render without JavaScript.
+- Keep the inline form structure, but remove the hidden `as_sitesearch` field.
+- Keep the visible input as a plain keyword field so users do not need to type `site:` themselves.
 - Preserve the existing visual language as much as practical by reusing the current search class names where they still fit.
+- Render the configured host into the form as theme-controlled data so submit-time logic can build the final `q` string.
 
 ### Host Derivation
 
 - Use Hugo template functions to derive the host from `site.BaseURL`.
-- The derived value is written into the hidden `as_sitesearch` field.
+- The derived value is exposed to submit-time logic, not read from `window.location`.
 - If host extraction fails unexpectedly, the partial should fall back to the raw `site.BaseURL` string rather than rendering an empty site restriction.
+
+### Query Composition
+
+- The visible input remains a plain keyword field for the user.
+- On submit, the theme composes the final Google query as `site:<configured-host> <trimmed-keyword>`.
+- If the user submits an empty value, the theme still submits `site:<configured-host>` so Google stays restricted to the configured site.
+- If the typed value already starts with a `site:` operator, the theme should strip that leading operator before prepending its own configured-site prefix. This keeps the Hugo configuration authoritative and avoids duplicate `site:` clauses.
 
 ## Asset Changes
 
 ### `assets/css/search.css`
 
 - Keep styles required for the compact navigation search form.
-- Remove styles that exist only for the overlay implementation:
-  - full-screen overlay container
-  - modal panel
-  - close button behavior
-  - search status text
-  - result list and result cards
-  - body lock state for open overlay
 - Ensure the form works on both desktop and small screens within the existing homepage header layout.
+
+### `assets/js/search-form.js`
+
+- Add a small homepage script dedicated to submit-time query rewriting.
+- The script should read the configured host from rendered form data, not from `window.location`.
+- The script should transform the outgoing request into a single `q=site:<host> <keyword>` parameter before the browser leaves the page.
 
 ### `assets/js/search-overlay.js`
 
@@ -84,23 +90,23 @@ Replace the current homepage `pagefind` search overlay with a lightweight search
 
 ### `layouts/home.html`
 
-- Remove the script include for `search-overlay.js`.
-- Keep the existing CSS bundle entry if `search.css` still owns the navigation search form styles after cleanup.
+- Keep the existing CSS bundle entry because `search.css` still owns the navigation search form styles.
+- Load the lightweight `search-form.js` script for submit-time query rewriting.
 
 ## Documentation Changes
 
 ### `README.md`
 
-- Update the feature list and search documentation to describe Google site search instead of `pagefind`.
-- Remove instructions that claim search requires `pagefind` for the theme to function.
-- Keep unrelated `pagefind` references only if they still serve another documented feature; otherwise remove them to avoid misleading setup steps.
+- Keep the Google site search documentation.
+- Update the search section so it describes the actual request shape as `site:<configured-host> <keyword>`.
+- State explicitly that the site part comes from Hugo `baseURL`, not from the browser's current address.
 
 ## Error Handling and Edge Cases
 
-- Empty search submissions should still follow native browser behavior; no custom validation is required.
-- The form must not depend on JavaScript, so failure modes are limited to Google handling the request.
-- Host derivation should avoid including a trailing slash or path segment in `as_sitesearch`.
+- Empty search submissions should still submit a site-restricted Google query for the configured host.
+- Host derivation should avoid including a trailing slash or path segment in the generated `site:` operator.
 - The search UI should remain usable if CSS fails to load.
+- If the submit-time script fails to run, the request may degrade to a plain Google keyword search; this is acceptable as a failure mode, but the normal path must produce the `site:`-prefixed query.
 
 ## Testing and Verification
 
@@ -111,15 +117,15 @@ Replace the current homepage `pagefind` search overlay with a lightweight search
 - Open the generated homepage and confirm:
   - a search form appears in the homepage navigation
   - submitting a keyword sends the browser to Google
-  - the outgoing request includes `q=<keyword>`
-  - the outgoing request includes `as_sitesearch=<site-host>`
+  - the outgoing request includes a single `q=site:<site-host> <keyword>` parameter
+  - no `as_sitesearch` parameter is sent
 - Confirm there are no Hugo template errors or broken asset references in the build output.
 
 ### Regression Focus
 
 - Confirm the homepage still renders its navigation and header layout correctly.
-- Confirm removing the overlay script does not leave broken markup hooks or dead controls.
-- Confirm README instructions no longer describe a search setup path that the theme does not use.
+- Confirm the new submission script uses the configured host rather than the browser location.
+- Confirm README instructions match the shipped request shape.
 
 ## Implementation Notes
 
