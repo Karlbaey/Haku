@@ -36,6 +36,15 @@
   text-wrap: balance;
 }
 
+.markdown h1[id],
+.markdown h2[id],
+.markdown h3[id],
+.markdown h4[id],
+.markdown h5[id],
+.markdown h6[id] {
+  scroll-margin-top: 1.5rem;
+}
+
 .markdown h1 {
   font-size: clamp(2rem, 1.82rem + 0.55vw, 2.18rem);
   font-weight: 720;

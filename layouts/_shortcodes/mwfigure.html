@@ -42,7 +42,8 @@
 {{ end }}
 
 {{ $resolvedSrc := $src }}
-{{ with .Page.Resources.GetMatch $src }}
+{{ $image := .Page.Resources.GetMatch $src }}
+{{ with $image }}
   {{ $resolvedSrc = .RelPermalink }}
 {{ end }}
 
@@ -55,11 +56,11 @@
 <figure class="mw-figure mw-figure--{{ $side }}{{ with $class }} {{ . }}{{ end }}" style="{{ $style }}">
   {{ if $link }}
     <a class="mw-figure__media" href="{{ $link | safeURL }}">
-      <img src="{{ $resolvedSrc | safeURL }}" alt="{{ $alt }}" loading="lazy" decoding="async" />
+      <img src="{{ $resolvedSrc | safeURL }}" alt="{{ $alt }}" loading="lazy" decoding="async"{{ with $image }} width="{{ .Width }}" height="{{ .Height }}"{{ end }} />
     </a>
   {{ else }}
     <div class="mw-figure__media">
-      <img src="{{ $resolvedSrc | safeURL }}" alt="{{ $alt }}" loading="lazy" decoding="async" />
+      <img src="{{ $resolvedSrc | safeURL }}" alt="{{ $alt }}" loading="lazy" decoding="async"{{ with $image }} width="{{ .Width }}" height="{{ .Height }}"{{ end }} />
     </div>
   {{ end }}
   {{ if or $title $captionSource }}
