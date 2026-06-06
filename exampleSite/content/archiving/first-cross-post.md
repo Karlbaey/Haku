@@ -4,7 +4,6 @@ date: 2026-06-06T09:30:00+08:00
 originalDate: 2025-03-15
 platform: "Twitter"
 platformUrl: "https://example.org/twitter/longer-note"
-coverImage: "/images/mwfigure-demo.svg"
 draft: false
 ---
 

@@ -4,7 +4,6 @@ date: 2026-05-12T08:00:00+08:00
 originalDate: 2024-11-21
 platform: "即刻"
 platformUrl: "https://example.org/jike/brief-observation"
-coverImage: "/images/mwfigure-demo.svg"
 draft: false
 ---
 

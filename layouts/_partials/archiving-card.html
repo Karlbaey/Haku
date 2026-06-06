@@ -3,19 +3,14 @@
 {{- if not $platform -}}
   {{- $platform = "未注明平台" -}}
 {{- end -}}
-{{- $excerptLength := site.Params.posts.excerptLength | default 140 -}}
-{{- $summary := $page.Description | default ($page.Summary | plainify | strings.TrimSpace | truncate $excerptLength) -}}
 {{- $originalDate := partial "archiving-original-date.html" (dict "page" $page) | transform.Unmarshal -}}
 
 <article class="archiving-card">
   <a class="archiving-card-link" href="{{ $page.RelPermalink }}">
     <h2 class="archiving-card-title">
       <span>{{ $page.Title }}</span>
-      <span class="archiving-pill">[{{ $platform }}]</span>
+      <span class="archiving-card-platform">[{{ $platform }}]</span>
     </h2>
-    {{ with $summary }}
-      <p class="archiving-card-summary">{{ . }}</p>
-    {{ end }}
     <p class="archiving-card-date">
       <time datetime="{{ $originalDate.datetime }}">{{ $originalDate.display }}</time>
     </p>

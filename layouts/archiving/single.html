@@ -33,41 +33,28 @@
     {{ $backHref = .RelPermalink }}
     {{ $backLabel = "← 返回 Archiving" }}
   {{ end }}
-  {{ $coverImage := strings.TrimSpace (printf "%v" (.Params.coverImage | default "")) }}
   {{ $platformUrl := strings.TrimSpace (printf "%v" (.Params.platformUrl | default "")) }}
 
   <main class="page-main page-main--archiving-single">
     <a class="article-back-link" href="{{ $backHref }}">{{ $backLabel }}</a>
 
-    <div class="archiving-single{{ if not $coverImage }} archiving-single--no-cover{{ end }}">
-      {{ with $coverImage }}
-        <figure class="archiving-cover">
-          <img src="{{ . }}" alt="{{ $.Title }}" loading="eager" decoding="async" />
-        </figure>
-      {{ end }}
+    <article class="archiving-single">
+      <header class="archiving-body-header">
+        <h1>{{ .Title }}</h1>
+        {{ partial "archiving-meta.html" (dict "page" .) }}
+      </header>
 
-      <article class="archiving-body">
-        <header class="archiving-body-header">
-          <h1>{{ .Title }}</h1>
-          {{ partial "archiving-meta.html" (dict "page" .) }}
-        </header>
-        <div class="markdown archiving-content">
-          {{- $content := .Content -}}
-          {{- $content = replaceRE `<div class="footnotes"([^>]*)>\s*<hr>` `<div class="footnotes"$1 aria-labelledby="footnote-label"><hr><h2 id="footnote-label">脚注</h2>` $content 1 -}}
-          {{- $content | safeHTML -}}
-        </div>
-      </article>
-
-      {{ if $platformUrl }}
-        <a class="archiving-origin-card archiving-origin-card--link" href="{{ $platformUrl }}" target="_blank" rel="noreferrer">
-          {{ partial "archiving-meta.html" (dict "page" . "variant" "card" "showLinkLabel" true) }}
-        </a>
-      {{ else }}
-        <div class="archiving-origin-card">
-          {{ partial "archiving-meta.html" (dict "page" . "variant" "card") }}
-        </div>
-      {{ end }}
-    </div>
+      <div class="markdown archiving-content">
+        {{ with $platformUrl }}
+          <p class="archiving-origin-link">
+            <a class="archiving-meta-link" href="{{ . }}" target="_blank" rel="noopener noreferrer">查看原文</a>
+          </p>
+        {{ end }}
+        {{- $content := .Content -}}
+        {{- $content = replaceRE `<div class="footnotes"([^>]*)>\s*<hr>` `<div class="footnotes"$1 aria-labelledby="footnote-label"><hr><h2 id="footnote-label">脚注</h2>` $content 1 -}}
+        {{- $content | safeHTML -}}
+      </div>
+    </article>
   </main>
 {{ end }}
 

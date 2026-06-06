@@ -37,7 +37,7 @@
         {{ if gt (len $platformStats) 0 }}
           <ul class="archiving-platform-summary" aria-label="平台统计">
             {{ range $platformStats }}
-              <li><span>{{ .name }} ({{ .count }})</span></li>
+              <li>{{ .name }} {{ .count }}</li>
             {{ end }}
           </ul>
         {{ end }}
