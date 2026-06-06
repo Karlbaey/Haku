@@ -1,0 +1,23 @@
+{{- $page := .page -}}
+{{- $variant := .variant | default "header" -}}
+{{- $platform := strings.TrimSpace (printf "%v" ($page.Params.platform | default "")) -}}
+{{- if not $platform -}}
+  {{- $platform = "未注明平台" -}}
+{{- end -}}
+{{- $originalDate := partial "archiving-original-date.html" (dict "page" $page) | transform.Unmarshal -}}
+
+{{- if eq $variant "card" -}}
+  <div class="archiving-meta archiving-meta--card">
+    <p class="archiving-origin-card-eyebrow">来源平台</p>
+    <p class="archiving-origin-card-platform">{{ $platform }}</p>
+    <p class="archiving-origin-card-date">原始发布于 {{ $originalDate.display }}</p>
+    {{- if .showLinkLabel -}}
+      <p class="archiving-origin-card-cta">查看原文</p>
+    {{- end -}}
+  </div>
+{{- else -}}
+  <div class="archiving-meta archiving-meta--header">
+    <span class="archiving-pill archiving-pill--meta">{{ $platform }}</span>
+    <span>原始发布于 {{ $originalDate.display }}</span>
+  </div>
+{{- end -}}

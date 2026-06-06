@@ -1,0 +1,77 @@
+{{ define "meta" }}
+  {{ $description := .Description | default (.Summary | plainify | strings.TrimSpace | truncate 140) | default site.Params.description }}
+  {{ partial "head.html" (dict
+    "page" .
+    "title" (printf "%s | %s" .Title site.Title)
+    "description" $description
+    "ogType" "article"
+    "author" (.Params.author | default site.Params.author.name)
+  ) }}
+{{ end }}
+
+{{ define "styles" }}
+  {{ partial "style-bundle.html" (dict
+    "paths" (slice
+      "css/archiving.css"
+      "css/markdown.css"
+      "css/article-mw-figure.css"
+      "css/ext.css"
+      "css/article-code-copy.css"
+      "css/article-heading-anchor.css"
+      "css/article-image-zoom.css"
+      "css/article-footnote-preview.css"
+    )
+    "target" "css/bundles/archiving-single.css"
+  ) }}
+{{ end }}
+
+{{ define "main" }}
+  {{ $sectionPage := .CurrentSection | default (.Site.GetPage "/archiving") }}
+  {{ $backHref := site.Home.RelPermalink }}
+  {{ $backLabel := "← 返回首页" }}
+  {{ with $sectionPage }}
+    {{ $backHref = .RelPermalink }}
+    {{ $backLabel = "← 返回 Archiving" }}
+  {{ end }}
+  {{ $coverImage := strings.TrimSpace (printf "%v" (.Params.coverImage | default "")) }}
+  {{ $platformUrl := strings.TrimSpace (printf "%v" (.Params.platformUrl | default "")) }}
+
+  <main class="page-main page-main--archiving-single">
+    <a class="article-back-link" href="{{ $backHref }}">{{ $backLabel }}</a>
+
+    <div class="archiving-single{{ if not $coverImage }} archiving-single--no-cover{{ end }}">
+      {{ with $coverImage }}
+        <figure class="archiving-cover">
+          <img src="{{ . }}" alt="{{ $.Title }}" loading="eager" decoding="async" />
+        </figure>
+      {{ end }}
+
+      <article class="archiving-body">
+        <header class="archiving-body-header">
+          <h1>{{ .Title }}</h1>
+          {{ partial "archiving-meta.html" (dict "page" .) }}
+        </header>
+        <div class="markdown archiving-content">
+          {{- $content := .Content -}}
+          {{- $content = replaceRE `<div class="footnotes"([^>]*)>\s*<hr>` `<div class="footnotes"$1 aria-labelledby="footnote-label"><hr><h2 id="footnote-label">脚注</h2>` $content 1 -}}
+          {{- $content | safeHTML -}}
+        </div>
+      </article>
+
+      {{ if $platformUrl }}
+        <a class="archiving-origin-card archiving-origin-card--link" href="{{ $platformUrl }}" target="_blank" rel="noreferrer">
+          {{ partial "archiving-meta.html" (dict "page" . "variant" "card" "showLinkLabel" true) }}
+        </a>
+      {{ else }}
+        <div class="archiving-origin-card">
+          {{ partial "archiving-meta.html" (dict "page" . "variant" "card") }}
+        </div>
+      {{ end }}
+    </div>
+  </main>
+{{ end }}
+
+{{ define "scripts" }}
+  {{ $articleScript := resources.Get "js/article-enhancements.js" | minify | fingerprint }}
+  <script src="{{ $articleScript.RelPermalink }}" integrity="{{ $articleScript.Data.Integrity }}" defer></script>
+{{ end }}

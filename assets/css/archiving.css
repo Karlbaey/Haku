@@ -1,0 +1,349 @@
+.page-main--archiving {
+  max-width: 980px;
+}
+
+.page-main--archiving-single {
+  max-width: 1120px;
+}
+
+.archiving-page {
+  display: grid;
+  gap: 2rem;
+}
+
+.archiving-header {
+  display: grid;
+  gap: 0.9rem;
+  padding: 1.5rem 1.6rem;
+  border: 1px solid var(--tag-pill-border);
+  border-radius: 1.5rem;
+  background: linear-gradient(180deg, var(--surface) 0%, transparent 100%);
+}
+
+.archiving-header h1,
+.archiving-body-header h1 {
+  margin: 0;
+  font-size: clamp(1.85rem, 1.55rem + 1vw, 2.3rem);
+  line-height: 1.28;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--heading);
+  font-family: var(--font-title);
+}
+
+.archiving-description {
+  margin: 0;
+  max-width: 42rem;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.9;
+}
+
+.archiving-platform-summary {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem 0;
+  margin: 0;
+  padding: 0;
+  color: var(--meta);
+  font-size: 0.95rem;
+}
+
+.archiving-platform-summary li {
+  display: inline-flex;
+  align-items: center;
+}
+
+.archiving-platform-summary li + li::before {
+  content: "\00b7";
+  margin: 0 0.7rem;
+  color: var(--subtle);
+}
+
+.archiving-lead {
+  margin-top: 0;
+  padding: 0 0.25rem;
+}
+
+.archiving-timeline {
+  display: grid;
+  gap: 1.8rem;
+}
+
+.archiving-month-group {
+  display: grid;
+  gap: 1rem;
+}
+
+.archiving-month-heading {
+  margin: 0;
+  color: var(--heading);
+  font-family: var(--font-title);
+  font-size: 1.12rem;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+}
+
+.archiving-card-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.archiving-card {
+  border: 1px solid var(--tag-pill-border);
+  border-radius: 1.2rem;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.archiving-card-link {
+  display: block;
+  padding: 1.2rem 1.25rem 1.15rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.archiving-card-link:hover {
+  color: inherit;
+  background: linear-gradient(180deg, transparent 0%, var(--tag-pill-bg) 100%);
+}
+
+.archiving-card-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.55rem 0.75rem;
+  margin: 0;
+  color: var(--heading);
+  font-family: var(--font-title);
+  font-size: 1.28rem;
+  line-height: 1.45;
+  font-weight: 650;
+}
+
+.archiving-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0.1rem 0.72rem;
+  border: 1px solid var(--tag-pill-border);
+  border-radius: 999px;
+  background: var(--tag-pill-bg);
+  color: var(--tag-pill-text);
+  font-family: var(--font-body-en), var(--font-body-zh);
+  font-size: 0.85rem;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.archiving-pill--meta {
+  min-height: 1.85rem;
+  padding-inline: 0.68rem;
+}
+
+.archiving-card-summary {
+  margin: 0.9rem 0 0;
+  color: var(--muted);
+  font-size: 0.98rem;
+  line-height: 1.85;
+}
+
+.archiving-card-date {
+  margin: 0.95rem 0 0;
+  color: var(--meta);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.archiving-single {
+  display: grid;
+  gap: 1.4rem;
+}
+
+.archiving-cover {
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--tag-pill-border);
+  border-radius: 1.4rem;
+  background: var(--surface);
+}
+
+.archiving-cover img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  margin: 0;
+}
+
+.archiving-body {
+  min-width: 0;
+}
+
+.archiving-body-header {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.archiving-meta {
+  color: var(--meta);
+}
+
+.archiving-meta--header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.7rem 0.95rem;
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+.archiving-origin-card {
+  display: block;
+  padding: 1.2rem 1.25rem;
+  border: 1px solid var(--tag-pill-border);
+  border-radius: 1.25rem;
+  background: linear-gradient(180deg, var(--surface) 0%, transparent 100%);
+  color: inherit;
+  text-decoration: none;
+}
+
+.archiving-origin-card--link {
+  transition: border-color 160ms ease, background-color 160ms ease, transform 160ms ease;
+}
+
+.archiving-origin-card--link:hover {
+  border-color: var(--tag-pill-hover-border);
+  background: linear-gradient(180deg, var(--tag-pill-bg) 0%, transparent 100%);
+  color: inherit;
+  transform: translateY(-1px);
+}
+
+.archiving-origin-card--link:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 4px;
+}
+
+.archiving-meta--card {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.archiving-origin-card-eyebrow,
+.archiving-origin-card-date,
+.archiving-origin-card-cta {
+  margin: 0;
+}
+
+.archiving-origin-card-eyebrow {
+  color: var(--muted);
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+}
+
+.archiving-origin-card-platform {
+  margin: 0;
+  color: var(--heading);
+  font-family: var(--font-title);
+  font-size: 1.3rem;
+  line-height: 1.35;
+  font-weight: 650;
+}
+
+.archiving-origin-card-date {
+  color: var(--meta);
+  font-size: 0.93rem;
+  line-height: 1.75;
+}
+
+.archiving-origin-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--accent);
+  font-size: 0.93rem;
+  line-height: 1.6;
+  font-weight: 600;
+}
+
+.archiving-origin-card-cta::after {
+  content: "\2197";
+  font-size: 0.95em;
+}
+
+.archiving-content {
+  margin-top: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .archiving-single {
+    grid-template-columns: minmax(0, 1fr) 320px;
+    grid-template-areas:
+      "body cover"
+      "body card";
+    align-items: start;
+    gap: 1.5rem 3rem;
+  }
+
+  .archiving-single--no-cover {
+    grid-template-areas: "body card";
+  }
+
+  .archiving-body {
+    grid-area: body;
+  }
+
+  .archiving-cover {
+    grid-area: cover;
+    position: sticky;
+    top: 1.5rem;
+  }
+
+  .archiving-origin-card {
+    grid-area: card;
+    position: sticky;
+    top: calc(1.5rem + 24rem);
+  }
+
+  .archiving-single--no-cover .archiving-origin-card {
+    top: 1.5rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .page-main--archiving-single,
+  .page-main--archiving {
+    padding-inline: 1rem;
+  }
+
+  .archiving-page {
+    gap: 1.5rem;
+  }
+
+  .archiving-header {
+    padding: 1.25rem 1.15rem;
+    border-radius: 1.2rem;
+  }
+
+  .archiving-platform-summary li + li::before {
+    margin: 0 0.55rem;
+  }
+
+  .archiving-card-link {
+    padding: 1.05rem 1rem;
+  }
+
+  .archiving-card-title {
+    font-size: 1.16rem;
+  }
+
+  .archiving-cover {
+    border-radius: 1.2rem;
+  }
+
+  .archiving-origin-card {
+    padding: 1.05rem 1rem;
+    border-radius: 1.15rem;
+  }
+}

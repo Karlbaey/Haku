@@ -29,8 +29,21 @@
   {{- $logoURL = partial "seo-abs-url.html" (dict "value" .) -}}
 {{- end -}}
 {{- $rssFeedURL := "" -}}
-{{- with $site.Home.OutputFormats.Get "RSS" -}}
+{{- with $page.OutputFormats.Get "RSS" -}}
   {{- $rssFeedURL = .RelPermalink -}}
+{{- else -}}
+  {{- if $page.IsPage -}}
+    {{- with $page.CurrentSection -}}
+      {{- with .OutputFormats.Get "RSS" -}}
+        {{- $rssFeedURL = .RelPermalink -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- if not $rssFeedURL -}}
+  {{- with $site.Home.OutputFormats.Get "RSS" -}}
+    {{- $rssFeedURL = .RelPermalink -}}
+  {{- end -}}
 {{- end -}}
 {{- $noindex := false -}}
 {{- if or $page.Params.noindex $pageSEO.noindex -}}

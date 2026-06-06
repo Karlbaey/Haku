@@ -4,6 +4,7 @@ Haku 是一个内容优先的 Hugo 主题，内置：
 
 - 首页文章流和分页
 - 标签归档
+- Archiving 存档 section
 - Google 站点搜索
 - Giscus / Sodesu 评论切换
 - 友情链接页面和申请表单
@@ -183,6 +184,46 @@ data/friends.toml
 创建 `content/about.md` 或 `content/about/index.md` 即可启用“关于我”页面。
 
 这个页面直接复用主题现有的文章页模板，因此正文样式、目录、版权区和评论区行为都和普通文章一致。只要页面存在，首页导航会自动显示“关于我”入口。
+
+### Archiving
+
+创建 `content/archiving/_index.md` 即可启用 Archiving 页面，导航会自动显示入口。推荐至少这样写：
+
+```yaml
+---
+title: "Archiving"
+description: "互联网的足迹"
+outputs:
+  - HTML
+  - RSS
+---
+```
+
+存档文章使用独立的 `archiving` section，主题会自动提供：
+
+- `/archiving/` 时间线列表页
+- `/archiving/rss.xml` 独立 RSS
+- 详情页封面图 + 平台信息卡布局
+
+建议 front matter 字段：
+
+```yaml
+---
+title: "帖子标题"
+date: 2026-06-07
+originalDate: 2025-03-15
+platform: "Twitter"
+platformUrl: "https://example.org/original-post"
+coverImage: "/images/example-cover.jpg"
+draft: true
+---
+```
+
+如果你启用了主题内置 archetype，可以直接执行：
+
+```bash
+hugo new archiving/my-archive-post.md
+```
 
 ### 页脚
 
