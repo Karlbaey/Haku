@@ -255,6 +255,30 @@ hugo
 
 ## 内容组件
 
+### Ruby 注音
+
+主题内置了 `ruby` shortcode，用来在正文里输出标准 HTML Ruby 注音结构，适合拼音、假名或其他读音标记。
+
+推荐把被注音的文字写成 shortcode 内文：
+
+```go-html-template
+{{< ruby rt="hàn" >}}汉{{< /ruby >}}
+```
+
+也可以用参数或位置参数（参数式写法需要自闭合）：
+
+```go-html-template
+{{< ruby base="漢字" rt="かんじ" />}}
+{{< ruby "漢字" "かんじ" />}}
+```
+
+可用参数：
+
+- `base`：被注音的文字；使用 shortcode 内文时可省略
+- `rt`：注音文本，必填
+
+输出会包含 `<rp>` 回退括号，以便在不支持 Ruby 的环境里仍然保留可读文本。
+
 ### MediaWiki 风格图片框
 
 主题内置了 `mwfigure` shortcode，用来做“浮动图文环绕 + 轻微破边”的图片框。它不会改动默认 Markdown 图片，只在你显式调用时生效。
