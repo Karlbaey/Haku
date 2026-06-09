@@ -336,3 +336,15 @@
   font-weight: 640;
 }
 
+.markdown ruby {
+  ruby-position: over;
+  ruby-align: center;
+}
+
+.markdown rt {
+  font-size: 0.5em;
+  line-height: 1;
+  letter-spacing: normal;
+  user-select: none;
+}
+

@@ -20,4 +20,6 @@ toc: false
 - GitHub: `your-name`
 - Email: `hello@example.com`
 
+更多参考可以查看 [Hugo 官网](https://gohugo.io/) 或 [Ruby 注音示例](/posts/ruby/)。
+
 如果你想把它改成 bundle 形式，也可以创建 `content/about/index.md`，主题同样会自动在导航里显示“关于我”入口。
