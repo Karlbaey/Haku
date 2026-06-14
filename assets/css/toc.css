@@ -173,7 +173,7 @@ html {
   .article-toc {
     position: fixed;
     top: 5rem;
-    left: max(1rem, calc((100vw - 760px) / 2 - 20rem));
+    left: 1rem;
     width: 18rem;
     max-height: calc(100vh - 6rem);
     margin-top: 0;
