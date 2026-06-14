@@ -399,6 +399,23 @@ nav {
   color: var(--muted);
 }
 
+@media (max-width: 767px) {
+  .pagination-links {
+    gap: 0.5rem;
+  }
+
+  .pagination-link {
+    min-width: 2.3rem;
+    min-height: 2.3rem;
+    padding: 0.35rem 0.7rem;
+    font-size: 0.9rem;
+  }
+
+  .pagination-link--arrow {
+    min-width: 4.2rem;
+  }
+}
+
 .article-title {
   font-family: var(--font-title);
   margin: 0;

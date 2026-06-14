@@ -348,3 +348,50 @@
   user-select: none;
 }
 
+.markdown pre.code-foldable {
+  position: relative;
+}
+
+.markdown pre.code-collapsed {
+  max-height: 20rem;
+  overflow: hidden;
+}
+
+.markdown pre.code-collapsed::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 6rem;
+  background: linear-gradient(to bottom, transparent, var(--code-bg));
+  pointer-events: none;
+}
+
+.code-fold-button {
+  position: absolute;
+  bottom: 0.75rem;
+  right: 0.75rem;
+  padding: 0.4rem 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  background: rgba(23, 32, 51, 0.88);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.85rem;
+  font-family: var(--font-body-en), var(--font-body-zh);
+  cursor: pointer;
+  transition: all 180ms ease;
+  z-index: 10;
+  backdrop-filter: blur(8px);
+}
+
+.code-fold-button:hover {
+  background: rgba(23, 32, 51, 0.95);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.code-fold-button:active {
+  transform: scale(0.96);
+}
+

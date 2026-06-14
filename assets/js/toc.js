@@ -1,5 +1,6 @@
 (function () {
-  const MEDIA_QUERY = "(min-width: 1536px)";
+  const MEDIA_QUERY = "(min-width: 1024px)";
+  const SCROLL_THRESHOLD = 200;
   const ARTICLE_IMAGE_SELECTOR = ".markdown img";
   const HASH_REALIGN_WINDOW = 3000;
   const tocRoot = document.querySelector("[data-article-toc]");
@@ -15,6 +16,16 @@
 
   if (!(scrollContainer instanceof HTMLElement) || links.length === 0) {
     return;
+  }
+
+  function updateTocVisibility() {
+    if (!media.matches) {
+      tocRoot.classList.remove("is-visible");
+      return;
+    }
+
+    const scrolled = window.scrollY > SCROLL_THRESHOLD;
+    tocRoot.classList.toggle("is-visible", scrolled);
   }
 
   function decodeHashFragment(value) {
@@ -207,6 +218,7 @@
 
     rafId = window.requestAnimationFrame(function () {
       rafId = 0;
+      updateTocVisibility();
       renderActiveLink();
     });
   }
@@ -246,11 +258,15 @@
   window.addEventListener("scroll", scheduleRender, { passive: true });
   window.addEventListener("hashchange", handleHashNavigation);
   window.addEventListener("load", handleHashNavigation, { once: true });
-  media.addEventListener("change", scheduleRender);
+  media.addEventListener("change", function () {
+    updateTocVisibility();
+    scheduleRender();
+  });
 
   if (window.location.hash) {
     handleHashNavigation();
   }
 
+  updateTocVisibility();
   scheduleRender();
 }());

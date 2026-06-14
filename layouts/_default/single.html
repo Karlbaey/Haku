@@ -55,6 +55,8 @@
 {{ define "scripts" }}
   {{ $articleScript := resources.Get "js/article-enhancements.js" | minify | fingerprint }}
   <script src="{{ $articleScript.RelPermalink }}" integrity="{{ $articleScript.Data.Integrity }}" defer></script>
+  {{ $codeFoldScript := resources.Get "js/code-fold.js" | minify | fingerprint }}
+  <script src="{{ $codeFoldScript.RelPermalink }}" integrity="{{ $codeFoldScript.Data.Integrity }}" defer></script>
   {{ $commentsScript := resources.Get "js/comments.js" | minify | fingerprint }}
   <script src="{{ $commentsScript.RelPermalink }}" integrity="{{ $commentsScript.Data.Integrity }}" defer></script>
   {{ if and (ne .Params.toc false) (gt (len (findRE "<a[^>]+href=" .TableOfContents)) 0) }}

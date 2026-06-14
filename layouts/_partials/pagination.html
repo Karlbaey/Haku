@@ -13,11 +13,35 @@
         <span class="pagination-link pagination-link--disabled pagination-link--arrow" aria-disabled="true">上一页</span>
       {{ end }}
 
+      {{ $current := $paginator.PageNumber }}
+      {{ $total := $paginator.TotalPages }}
+      {{ $delta := 2 }}
+
       {{ range $paginator.Pagers }}
-        {{ if eq .PageNumber $paginator.PageNumber }}
-          <span class="pagination-link pagination-link--current" aria-current="page">{{ .PageNumber }}</span>
+        {{ $show := false }}
+        {{ if or (eq .PageNumber 1) (eq .PageNumber $total) }}
+          {{ $show = true }}
+        {{ else if and (ge .PageNumber (sub $current $delta)) (le .PageNumber (add $current $delta)) }}
+          {{ $show = true }}
+        {{ end }}
+
+        {{ if $show }}
+          {{ if eq .PageNumber $current }}
+            <span class="pagination-link pagination-link--current" aria-current="page">{{ .PageNumber }}</span>
+          {{ else }}
+            <a class="pagination-link" href="{{ .URL }}">{{ .PageNumber }}</a>
+          {{ end }}
         {{ else }}
-          <a class="pagination-link" href="{{ .URL }}">{{ .PageNumber }}</a>
+          {{ $prev := sub .PageNumber 1 }}
+          {{ $showEllipsis := false }}
+          {{ if and (eq .PageNumber 2) (gt $current (add $delta 2)) }}
+            {{ $showEllipsis = true }}
+          {{ else if and (eq .PageNumber (sub $total 1)) (lt $current (sub $total (add $delta 1))) }}
+            {{ $showEllipsis = true }}
+          {{ end }}
+          {{ if $showEllipsis }}
+            <span class="pagination-ellipsis" aria-hidden="true">…</span>
+          {{ end }}
         {{ end }}
       {{ end }}
 
