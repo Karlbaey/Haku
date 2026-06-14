@@ -86,7 +86,7 @@
   max-height: calc(100vh - 4rem);
   padding: 1.4rem;
   border: 1px solid #ddd6d0;
-  border-radius: 1.25rem;
+  border-radius: 0;
   background: #fffdfadf;
   backdrop-filter: blur(22px);
   box-shadow: 0 30px 80px #1d140f30;
