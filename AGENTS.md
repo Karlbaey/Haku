@@ -1,31 +1,149 @@
-# 仓库指南
+## Project Overview
 
-## 项目结构和模块组织
+Haku is a content-first Hugo theme for Chinese-language blogs. It's a standalone Hugo theme (not a site using a theme) — theme files live at the repository root, and `exampleSite/` provides a minimal demo site for testing.
 
-本仓库是一个 Hugo 主题。核心模板位于 `layouts/` 目录下，可重用部分位于 `layouts/_partials/` 目录下，短代码位于 `layouts/_shortcodes/` 目录下，Markdown 渲染钩子位于 `layouts/_markup/` 目录下。主题资源分别位于 `assets/css/` 和 `assets/js/` 目录下，而 `static/` 目录下的文件会在构建时原样复制。共享数据文件位于 `data/` 目录下，`archetypes/default.md` 定义了默认的 front matter。使用 `exampleSite/` 作为集成沙箱，用于验证模板、样式和短代码的更改。
+**Key constraint**: No npm ecosystem. All JavaScript must be vanilla, and CSS is hand-written. Hugo Pipes handles asset bundling.
 
-## 构建、测试和开发命令
+## Development Commands
 
-除非另有说明，否则请在仓库根目录运行以下命令：
+### Preview the example site (for theme development)
+```bash
+hugo server --source exampleSite --themesDir .. -D
+```
 
-* `hugo --source exampleSite --themesDir ..\\.. --destination public` 构建示例站点，已在本地验证。
+### Preview a user's site (when testing theme integration)
+From the user's site root:
+```bash
+hugo server -D
+```
 
-* `hugo server --source exampleSite --themesDir ..\\.. -D` 会启动启用草稿的实时预览。
+### Build static site
+```bash
+hugo
+```
 
-在 `exampleSite/` 目录下，等效的 Hugo 命令使用 `--themesDir ..\\..`。
+### Create new archiving post
+```bash
+hugo new archiving/my-archive-post.md
+```
 
-## 编码风格和命名约定
+## Architecture
 
-保持与现有风格一致：模板、CSS 和 JavaScript 代码使用两个空格缩进；文件名（例如 `article-card.html`、`search-form.js`）和 CSS 类名使用 kebab-case 命名法。保持 Hugo 局部模板的作用域狭窄，并按关注点分组，尤其是在现有的 SEO 和文章相关局部模板下。换行一律使用Windows CRLF。
+### Template Organization
 
-严禁使用任何 `color-mix()` 函数，需要使用颜色时优先调用 CSS 变量，其次调用 CSS 原生颜色，最后才使用 Hex 编码颜色。
+- **baseof.html**: Base template with `{{ block }}` sections for meta, styles, main, scripts, extra_head
+- **Partials**: Heavily modular — SEO logic split across `_partials/seo-*.html`, reusable components in `_partials/*.html`
+- **Content-type layouts**: 
+  - `home.html` - article stream with pagination
+  - `archiving/` - timeline layout for archived internet posts
+  - `friends/` - links page with optional application form
+  - `_default/single.html` - article detail page
+- **Render hooks**: Custom markdown rendering in `_markup/render-*.html` (images, links, code blocks, blockquotes, passthrough for math)
+- **Shortcodes**: `ruby`, `mwfigure`, `admonition`, `fold`
 
-严禁使用LF换行，一律使用CRLF换行。
+### Asset Bundling
 
-## 测试指南
+Hugo Pipes bundles assets via `_partials/style-bundle.html`. JavaScript is loaded per-page as needed (e.g., `toc.js` only on article pages with TOC, `comments.js` only when comments configured).
 
-此仓库目前没有自动化测试套件。每次更改至少应成功重新构建 `exampleSite/` 目录，并在渲染输出或本地服务器预览中进行验证。修改搜索、评论、SEO 或短代码时，请手动验证受影响的页面，并确认在 `hugo` 构建过程中没有出现损坏的资源或模板错误。
+### SEO System
 
-## 配置说明
+Multi-layered SEO implementation:
+- `seo-context.html` gathers all metadata
+- `seo-image.html` resolves cover images with fallback chain: `seo.images[0]` → `images[0]` → `cover` → page bundle `cover*` → `params.seo.defaultImage` → favicon
+- `seo-schema.html` outputs JSON-LD (BlogPosting/CollectionPage/WebSite)
+- Open Graph, Twitter Card, canonical URLs, robots meta all automated
 
-请勿提交生成的输出或本地工具缓存，例如 `.tools/`、`public/` 或 `exampleSite/public/`。`theme.toml` 声明的最低 Hugo 版本为 `0.128.0`；验证资源管道更改时请使用 Hugo Extended。
+### Friends Link System
+
+- **Data source**: `data/friends.toml` (TOML array of link objects)
+- **Field schema**: `data/friend_link_fields.toml` defines form fields
+- **Application flow**: `assets/js/friends-application.js` builds GitHub issue body with TOML code block
+- **Enable**: Create `content/friends/_index.md` + set `params.friendsApplication.enabled = true`
+
+### Comment System Integration
+
+- Supports Giscus and Sodesu
+- Sodesu loads frontend via CDN (no npm install required)
+- Configuration: `params.comments.giscus` or `params.comments.sodesu` in Hugo config
+- Rendering: `_partials/comments.html` + `assets/js/comments.js`
+
+## Current Development Focus
+
+Active optimization work tracked in `优化需求文档.md`:
+
+1. **Friends form TOML output** (highest priority) - `assets/js/friends-application.js` must generate TOML format, not TypeScript. Add `<!-- id: result -->` and `<!-- id: toml -->` field identifiers.
+
+2. **Mobile pagination layout** - `assets/css/global.css` pagination breaks into two rows on mobile. Need responsive refinement for `<768px`.
+
+3. **Code block folding** - Long code blocks (>20 lines) should get collapse/expand UI. Implement in `assets/js/article-enhancements.js` or new file. Default to expanded state.
+
+4. **Comment lazy loading** - Delay Sodesu initialization until scroll or manual trigger to reduce Vercel function invocations and Neon DB queries. Modify `assets/js/comments.js` and `_partials/comments.html`.
+
+5. **Desktop sticky TOC** - Fixed TOC in left margin when viewport >1024px and scroll >200px. Requires `assets/css/toc.css` and `assets/js/toc.js` updates. Must not break existing mobile TOC.
+
+## Important Conventions
+
+### Front Matter Fields
+
+**Standard posts**:
+- Use `date` for publish date, `lastmod` for updates
+- SEO override via `seo.title`, `seo.description`, `seo.images`, `seo.canonical`, `seo.noindex`
+- Math support detected via page store, not front matter flag
+
+**Archiving posts**:
+- `originalDate` - original post date on external platform
+- `platform` - platform name (Twitter, Mastodon, etc.)
+- `platformUrl` - link to original post
+- `coverImage` - featured image for the archive card
+
+**Friends page**:
+- Must be at `content/friends/_index.md`
+- Reads link data from `data/friends.toml`
+
+### File Naming
+
+- CSS files in `assets/css/` are scoped by feature (`archiving.css`, `comments.css`, `toc.css`)
+- JS files in `assets/js/` follow `feature-name.js` pattern
+- Partials use kebab-case: `article-card.html`, `seo-image.html`
+
+### Responsive Breakpoints
+
+- Mobile: `<768px`
+- Tablet: `768px - 1024px`
+- Desktop: `>1024px`
+- Content max-width: `760px`
+
+### Asset Loading Strategy
+
+- Critical CSS bundled in baseof.html via `style-bundle.html`
+- KaTeX CSS loaded conditionally when `.Page.Store.Get "hasMath"` is true
+- JavaScript loaded per-page in template `{{ block "scripts" }}` sections
+- No inline styles; all styling through CSS files
+
+### Hugo Configuration Requirements
+
+Users must set these in their site config for full functionality:
+- `enableRobotsTXT = true`
+- `disablePathToLower = true`
+- `taxonomies.tag = "tags"`
+- `outputs.home = ["HTML", "RSS"]`
+- `params.mainSections` (typically `["posts"]`)
+- Goldmark `unsafe = true` for HTML in markdown
+- Math passthrough delimiters if using LaTeX
+
+## Testing Changes
+
+Always test in `exampleSite/` before claiming completion:
+1. Start dev server: `hugo server --source exampleSite --themesDir .. -D`
+2. Verify the change in browser (both desktop and mobile viewports)
+3. Check browser console for JavaScript errors
+4. Test both light and dark system themes
+5. For layout changes, test with real content (multiple paragraph lengths, varied image sizes, long code blocks)
+
+## Do Not
+
+- Add npm dependencies or build tools
+- Create README.md or documentation files unless explicitly requested
+- Modify example site content casually — it demonstrates theme features
+- Change `baseURL` in example site (it's intentionally `example.org` for testing)
+- Add generic Hugo features available in all themes — focus on Haku-specific architecture

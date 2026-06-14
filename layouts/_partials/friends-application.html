@@ -1,8 +1,9 @@
 {{ $config := site.Params.friendsApplication }}
-{{ $friendLinkFieldsData := index .Site.Data "friend_link_fields" }}
-{{ $fields := index $friendLinkFieldsData "fields" | default (slice) }}
+{{ $enabled := and $config (eq ($config.enabled | default false) true) }}
 
-{{ if $config }}
+{{ if $enabled }}
+  {{ $friendLinkFieldsData := index .Site.Data "friend_link_fields" }}
+  {{ $fields := index $friendLinkFieldsData "fields" | default (slice) }}
   <friends-application class="friends-application" data-config='{{ $config | jsonify }}'>
     <div class="friends-actions">
       <button type="button" class="friends-apply-trigger" data-friends-open>

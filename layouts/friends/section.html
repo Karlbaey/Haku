@@ -71,7 +71,8 @@
 {{ end }}
 
 {{ define "scripts" }}
-  {{ if site.Params.friendsApplication }}
+  {{ $friendsApplication := site.Params.friendsApplication }}
+  {{ if and $friendsApplication (eq ($friendsApplication.enabled | default false) true) }}
     {{ $friendsScript := resources.Get "js/friends-application.js" | minify | fingerprint }}
     <script src="{{ $friendsScript.RelPermalink }}" integrity="{{ $friendsScript.Data.Integrity }}" defer></script>
   {{ end }}
