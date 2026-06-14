@@ -11,11 +11,11 @@
   }
 
   function createFoldButton() {
-    const button = document.createElement("button");
-    button.type = "button";
+    const button = document.createElement("div");
     button.className = BUTTON_CLASS;
-    button.setAttribute("aria-label", "折叠代码块");
-    button.textContent = "折叠";
+    button.setAttribute("role", "button");
+    button.setAttribute("tabindex", "0");
+    button.setAttribute("aria-label", "展开代码块");
     return button;
   }
 
@@ -24,12 +24,10 @@
 
     if (isCollapsed) {
       pre.classList.remove(COLLAPSED_CLASS);
-      button.textContent = "折叠";
       button.setAttribute("aria-label", "折叠代码块");
       button.setAttribute("aria-expanded", "true");
     } else {
       pre.classList.add(COLLAPSED_CLASS);
-      button.textContent = "展开";
       button.setAttribute("aria-label", "展开代码块");
       button.setAttribute("aria-expanded", "false");
     }
@@ -52,12 +50,20 @@
 
     pre.dataset.codeFoldBound = "true";
     pre.classList.add(FOLD_CLASS);
+    pre.classList.add(COLLAPSED_CLASS);
 
     const button = createFoldButton();
-    button.setAttribute("aria-expanded", "true");
+    button.setAttribute("aria-expanded", "false");
 
     button.addEventListener("click", () => {
       toggleFold(pre, button);
+    });
+
+    button.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        toggleFold(pre, button);
+      }
     });
 
     pre.appendChild(button);
