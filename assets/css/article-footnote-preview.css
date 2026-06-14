@@ -80,7 +80,7 @@ body.footnote-preview-mobile-open {
   overflow: auto;
   pointer-events: auto;
   border: 1px solid var(--article-footnote-card-border);
-  border-radius: 0.95rem;
+  border-radius: 0;
   background: var(--article-footnote-card-bg);
   color: var(--text);
   box-shadow: var(--article-footnote-card-shadow);
@@ -128,8 +128,8 @@ body.footnote-preview-mobile-open {
   max-height: min(62vh, 32rem);
   padding-top: 1rem;
   padding-bottom: calc(1rem + env(safe-area-inset-bottom));
-  border-top-left-radius: 1.1rem;
-  border-top-right-radius: 1.1rem;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
   transform: translate(-50%, calc(100% + env(safe-area-inset-bottom)));
@@ -215,7 +215,7 @@ body.footnote-preview-mobile-open {
 
 .footnote-preview-content code {
   padding: 0.08em 0.32em;
-  border-radius: 0.35rem;
+  border-radius: 0;
   background: var(--inline-code-bg);
   font-family: var(--font-mono);
   font-size: 0.9em;

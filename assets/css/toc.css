@@ -5,7 +5,7 @@ html {
 .article-toc {
   margin-top: 1.8rem;
   border: 1px solid #8f4b3a29;
-  border-radius: 0.85rem;
+  border-radius: 0;
   background: #fbf9f8cf;
   backdrop-filter: blur(6px);
 }
@@ -52,7 +52,7 @@ html {
 
 .article-toc-switch--text {
   padding: 0.16rem 0.42rem;
-  border-radius: 0.38rem;
+  border-radius: 0;
   font-size: 0.82rem;
   line-height: 1.2;
   border: 1px solid #8f4b3a26;

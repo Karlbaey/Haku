@@ -6,7 +6,7 @@
   padding: 0.9rem 1rem;
   border-left: 0.24rem solid var(--admonition-border-color);
   background: var(--admonition-background-color);
-  border-radius: 0.36rem;
+  border-radius: 0;
   font-style: normal;
   color: var(--text);
 }
@@ -139,7 +139,7 @@
 .markdown details {
   margin: 1.25em 0;
   background: #f8f9fa;
-  border-radius: 0.5rem;
+  border-radius: 0;
   overflow: hidden;
   transition: background-color 0.2s ease;
 }
@@ -152,7 +152,7 @@
   display: block;
   position: relative;
   padding: 0.6rem 1rem 0.6rem 2rem;
-  border-radius: 0.5rem 0.5rem 0 0;
+  border-radius: 0;
   color: #6c757d;
   font-size: 0.95rem;
   line-height: 1.55;
@@ -184,7 +184,7 @@
 }
 
 .markdown details:not([open]) > summary {
-  border-radius: 0.5rem;
+  border-radius: 0;
 }
 
 .markdown details > summary:hover {
@@ -192,11 +192,11 @@
 }
 
 .markdown details:not([open]) > summary:hover {
-  border-radius: 0.5rem;
+  border-radius: 0;
 }
 
 .markdown details[open] > summary:hover {
-  border-radius: 0.5rem 0.5rem 0 0;
+  border-radius: 0;
 }
 
 .markdown details > :not(summary) {
@@ -248,6 +248,6 @@
   }
 
   .markdown details:not([open]) > summary:hover {
-    border-radius: 0.5rem;
+    border-radius: 0;
   }
 }
