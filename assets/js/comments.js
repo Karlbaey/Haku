@@ -178,7 +178,28 @@
       });
 
       root.dataset.bound = "true";
-      void activateProvider(root, config, config.defaultProvider);
+
+      // 使用 Intersection Observer 实现懒加载
+      if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                void activateProvider(root, config, config.defaultProvider);
+                observer.unobserve(root);
+              }
+            });
+          },
+          {
+            rootMargin: "200px",
+          }
+        );
+
+        observer.observe(root);
+      } else {
+        // 降级方案：直接加载
+        void activateProvider(root, config, config.defaultProvider);
+      }
     });
   }
 

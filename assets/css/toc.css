@@ -169,18 +169,27 @@ html {
   }
 }
 
-@media (min-width: 1536px) {
+@media (min-width: 1024px) {
   .article-toc {
     position: fixed;
-    top: 7rem;
-    left: 1rem;
-    width: min(18rem, calc(100vw - 2rem));
-    max-height: calc(100vh - 8.5rem);
+    top: 5rem;
+    left: max(1rem, calc((100vw - 760px) / 2 - 20rem));
+    width: 18rem;
+    max-height: calc(100vh - 6rem);
+    margin-top: 0;
     border: 0;
     border-radius: 0;
     background: transparent;
     backdrop-filter: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
     z-index: 10;
+  }
+
+  .article-toc.is-visible {
+    opacity: 1;
+    visibility: visible;
   }
 
   .article-toc-head {
@@ -188,10 +197,14 @@ html {
   }
 
   .article-toc-body {
-    max-height: min(15rem, calc(100vh - 15rem));
+    max-height: min(30rem, calc(100vh - 12rem));
   }
 
   .article-toc-list {
+    padding-inline: 0;
+  }
+
+  .article-toc-body #TableOfContents {
     padding-inline: 0;
   }
 }

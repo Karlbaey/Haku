@@ -74,50 +74,21 @@
     return normalized.length > 0 ? normalized : ["博客"];
   }
 
-  function escapeString(value) {
-    return String(value).replaceAll("\\", "\\\\").replaceAll("\"", "\\\"");
-  }
-
-  function buildIssueBody(currentConfig, input) {
-    const issueBodyHeader = currentConfig.issueBodyHeader || currentConfig.issuebodyheader || "";
-    const tags = normalizeTags(input.tags);
-    const codeBlock = [
-      "  {",
-      "    name: \"" + escapeString(input.name.trim()) + "\",",
-      "    url: \"" + escapeString(input.url.trim()) + "\",",
-      "    description: \"" + escapeString(input.description.trim()) + "\",",
-      "    site: \"" + escapeString(input.site.trim()) + "\",",
-      "    avatar: \"" + escapeString(input.avatar.trim()) + "\",",
-      "    tags: [" + tags.map(function (tag) { return "\"" + escapeString(tag) + "\""; }).join(", ") + "],",
-      "  },",
-    ].join("\n");
-
-    return [
-      issueBodyHeader.trim(),
-      "",
-      "- 站点名称：" + input.name.trim(),
-      "- 站点链接：" + input.url.trim(),
-      "- 站点简介：" + input.description.trim(),
-      "- 展示域名：" + input.site.trim(),
-      "- 头像链接：" + input.avatar.trim(),
-      "- 标签：" + tags.join("、"),
-      "",
-      "<!-- 下方为自动生成的代码，填写到博客时我会以下面的为准 -->",
-      "",
-      "```typescript",
-      codeBlock,
-      "```",
-    ].join("\n");
-  }
-
   function buildIssueUrl(currentConfig, input) {
     const issueTitlePrefix = currentConfig.issueTitlePrefix || currentConfig.issuetitleprefix || "";
+    const tags = normalizeTags(input.tags);
     const url = new URL(
       "https://github.com/" + currentConfig.github.owner.trim() + "/" + currentConfig.github.repo.trim() + "/issues/new"
     );
 
+    url.searchParams.set("template", "friend-link.yml");
     url.searchParams.set("title", (issueTitlePrefix.trim() + " " + input.name.trim()).trim());
-    url.searchParams.set("body", buildIssueBody(currentConfig, input));
+    url.searchParams.set("name", input.name.trim());
+    url.searchParams.set("url", input.url.trim());
+    url.searchParams.set("description", input.description.trim());
+    url.searchParams.set("site", input.site.trim());
+    url.searchParams.set("avatar", input.avatar.trim());
+    url.searchParams.set("tags", tags.join(", "));
 
     return url;
   }

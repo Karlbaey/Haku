@@ -177,7 +177,7 @@ Sodesu 前端默认通过 CDN 加载，不需要在站点里额外安装任何�
 data/friends.toml
 ```
 
-友链申请按钮需要配置 `params.friendsApplication`，并会读取主题内置的 `data/friend_link_fields.toml` 字段定义。你也可以在站点自己的 `data/friend_link_fields.toml` 中覆盖它。
+友链申请按钮目前默认关闭。需要启用时请配置 `params.friendsApplication.enabled = true`，表单会读取主题内置的 `data/friend_link_fields.toml` 字段定义。你也可以在站点自己的 `data/friend_link_fields.toml` 中覆盖它。
 
 ### 关于我
 

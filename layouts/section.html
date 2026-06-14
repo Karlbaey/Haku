@@ -24,7 +24,7 @@
 
     {{ if gt (len .Pages) 0 }}
       <section class="article-list" aria-label="{{ .Title }} 列表">
-        {{ range .Pages.ByDate.Reverse }}
+        {{ range first 3 .Pages.ByDate.Reverse }}
           {{ partial "article-card.html" (dict "page" .) }}
         {{ end }}
       </section>
