@@ -22,11 +22,6 @@ hugo server -D
 hugo
 ```
 
-### Create new archiving post
-```bash
-hugo new archiving/my-archive-post.md
-```
-
 ## Architecture
 
 ### Template Organization
@@ -35,7 +30,6 @@ hugo new archiving/my-archive-post.md
 - **Partials**: Heavily modular — SEO logic split across `_partials/seo-*.html`, reusable components in `_partials/*.html`
 - **Content-type layouts**: 
   - `home.html` - article stream with pagination
-  - `archiving/` - timeline layout for archived internet posts
   - `friends/` - links page with optional application form
   - `_default/single.html` - article detail page
 - **Render hooks**: Custom markdown rendering in `_markup/render-*.html` (images, links, code blocks, blockquotes, passthrough for math)
@@ -90,19 +84,13 @@ Active optimization work tracked in `优化需求文档.md`:
 - SEO override via `seo.title`, `seo.description`, `seo.images`, `seo.canonical`, `seo.noindex`
 - Math support detected via page store, not front matter flag
 
-**Archiving posts**:
-- `originalDate` - original post date on external platform
-- `platform` - platform name (Twitter, Mastodon, etc.)
-- `platformUrl` - link to original post
-- `coverImage` - featured image for the archive card
-
 **Friends page**:
 - Must be at `content/friends/_index.md`
 - Reads link data from `data/friends.toml`
 
 ### File Naming
 
-- CSS files in `assets/css/` are scoped by feature (`archiving.css`, `comments.css`, `toc.css`)
+- CSS files in `assets/css/` are scoped by feature (`comments.css`, `toc.css`)
 - JS files in `assets/js/` follow `feature-name.js` pattern
 - Partials use kebab-case: `article-card.html`, `seo-image.html`
 

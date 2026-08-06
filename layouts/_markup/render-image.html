@@ -1,4 +1,7 @@
 {{ $alt := .PlainText | default (.Text | plainify) }}
+{{ if eq $alt "_" }}
+  {{ $alt = "" }}
+{{ end }}
 {{ $caption := "" }}
 {{ $destination := strings.TrimPrefix "./" .Destination }}
 {{ $image := .Page.Resources.GetMatch $destination }}

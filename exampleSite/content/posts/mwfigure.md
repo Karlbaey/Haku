@@ -29,3 +29,7 @@ description: "Preview of the mwfigure shortcode with float, wrap, and bleed."
 下面这段正文继续验证左浮动场景。通常在一篇文章里，不建议左右浮动来回切得过于频繁，否则阅读节奏会变碎；但作为一个演示页，这里保留两种方向，方便直接比较版面差异。
 
 在移动端，组件会自动取消浮动，退化为普通块级图片框。因为窄屏上的文字环绕通常会压缩得过于局促，牺牲可读性，那里更合理的做法是让图片和说明完整占据一行宽度。
+
+![hNmF7hOx6LHktcUNvjl9dpgURrMdgPcJ.webp](https://cdn.nodeimage.com/i/hNmF7hOx6LHktcUNvjl9dpgURrMdgPcJ.webp)
+
+![_](https://cdn.nodeimage.com/i/hNmF7hOx6LHktcUNvjl9dpgURrMdgPcJ.webp)

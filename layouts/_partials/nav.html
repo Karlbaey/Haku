@@ -4,7 +4,6 @@
 {{ $isHomePage := eq $currentPath $homePath }}
 {{ $aboutPage := or ($page.Site.GetPage "/about") ($page.Site.GetPage "page" "about") }}
 {{ $tagsPage := $page.Site.GetPage "/tags" }}
-{{ $archivingPage := $page.Site.GetPage "/archiving" }}
 {{ $friendsPage := $page.Site.GetPage "/friends" }}
 {{ $rssFeed := $page.Site.Home.OutputFormats.Get "RSS" }}
 
@@ -21,9 +20,6 @@
     {{ end }}
     {{ with $tagsPage }}
       <a href="{{ .RelPermalink }}" class="site-nav-link">所有标签</a>
-    {{ end }}
-    {{ with $archivingPage }}
-      <a href="{{ .RelPermalink }}" class="site-nav-link">Archiving</a>
     {{ end }}
     {{ with $friendsPage }}
       <a href="{{ .RelPermalink }}" class="site-nav-link">友情链接</a>
