@@ -1,4 +1,4 @@
-theme = "Haku"
+theme = "haku"
 baseURL = "https://example.org/"
 locale = "zh-CN"
 title = "Haku Example"
