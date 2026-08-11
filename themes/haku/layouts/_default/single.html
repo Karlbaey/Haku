@@ -1,0 +1,66 @@
+{{ define "meta" }}
+  {{ $description := .Description | default (.Summary | plainify | strings.TrimSpace | truncate 140) | default site.Params.description }}
+  {{ partial "head.html" (dict
+    "page" .
+    "title" (printf "%s | %s" .Title site.Title)
+    "description" $description
+    "ogType" "article"
+    "author" (.Params.author | default site.Params.author.name)
+  ) }}
+{{ end }}
+
+{{ define "styles" }}
+  {{ $comments := site.Params.comments }}
+  {{ $sodesu := $comments.sodesu }}
+  {{ if and $sodesu (ne $sodesu.enabled false) $sodesu.serverUrl }}
+    <link rel="stylesheet" href="https://cdn.jsdmirror.com/npm/@karlbaey/sodesu-for-haku@0.2.2/dist/sodesu-for-haku.css" />
+    <link rel="stylesheet" href="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/prism-themes/1.9.0/prism-material-dark.min.css" />
+  {{ end }}
+  {{ partial "style-bundle.html" (dict
+    "paths" (slice
+      "css/tags.css"
+      "css/markdown.css"
+      "css/article-mw-figure.css"
+      "css/ext.css"
+      "css/comments.css"
+      "css/article-code-copy.css"
+      "css/article-heading-anchor.css"
+      "css/article-image-zoom.css"
+      "css/article-footnote-preview.css"
+    )
+    "target" "css/bundles/article.css"
+  ) }}
+{{ end }}
+
+{{ define "main" }}
+  <main class="page-main">
+    <a class="article-back-link" href="{{ site.Home.RelPermalink }}">← 返回首页</a>
+    {{ if ne .Params.toc false }}
+      {{ partial "toc.html" (dict "page" .) }}
+    {{ end }}
+    <header class="article-header">
+      <h1>{{ .Title }}</h1>
+      {{ partial "article-meta.html" (dict "page" . "variant" "flow") }}
+    </header>
+    <article class="markdown">
+      {{- $content := .Content -}}
+      {{- $content = replaceRE `<div class="footnotes"([^>]*)>\s*<hr>` `<div class="footnotes"$1 aria-labelledby="footnote-label"><hr><h2 id="footnote-label">脚注</h2>` $content 1 -}}
+      {{- $content | safeHTML -}}
+    </article>
+    {{ partial "copyright.html" (dict "page" .) }}
+    {{ partial "comments.html" (dict "page" .) }}
+  </main>
+{{ end }}
+
+{{ define "scripts" }}
+  {{ $articleScript := resources.Get "js/article-enhancements.js" | minify | fingerprint }}
+  <script src="{{ $articleScript.RelPermalink }}" integrity="{{ $articleScript.Data.Integrity }}" defer></script>
+  {{ $codeFoldScript := resources.Get "js/code-fold.js" | minify | fingerprint }}
+  <script src="{{ $codeFoldScript.RelPermalink }}" integrity="{{ $codeFoldScript.Data.Integrity }}" defer></script>
+  {{ $commentsScript := resources.Get "js/comments.js" | minify | fingerprint }}
+  <script src="{{ $commentsScript.RelPermalink }}" integrity="{{ $commentsScript.Data.Integrity }}" defer></script>
+  {{ if and (ne .Params.toc false) (gt (len (findRE "<a[^>]+href=" .TableOfContents)) 0) }}
+    {{ $tocScript := resources.Get "js/toc.js" | minify | fingerprint }}
+    <script src="{{ $tocScript.RelPermalink }}" integrity="{{ $tocScript.Data.Integrity }}" defer></script>
+  {{ end }}
+{{ end }}

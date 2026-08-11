@@ -1,0 +1,17 @@
+{{- $type := .type | default "note" -}}
+{{- $icon := "note" -}}
+
+{{- if eq $type "tip" -}}
+  {{- $icon = "tip" -}}
+{{- else if eq $type "important" -}}
+  {{- $icon = "important" -}}
+{{- else if eq $type "warning" -}}
+  {{- $icon = "warning" -}}
+{{- else if eq $type "caution" -}}
+  {{- $icon = "caution" -}}
+{{- else if eq $type "quote" -}}
+  {{- $icon = "quote" -}}
+{{- end -}}
+
+{{- $iconPath := printf "/icons/admonition/%s.svg" $icon | relURL -}}
+<span class="admonition-icon" style="--admonition-icon-url: url('{{ $iconPath }}');" aria-hidden="true"></span>

@@ -61,7 +61,25 @@
     }
 
     mount.append(script);
-    mount.dataset.loaded = "true";
+    // 不在 append 后立即标记 loaded:giscus 是异步脚本,只有 load 成功后才算真正就绪。
+    // 这样加载失败时保持未加载状态,用户切换 tab 后可以重试。
+
+    // giscus 是异步脚本,加载失败时用户看不到任何反馈。监听 error 事件,
+    // 在挂载点显示错误提示,并允许用户切换 tab 后重试。
+    script.addEventListener(
+      "load",
+      () => {
+        mount.dataset.loaded = "true";
+      },
+      { once: true }
+    );
+    script.addEventListener(
+      "error",
+      () => {
+        mount.textContent = "Giscus 加载失败,请稍后重试。";
+      },
+      { once: true }
+    );
   }
 
   function loadScript(src) {
@@ -176,6 +194,46 @@
           void activateProvider(root, config, provider);
         });
       });
+
+      // 支持方向键在 tab 间切换(WAI-ARIA tabs 模式):
+      // 左右方向键移动焦点并激活相邻 tab。
+      const tabs = Array.from(root.querySelectorAll("[data-comments-tab]"));
+      const tablist = root.querySelector(".comments-tabs");
+      if (tablist) {
+        tablist.addEventListener("keydown", (event) => {
+          if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) {
+            return;
+          }
+
+          const currentIndex = tabs.findIndex((tab) => tab.classList.contains("is-active"));
+          if (currentIndex === -1) {
+            return;
+          }
+
+          let nextIndex = currentIndex;
+          if (event.key === "ArrowLeft") {
+            nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+          } else if (event.key === "ArrowRight") {
+            nextIndex = (currentIndex + 1) % tabs.length;
+          } else if (event.key === "Home") {
+            nextIndex = 0;
+          } else if (event.key === "End") {
+            nextIndex = tabs.length - 1;
+          }
+
+          const nextTab = tabs[nextIndex];
+          if (!(nextTab instanceof HTMLElement)) {
+            return;
+          }
+
+          event.preventDefault();
+          nextTab.focus();
+          const provider = nextTab.getAttribute("data-comments-tab");
+          if (provider) {
+            void activateProvider(root, config, provider);
+          }
+        });
+      }
 
       root.dataset.bound = "true";
 

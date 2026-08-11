@@ -1,0 +1,21 @@
+{{ $page := .page }}
+{{ if and $page.Site.Params.copyright.enabled (eq $page.Site.Params.copyright.license "cc-by-nc-sa-4.0") }}
+  <aside class="article-copyright" aria-label="版权信息">
+    <p class="article-copyright-eyebrow">版权声明</p>
+    <p class="article-copyright-text">除特别声明外，本文采用知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议进行许可。</p>
+    <dl class="article-copyright-list">
+      <div>
+        <dt>本文链接</dt>
+        <dd>
+          <a href="{{ $page.Permalink }}">{{ $page.Permalink }}</a>
+        </dd>
+      </div>
+      <div>
+        <dt>许可协议</dt>
+        <dd>
+          <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a>
+        </dd>
+      </div>
+    </dl>
+  </aside>
+{{ end }}

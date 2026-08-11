@@ -1,0 +1,12 @@
+{{ $page := .page }}
+{{ $title := strings.TrimSpace ($page.Title | default "待补充文章标题") }}
+{{ $excerptLength := site.Params.posts.excerptLength | default 140 }}
+{{ $description := $page.Description | default ($page.Summary | plainify | strings.TrimSpace | truncate $excerptLength) | default "待补充文章简介" }}
+
+<article class="article-entry">
+  <h2 class="article-title">
+    <a href="{{ $page.RelPermalink }}">{{ $title }}</a>
+  </h2>
+  <p class="article-description">{{ $description }}</p>
+  {{ partial "article-meta.html" (dict "page" $page) }}
+</article>

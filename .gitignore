@@ -10,3 +10,4 @@ exampleSite/public/
 .claude/
 .agents/
 .trellis/
+reasonix.toml

@@ -1,0 +1,14 @@
+{{ $paths := .paths | default (slice) }}
+{{ if gt (len $paths) 0 }}
+  {{ $styles := slice }}
+  {{ range $paths }}
+    {{ with resources.Get . }}
+      {{ $styles = $styles | append . }}
+    {{ end }}
+  {{ end }}
+  {{ if gt (len $styles) 0 }}
+    {{ $target := .target | default "css/bundles/page.css" }}
+    {{ $bundle := $styles | resources.Concat $target | minify | fingerprint }}
+    <link rel="stylesheet" href="{{ $bundle.RelPermalink }}" integrity="{{ $bundle.Data.Integrity }}" />
+  {{ end }}
+{{ end }}

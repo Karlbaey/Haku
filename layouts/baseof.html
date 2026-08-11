@@ -14,10 +14,12 @@
     ) }}
     {{ block "styles" . }}{{ end }}
     {{ if .Page.Store.Get "hasMath" }}
+      {{ $katexVersion := site.Params.katex.version | default "0.16.25" }}
+      {{ $katexIntegrity := site.Params.katex.integrity | default "sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi" }}
       <link
         rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
-        integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+        href="https://cdn.jsdelivr.net/npm/katex@{{ $katexVersion }}/dist/katex.min.css"
+        integrity="{{ $katexIntegrity }}"
         crossorigin="anonymous"
       />
     {{ end }}

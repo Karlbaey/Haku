@@ -1,0 +1,55 @@
+{{ $paginator := .paginator | default . }}
+
+{{ if gt $paginator.TotalPages 1 }}
+  <nav class="pagination" aria-label="文章分页">
+    <p class="pagination-summary">
+      第 {{ $paginator.PageNumber }} 页，共 {{ $paginator.TotalPages }} 页
+    </p>
+
+    <div class="pagination-links">
+      {{ with $paginator.Prev }}
+        <a class="pagination-link pagination-link--arrow" href="{{ .URL }}" rel="prev">上一页</a>
+      {{ else }}
+        <span class="pagination-link pagination-link--disabled pagination-link--arrow" aria-disabled="true">上一页</span>
+      {{ end }}
+
+      {{ $current := $paginator.PageNumber }}
+      {{ $total := $paginator.TotalPages }}
+      {{ $delta := 2 }}
+
+      {{ range $paginator.Pagers }}
+        {{ $show := false }}
+        {{ if or (eq .PageNumber 1) (eq .PageNumber $total) }}
+          {{ $show = true }}
+        {{ else if and (ge .PageNumber (sub $current $delta)) (le .PageNumber (add $current $delta)) }}
+          {{ $show = true }}
+        {{ end }}
+
+        {{ if $show }}
+          {{ if eq .PageNumber $current }}
+            <span class="pagination-link pagination-link--current" aria-current="page">{{ .PageNumber }}</span>
+          {{ else }}
+            <a class="pagination-link" href="{{ .URL }}">{{ .PageNumber }}</a>
+          {{ end }}
+        {{ else }}
+          {{ $prev := sub .PageNumber 1 }}
+          {{ $showEllipsis := false }}
+          {{ if and (eq .PageNumber 2) (gt $current (add $delta 2)) }}
+            {{ $showEllipsis = true }}
+          {{ else if and (eq .PageNumber (sub $total 1)) (lt $current (sub $total (add $delta 1))) }}
+            {{ $showEllipsis = true }}
+          {{ end }}
+          {{ if $showEllipsis }}
+            <span class="pagination-ellipsis" aria-hidden="true">…</span>
+          {{ end }}
+        {{ end }}
+      {{ end }}
+
+      {{ with $paginator.Next }}
+        <a class="pagination-link pagination-link--arrow" href="{{ .URL }}" rel="next">下一页</a>
+      {{ else }}
+        <span class="pagination-link pagination-link--disabled pagination-link--arrow" aria-disabled="true">下一页</span>
+      {{ end }}
+    </div>
+  </nav>
+{{ end }}

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 720" role="img" aria-labelledby="title desc">
+  <title id="title">MW Figure Demo</title>
+  <desc id="desc">Abstract landscape illustration for the mwfigure shortcode preview.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#f7e5c8" />
+      <stop offset="100%" stop-color="#d6e1f4" />
+    </linearGradient>
+    <linearGradient id="hill" x1="0%" x2="100%" y1="0%" y2="0%">
+      <stop offset="0%" stop-color="#567b68" />
+      <stop offset="100%" stop-color="#304d46" />
+    </linearGradient>
+    <linearGradient id="card" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#fbf7f1" />
+      <stop offset="100%" stop-color="#efe2d2" />
+    </linearGradient>
+  </defs>
+  <rect width="960" height="720" fill="url(#sky)" />
+  <circle cx="760" cy="140" r="72" fill="#f7c97f" opacity="0.9" />
+  <path d="M0 470C90 430 170 418 255 436C330 451 391 498 474 504C578 511 653 410 744 393C826 378 899 407 960 438V720H0Z" fill="#779b83" />
+  <path d="M0 516C104 483 212 482 318 523C398 554 493 602 596 585C706 566 787 478 879 462C907 457 934 457 960 460V720H0Z" fill="url(#hill)" />
+  <rect x="114" y="106" width="372" height="212" rx="20" fill="url(#card)" opacity="0.95" />
+  <rect x="144" y="140" width="164" height="18" rx="9" fill="#35554b" opacity="0.9" />
+  <rect x="144" y="178" width="286" height="12" rx="6" fill="#66857a" opacity="0.72" />
+  <rect x="144" y="206" width="248" height="12" rx="6" fill="#66857a" opacity="0.72" />
+  <rect x="144" y="234" width="210" height="12" rx="6" fill="#66857a" opacity="0.72" />
+  <rect x="144" y="272" width="126" height="22" rx="11" fill="#c4826f" />
+  <rect x="602" y="132" width="194" height="194" rx="28" fill="#f3eee8" opacity="0.86" />
+  <path d="M643 275L693 214L731 248L776 184L831 275Z" fill="#7d9e8d" />
+  <circle cx="756" cy="188" r="24" fill="#d7b16c" />
+  <path d="M570 600C622 546 662 520 710 520C769 520 812 557 870 624" fill="none" stroke="#f3eee8" stroke-linecap="round" stroke-width="20" opacity="0.75" />
+  <path d="M94 610C154 560 216 534 286 534C348 534 405 558 466 606" fill="none" stroke="#f7d5a4" stroke-linecap="round" stroke-width="18" opacity="0.65" />
+</svg>

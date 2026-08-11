@@ -35,6 +35,13 @@
     {{- with $self }}
     <atom:link href="{{ . }}" rel="self" type="application/rss+xml" />
     {{- end }}
+    {{- $fullRSS := "" -}}
+    {{- with $page.OutputFormats.Get "FullRSS" -}}
+      {{- $fullRSS = .Permalink -}}
+    {{- end -}}
+    {{- with $fullRSS }}
+    <atom:link href="{{ . }}" rel="alternate" type="application/rss+xml" title="全文 RSS" />
+    {{- end }}
     {{- with $seo.faviconURL }}
     <image>
       <url>{{ . }}</url>

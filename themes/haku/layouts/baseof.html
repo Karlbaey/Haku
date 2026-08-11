@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="{{ or .Params.lang .Site.Language.Locale .Site.Language.Lang "zh-CN" }}">
+  <head>
+    {{ $noop := .WordCount }}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content="Hugo {{ hugo.Version }}" />
+    {{ block "meta" . }}
+      {{ partial "head.html" (dict "page" .) }}
+    {{ end }}
+    {{ partial "style-bundle.html" (dict
+      "paths" (slice "css/global.css" "css/toc.css")
+      "target" "css/bundles/base.css"
+    ) }}
+    {{ block "styles" . }}{{ end }}
+    {{ if .Page.Store.Get "hasMath" }}
+      {{ $katexVersion := site.Params.katex.version | default "0.16.25" }}
+      {{ $katexIntegrity := site.Params.katex.integrity | default "sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi" }}
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/katex@{{ $katexVersion }}/dist/katex.min.css"
+        integrity="{{ $katexIntegrity }}"
+        crossorigin="anonymous"
+      />
+    {{ end }}
+    {{ block "extra_head" . }}{{ end }}
+  </head>
+  <body>
+    {{ block "main" . }}{{ end }}
+    {{ $footer := .Site.Params.footer }}
+    {{ with $footer.text }}
+      <footer>
+        <div class="site-footer-inner">
+          {{ with $footer.link }}
+            <a href="{{ . }}" target="_blank" rel="noreferrer">{{ $footer.text }}</a>
+          {{ else }}
+            <span>{{ $footer.text }}</span>
+          {{ end }}
+        </div>
+      </footer>
+    {{ end }}
+    {{ block "scripts" . }}{{ end }}
+  </body>
+</html>

@@ -13,10 +13,17 @@ pagerSize = 7
 path = "page"
 
 [outputs]
-home = ["HTML", "RSS"]
+home = ["HTML", "RSS", "FullRSS"]
 
 [outputFormats.RSS]
 baseName = "rss"
+
+[outputFormats.FullRSS]
+baseName = "rss-full"
+mediaType = "application/rss+xml"
+isPlainText = false
+noUgly = true
+permalinkable = true
 
 [sitemap]
 changefreq = "weekly"

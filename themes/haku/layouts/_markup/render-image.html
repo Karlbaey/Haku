@@ -1,0 +1,19 @@
+{{ $alt := .PlainText | default (.Text | plainify) }}
+{{ if eq $alt "_" }}
+  {{ $alt = "" }}
+{{ end }}
+{{ $caption := "" }}
+{{ $destination := strings.TrimPrefix "./" .Destination }}
+{{ $image := .Page.Resources.GetMatch $destination }}
+{{ if and $alt (ne $alt "_image") }}
+  {{ $caption = $alt }}
+{{ end }}
+
+{{ if .IsBlock }}
+  <figure class="md-image-figure">
+    <img src="{{ .Destination | safeURL }}" alt="{{ $alt | default "" }}" loading="lazy" decoding="async"{{ with $image }} width="{{ .Width }}" height="{{ .Height }}"{{ end }} />
+    {{ with $caption }}<figcaption>{{ . }}</figcaption>{{ end }}
+  </figure>
+{{ else }}
+  <img src="{{ .Destination | safeURL }}" alt="{{ $alt | default "" }}" loading="lazy" decoding="async"{{ with $image }} width="{{ .Width }}" height="{{ .Height }}"{{ end }} />
+{{ end }}

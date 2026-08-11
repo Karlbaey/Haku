@@ -1,0 +1,1 @@
+{{- partial "rss-full-feed.xml" . | safeHTML -}}

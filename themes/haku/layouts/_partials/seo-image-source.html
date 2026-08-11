@@ -1,0 +1,13 @@
+{{- $page := .page -}}
+{{- $src := strings.TrimSpace (printf "%v" (.src | default "")) -}}
+{{- if not $src -}}
+  {{- "" -}}
+{{- else if or (hasPrefix $src "http://") (hasPrefix $src "https://") (hasPrefix $src "//") (hasPrefix $src "/") -}}
+  {{- partial "seo-abs-url.html" (dict "value" $src) -}}
+{{- else -}}
+  {{- with $page.Resources.GetMatch $src -}}
+    {{- .Permalink -}}
+  {{- else -}}
+    {{- partial "seo-abs-url.html" (dict "value" $src) -}}
+  {{- end -}}
+{{- end -}}

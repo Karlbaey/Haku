@@ -1,0 +1,10 @@
+{{- $value := strings.TrimSpace (printf "%v" (.value | default "")) -}}
+{{- if not $value -}}
+  {{- "" -}}
+{{- else if or (hasPrefix $value "http://") (hasPrefix $value "https://") -}}
+  {{- $value -}}
+{{- else if hasPrefix $value "//" -}}
+  {{- printf "https:%s" $value -}}
+{{- else -}}
+  {{- absURL $value -}}
+{{- end -}}

@@ -224,8 +224,11 @@
           <p class="description"><xsl:value-of select="/rss/channel/description" /></p>
 
           <div class="meta">
-            <span>订阅地址：<a href="{/rss/channel/atom:link/@href}"><xsl:value-of select="/rss/channel/atom:link/@href" /></a></span>
+            <span>订阅地址：<a href="{/rss/channel/atom:link[@rel='self']/@href}"><xsl:value-of select="/rss/channel/atom:link[@rel='self']/@href" /></a></span>
             <span>主页：<a href="{/rss/channel/link}"><xsl:value-of select="/rss/channel/link" /></a></span>
+            <xsl:if test="count(/rss/channel/atom:link[@rel='alternate']) > 0">
+              <span>全文 RSS：<a href="{/rss/channel/atom:link[@rel='alternate']/@href}"><xsl:value-of select="/rss/channel/atom:link[@rel='alternate']/@href" /></a></span>
+            </xsl:if>
           </div>
 
           <section class="panel">

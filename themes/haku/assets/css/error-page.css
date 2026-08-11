@@ -1,0 +1,45 @@
+.not-found-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 9rem);
+  text-align: center;
+}
+
+.not-found-page {
+  display: grid;
+  justify-items: center;
+  gap: 1rem;
+}
+
+.not-found-icon {
+  width: 8.5rem;
+  height: 8.5rem;
+  background: var(--muted);
+  -webkit-mask: var(--not-found-icon-url) center / contain no-repeat;
+  mask: var(--not-found-icon-url) center / contain no-repeat;
+}
+
+.not-found-message {
+  margin: 0;
+  color: var(--heading);
+  font-family: var(--font-title);
+  font-size: 1.18rem;
+  line-height: 1.8;
+}
+
+.not-found-home-link {
+  color: var(--accent);
+  font-size: 1rem;
+}
+
+@media (max-width: 767px) {
+  .not-found-main {
+    min-height: calc(100vh - 6.75rem);
+  }
+
+  .not-found-icon {
+    width: 7rem;
+    height: 7rem;
+  }
+}

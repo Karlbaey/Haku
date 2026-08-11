@@ -30,6 +30,16 @@
     }
   });
 
+  // 原生 <dialog> 按 Esc 或浏览器关闭按钮触发 cancel/close,不会走自定义 closeDialog,
+  // 需要在此兜底清理 body 上的滚动锁类,避免页面滚动被永久锁定。
+  dialog.addEventListener("cancel", function () {
+    document.body.classList.remove("friends-dialog-open");
+  });
+
+  dialog.addEventListener("close", function () {
+    document.body.classList.remove("friends-dialog-open");
+  });
+
   form.addEventListener("submit", function (event) {
     event.preventDefault();
 

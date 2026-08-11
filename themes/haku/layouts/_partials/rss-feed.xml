@@ -1,0 +1,68 @@
+{{ printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>\n" | safeHTML }}
+{{ printf "<?xml-stylesheet type=\"text/xsl\" href=%q?>\n" ("feed.xsl" | relURL) | safeHTML }}
+{{- $page := . -}}
+{{- $site := .Site -}}
+{{- $seo := partial "seo-context.html" (dict "page" $page) | transform.Unmarshal -}}
+{{- $pages := slice -}}
+{{- if $page.IsHome -}}
+  {{- $mainSections := $site.Params.mainSections | default $site.MainSections | default (slice "articles") -}}
+  {{- $pages = where $site.RegularPages "Section" "in" $mainSections -}}
+{{- else -}}
+  {{- $pages = $page.RegularPages -}}
+{{- end -}}
+{{- $pages = $pages.ByDate.Reverse -}}
+{{- $title := $seo.title -}}
+{{- $description := $seo.description -}}
+{{- $excerptLength := $site.Params.posts.excerptLength | default 140 -}}
+{{- $self := "" -}}
+{{- with $page.OutputFormats.Get "RSS" -}}
+  {{- $self = .Permalink -}}
+{{- end -}}
+{{- $lastBuildDate := "" -}}
+{{- with index $pages 0 -}}
+  {{- $lastBuildDate = (.Lastmod | default .Date).Format "Mon, 02 Jan 2006 15:04:05 -0700" -}}
+{{- end -}}
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ $title }}</title>
+    <link>{{ $page.Permalink }}</link>
+    <description>{{ $description }}</description>
+    <generator>Hugo</generator>
+    <language>{{ $seo.languageCode }}</language>
+    {{- with $lastBuildDate }}
+    <lastBuildDate>{{ . }}</lastBuildDate>
+    {{- end }}
+    {{- with $self }}
+    <atom:link href="{{ . }}" rel="self" type="application/rss+xml" />
+    {{- end }}
+    {{- $fullRSS := "" -}}
+    {{- with $page.OutputFormats.Get "FullRSS" -}}
+      {{- $fullRSS = .Permalink -}}
+    {{- end -}}
+    {{- with $fullRSS }}
+    <atom:link href="{{ . }}" rel="alternate" type="application/rss+xml" title="全文 RSS" />
+    {{- end }}
+    {{- with $seo.faviconURL }}
+    <image>
+      <url>{{ . }}</url>
+      <title>{{ $site.Title }}</title>
+      <link>{{ $site.Home.Permalink }}</link>
+    </image>
+    {{- end }}
+    {{- range $pages }}
+    <item>
+      <title>{{ .Title }}</title>
+      <link>{{ .Permalink }}</link>
+      <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" }}</pubDate>
+      <guid>{{ .Permalink }}</guid>
+      {{- $itemDescription := .Description | default (.Summary | plainify | htmlUnescape | strings.TrimSpace | truncate $excerptLength) -}}
+      {{- with $itemDescription }}
+      <description>{{ . | transform.XMLEscape }}</description>
+      {{- end }}
+      {{- range .GetTerms "tags" }}
+      <category>{{ .LinkTitle }}</category>
+      {{- end }}
+    </item>
+    {{- end }}
+  </channel>
+</rss>
