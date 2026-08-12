@@ -3,6 +3,7 @@
 {{ $providers := slice }}
 {{ $giscus := $comments.giscus }}
 {{ $sodesu := $comments.sodesu }}
+{{ $linuxdo := $comments.linuxdo }}
 
 {{ if and $giscus (ne $giscus.enabled false) $giscus.repo $giscus.repoId $giscus.category $giscus.categoryId }}
   {{ $providers = $providers | append "giscus" }}
@@ -10,6 +11,10 @@
 
 {{ if and $sodesu (ne $sodesu.enabled false) $sodesu.serverUrl }}
   {{ $providers = $providers | append "sodesu" }}
+{{ end }}
+
+{{ if and $linuxdo (ne $linuxdo.enabled false) $linuxdo.discourseUrl }}
+  {{ $providers = $providers | append "linuxdo" }}
 {{ end }}
 
 {{ if gt (len $providers) 0 }}
@@ -62,6 +67,14 @@
       "copyright" ($sodesu.copyright | default false)
     )) }}
   {{ end }}
+  {{ if in $providers "linuxdo" }}
+    {{ $config = merge $config (dict "linuxdo" (dict
+      "discourseUrl" ($linuxdo.discourseUrl | default "https://linux.do/")
+      "discourseUserName" $linuxdo.username
+      "fullApp" ($linuxdo.fullApp | default true)
+      "embedHeight" ($linuxdo.embedHeight | default "800px")
+    )) }}
+  {{ end }}
 
   <section class="comments-section" data-comments-root>
     <div class="comments-section-head">
@@ -70,7 +83,9 @@
     <div class="comments-tabs" role="tablist" aria-label="评论系统切换">
       {{ range $providers }}
         {{ $provider := . }}
-        {{ $label := cond (eq $provider "giscus") "Giscus" "Sodesu" }}
+        {{ $label := "Giscus" }}
+        {{ if eq $provider "sodesu" }}{{ $label = "Sodesu" }}{{ end }}
+        {{ if eq $provider "linuxdo" }}{{ $label = "LINUX DO" }}{{ end }}
         <button
           class="comments-tab{{ if eq $defaultProvider $provider }} is-active{{ end }}"
           type="button"

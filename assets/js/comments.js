@@ -135,6 +135,62 @@
     mount.dataset.loaded = "true";
   }
 
+  function mountLinuxdo(mount, config) {
+    if (mount.dataset.loaded === "true" || !config.linuxdo) {
+      return;
+    }
+
+    // Discourse 的 embed.js 在加载后立即查找 id 为 discourse-comments 的容器,
+    // 并读取 window.DiscourseEmbed 全局配置来插入 iframe。
+    // 这里在挂载点内部放入该容器,由全局配置驱动,使其与 tab 切换/懒加载协同。
+    mount.innerHTML = '<div id="discourse-comments"></div>';
+
+    // discourseUrl 需要以 / 结尾:embed.js 会拼接 "embed/comments"。
+    let discourseUrl = config.linuxdo.discourseUrl || "https://linux.do/";
+    if (!discourseUrl.endsWith("/")) {
+      discourseUrl += "/";
+    }
+
+    window.DiscourseEmbed = {
+      discourseUrl,
+      discourseEmbedUrl: config.article.url,
+      discourseUserName: config.linuxdo.discourseUserName || "",
+      topicId: config.linuxdo.topicId,
+      className: config.linuxdo.className,
+      fullApp: config.linuxdo.fullApp,
+      embedHeight: config.linuxdo.embedHeight,
+    };
+
+    const src = discourseUrl + "javascripts/embed.js";
+    const existing = document.querySelector(`script[src="${src}"]`);
+    if (existing) {
+      // 之前已加载过 embed.js:它是自执行脚本,只会在初次加载时向当前 #discourse-comments
+      // 注入 iframe。此处不在 tab 切换时重复注入,避免同一页面出现多个 iframe。
+      mount.dataset.loaded = "true";
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.type = "text/javascript";
+    script.async = true;
+    script.src = src;
+    script.addEventListener(
+      "load",
+      () => {
+        mount.dataset.loaded = "true";
+      },
+      { once: true }
+    );
+    script.addEventListener(
+      "error",
+      () => {
+        mount.textContent = "linux.do 评论加载失败,请稍后重试。";
+      },
+      { once: true }
+    );
+    document.head.append(script);
+  }
+
   async function activateProvider(root, config, provider) {
     applyTabState(root, provider);
     const mount = root.querySelector(`[data-comments-mount="${provider}"]`);
@@ -150,6 +206,11 @@
 
       if (provider === "sodesu") {
         await mountSodesu(mount, config);
+        return;
+      }
+
+      if (provider === "linuxdo") {
+        mountLinuxdo(mount, config);
       }
     } catch (error) {
       console.error(error);

@@ -1,9 +1,0 @@
-{{- $destination := strings.TrimSpace .Destination -}}
-{{- $url := urls.Parse $destination -}}
-{{- $siteURL := urls.Parse .Page.Site.BaseURL -}}
-{{- $scheme := lower $url.Scheme -}}
-{{- $host := lower $url.Host -}}
-{{- $siteHost := lower $siteURL.Host -}}
-{{- $isHTTP := or (eq $scheme "http") (eq $scheme "https") -}}
-{{- $isExternal := and $isHTTP $host (ne $host $siteHost) -}}
-<a href="{{ $destination | safeURL }}"{{ with .Title }} title="{{ . }}"{{ end }}{{ if $isExternal }} target="_blank" rel="noopener noreferrer"{{ end }}>{{ .Text | safeHTML }}</a>{{- /* Trim render-hook trailing newline. */ -}}

@@ -1,7 +1,0 @@
-{{- with . -}}
-  {{- if and (eq .Hour 0) (eq .Minute 0) (eq .Second 0) -}}
-    {{- .Format "2006年1月2日" -}}
-  {{- else -}}
-    {{- .Format "2006年1月2日 15:04" -}}
-  {{- end -}}
-{{- end -}}
