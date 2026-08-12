@@ -5,12 +5,12 @@
 {{ $sodesu := $comments.sodesu }}
 {{ $linuxdo := $comments.linuxdo }}
 
-{{ if and $giscus (ne $giscus.enabled false) $giscus.repo $giscus.repoId $giscus.category $giscus.categoryId }}
-  {{ $providers = $providers | append "giscus" }}
-{{ end }}
-
 {{ if and $sodesu (ne $sodesu.enabled false) $sodesu.serverUrl }}
   {{ $providers = $providers | append "sodesu" }}
+{{ end }}
+
+{{ if and $giscus (ne $giscus.enabled false) $giscus.repo $giscus.repoId $giscus.category $giscus.categoryId }}
+  {{ $providers = $providers | append "giscus" }}
 {{ end }}
 
 {{ if and $linuxdo (ne $linuxdo.enabled false) $linuxdo.discourseUrl }}
