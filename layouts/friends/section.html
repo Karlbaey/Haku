@@ -9,7 +9,7 @@
 
 {{ define "styles" }}
   {{ partial "style-bundle.html" (dict
-    "paths" (slice "css/markdown.css" "css/friends.css")
+    "paths" (slice "css/markdown.css" "css/friends.css" "css/aggregator.css")
     "target" "css/bundles/friends.css"
   ) }}
 {{ end }}
@@ -66,6 +66,27 @@
       </section>
     {{ else }}
       <p class="empty-state">暂时还没有展示的友情链接。</p>
+    {{ end }}
+
+    {{ $aggregatorData := index .Site.Data "aggregator" }}
+    {{ $aggregators := index $aggregatorData "links" | default (slice) }}
+    {{ if gt (len $aggregators) 0 }}
+      <section class="friends-aggregator" aria-label="博客聚合网站">
+        {{ with $aggregatorData.title }}
+          <h2 class="friends-aggregator-title">{{ . }}</h2>
+        {{ else }}
+          <h2 class="friends-aggregator-title">博客聚合</h2>
+        {{ end }}
+        <p> 你可以在这些博客聚合站点上找到我。 </p>
+        <ul class="friends-aggregator-list">
+          {{ range $aggregators }}
+            <li class="friends-aggregator-item">
+              <a class="friends-aggregator-link" href="{{ .url }}" target="_blank" rel="noreferrer">{{ .name }}</a>
+              {{ with .description }}<span class="friends-aggregator-desc">{{ . }}</span>{{ end }}
+            </li>
+          {{ end }}
+        </ul>
+      </section>
     {{ end }}
   </main>
 {{ end }}

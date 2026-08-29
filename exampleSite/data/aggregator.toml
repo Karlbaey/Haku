@@ -1,0 +1,14 @@
+# 示例:博客聚合站点列表,渲染在友链卡片下方(纯列表样式)。
+# 主题读取本文件的 "links" 数组;用户站点用各自 data/aggregator.toml 维护。
+
+title = "博客聚合"
+
+[[links]]
+name = "十年之约"
+url = "https://www.foreverblog.cn"
+description = "聚集了一批坚持写作的中文独立博客。"
+
+[[links]]
+name = "中文独立博客"
+url = "https://github.com/timqian/chinese-independent-blogs"
+description = "GitHub 上维护的中文独立博客列表。"

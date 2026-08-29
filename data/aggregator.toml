@@ -1,0 +1,10 @@
+# 博客聚合站点列表。
+# 主题会读取本文件的 "links" 数组,渲染在友链卡片下方(纯列表样式)。
+# 用户站点可用自己的 data/aggregator.toml 覆盖此配置,格式如下:
+
+# title = "博客聚合"
+
+# [[links]]
+# name = "聚合站名称"
+# url = "https://example.com"
+# description = "一句话介绍,可选"
