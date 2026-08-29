@@ -3,6 +3,7 @@
   const SCROLL_THRESHOLD = 200;
   const ARTICLE_IMAGE_SELECTOR = ".markdown img";
   const HASH_REALIGN_WINDOW = 3000;
+  const PAGE_MAIN_SELECTOR = ".page-main";
   const tocRoot = document.querySelector("[data-article-toc]");
 
   if (!tocRoot) {
@@ -18,6 +19,16 @@
     return;
   }
 
+  function isOverflowing() {
+    const pageMain = document.querySelector(PAGE_MAIN_SELECTOR);
+    if (!(pageMain instanceof HTMLElement)) {
+      return false;
+    }
+
+    const tocRect = tocRoot.getBoundingClientRect();
+    return tocRect.right > pageMain.getBoundingClientRect().left;
+  }
+
   function updateTocVisibility() {
     if (!media.matches) {
       tocRoot.classList.remove("is-visible");
@@ -25,7 +36,7 @@
     }
 
     const scrolled = window.scrollY > SCROLL_THRESHOLD;
-    tocRoot.classList.toggle("is-visible", scrolled);
+    tocRoot.classList.toggle("is-visible", scrolled && !isOverflowing());
   }
 
   function decodeHashFragment(value) {
@@ -259,6 +270,10 @@
   window.addEventListener("hashchange", handleHashNavigation);
   window.addEventListener("load", handleHashNavigation, { once: true });
   media.addEventListener("change", function () {
+    updateTocVisibility();
+    scheduleRender();
+  });
+  window.addEventListener("resize", function () {
     updateTocVisibility();
     scheduleRender();
   });
