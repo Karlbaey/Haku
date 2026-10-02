@@ -14,12 +14,6 @@
   font-size: 1.2rem;
 }
 
-.comments-section-head p {
-  margin: 0.45rem 0 0;
-  color: var(--muted);
-  font-size: 0.94rem;
-}
-
 .comments-tabs {
   display: flex;
   flex-wrap: wrap;

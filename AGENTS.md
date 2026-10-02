@@ -8,7 +8,7 @@ Haku is a content-first Hugo theme for Chinese-language blogs. It's a standalone
 
 ### Preview the example site (for theme development)
 ```bash
-hugo server --source exampleSite --themesDir .. -D
+hugo server --source exampleSite --themesDir ../.. -D
 ```
 
 ### Preview a user's site (when testing theme integration)
@@ -47,33 +47,14 @@ Multi-layered SEO implementation:
 - `seo-schema.html` outputs JSON-LD (BlogPosting/CollectionPage/WebSite)
 - Open Graph, Twitter Card, canonical URLs, robots meta all automated
 
-### Friends Link System
-
-- **Data source**: `data/friends.toml` (TOML array of link objects)
-- **Field schema**: `data/friend_link_fields.toml` defines form fields
-- **Application flow**: `assets/js/friends-application.js` builds GitHub issue body with TOML code block
-- **Enable**: Create `content/friends/_index.md` + set `params.friendsApplication.enabled = true`
-
 ### Comment System Integration
 
-- Supports Giscus and Sodesu
+- Supports Giscus, Sodesu and LINUX DO embed (Discourse)
 - Sodesu loads frontend via CDN (no npm install required)
-- Configuration: `params.comments.giscus` or `params.comments.sodesu` in Hugo config
+- Configuration: `params.comments.providers` (array of strict lowercase names) + `params.comments.{giscus,sodesu,linuxdo}` tables
+- `providers` order is the tab order left to right, and the first entry is the initially expanded one
+- A provider listed in `providers` must be fully configured, otherwise the build fails with an error
 - Rendering: `_partials/comments.html` + `assets/js/comments.js`
-
-## Current Development Focus
-
-Active optimization work tracked in `优化需求文档.md`:
-
-1. **Friends form TOML output** (highest priority) - `assets/js/friends-application.js` must generate TOML format, not TypeScript. Add `<!-- id: result -->` and `<!-- id: toml -->` field identifiers.
-
-2. **Mobile pagination layout** - `assets/css/global.css` pagination breaks into two rows on mobile. Need responsive refinement for `<768px`.
-
-3. **Code block folding** - Long code blocks (>20 lines) should get collapse/expand UI. Implement in `assets/js/article-enhancements.js` or new file. Default to expanded state.
-
-4. **Comment lazy loading** - Delay Sodesu initialization until scroll or manual trigger to reduce Vercel function invocations and Neon DB queries. Modify `assets/js/comments.js` and `_partials/comments.html`.
-
-5. **Desktop sticky TOC** - Fixed TOC in left margin when viewport >1024px and scroll >200px. Requires `assets/css/toc.css` and `assets/js/toc.js` updates. Must not break existing mobile TOC.
 
 ## Important Conventions
 

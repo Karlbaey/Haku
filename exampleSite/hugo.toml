@@ -50,21 +50,18 @@ name = "Haku"
 enabled = false
 
 [params.comments]
-defaultProvider = "linuxdo"
+providers = ["sodesu", "giscus", "linuxdo"]
 
 [params.comments.giscus]
-enabled = true
 repo = "test/repo"
 repoId = "R_test"
 category = "Announcements"
 categoryId = "DIC_test"
 
 [params.comments.sodesu]
-enabled = true
 serverUrl = "https://sodesu.example.com"
 
 [params.comments.linuxdo]
-enabled = true
 discourseUrl = "https://linux.do/"
 username = "Karlbaey"
 

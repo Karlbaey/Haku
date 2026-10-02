@@ -157,12 +157,45 @@ images = ["/images/post-og.png"]
 
 ### 评论
 
-按需配置 `params.comments`：
+评论服务通过 `params.comments.providers` 声明，数组顺序就是评论区标签从左到右的顺序，数组第一项默认展开：
 
-- `params.comments.giscus`
-- `params.comments.sodesu`
+```toml
+[params.comments]
+# providers 中靠前的提供者排在左边
+providers = ["sodesu", "giscus", "linuxdo"]
 
-未配置时，文章页不会渲染评论区。
+[params.comments.giscus]
+repo = "user/repo"
+repoId = "R_xxxx"
+category = "Announcements"
+categoryId = "DIC_xxxx"
+# 可选：mapping / strict / reactionsEnabled / inputPosition / theme / lang
+
+[params.comments.sodesu]
+serverUrl = "https://sodesu.example.com"
+# 可选：turnstileKey / lang / emoji / requiredMeta / login / pageSize / commentSorting / copyright
+
+[params.comments.linuxdo]
+discourseUrl = "https://linux.do/"
+username = "your-linuxdo-username"
+# 可选：fullApp / embedHeight / topicId / className
+```
+
+目前支持三个提供者，名称必须严格写小写：
+
+- `giscus`
+- `sodesu`
+- `linuxdo`（LINUX DO 内嵌）
+
+`providers` 中列出且名称有效的提供者才会渲染，数组里没有的提供者一律不会出现，即使配置了对应的 `[params.comments.*]`。只启用一个提供者时不会渲染标签栏。
+
+列进 `providers` 的提供者必须配置完整，缺项会直接中断构建并报错：
+
+- `giscus` 需要 `[params.comments.giscus]` 以及 `repo` / `repoId` / `category` / `categoryId`
+- `sodesu` 需要 `[params.comments.sodesu]` 以及 `serverUrl`
+- `linuxdo` 需要 `[params.comments.linuxdo]`
+
+未配置 `providers` 时，文章页不会渲染评论区。
 
 Sodesu 前端默认通过 CDN 加载，不需要在站点里额外安装任何包。你只需要提供可用的 `serverUrl`。
 

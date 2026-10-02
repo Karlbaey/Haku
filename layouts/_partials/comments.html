@@ -1,36 +1,53 @@
 {{ $page := .page }}
 {{ $comments := site.Params.comments }}
+{{ $labels := dict "giscus" "Giscus" "sodesu" "Sodesu" "linuxdo" "LINUX DO" }}
+
+{{/* providers 数组同时决定启用哪些提供者、以及评论区标签从左到右的顺序,
+     数组第一项就是默认展开的提供者。名称必须与 $labels 的键严格一致(小写),
+     不做大小写、空格或别名归一化。 */}}
 {{ $providers := slice }}
+{{ range $comments.providers }}
+  {{ if and (isset $labels .) (not (in $providers .)) }}
+    {{ $providers = $providers | append . }}
+  {{ end }}
+{{ end }}
+
 {{ $giscus := $comments.giscus }}
 {{ $sodesu := $comments.sodesu }}
 {{ $linuxdo := $comments.linuxdo }}
 
-{{ if and $sodesu (ne $sodesu.enabled false) $sodesu.serverUrl }}
-  {{ $providers = $providers | append "sodesu" }}
+{{/* 列进 providers 的提供者必须配置完整,缺项直接报错中断构建。 */}}
+{{ if in $providers "giscus" }}
+  {{ if not $giscus }}
+    {{ erroridf "comments-giscus-missing" "comments: providers 中包含 giscus,但缺少 [params.comments.giscus] 配置。" }}
+  {{ else }}
+    {{ $missing := slice }}
+    {{ range slice "repo" "repoId" "category" "categoryId" }}
+      {{ if not (index $giscus .) }}
+        {{ $missing = $missing | append . }}
+      {{ end }}
+    {{ end }}
+    {{ if $missing }}
+      {{ erroridf "comments-giscus-incomplete" "comments: params.comments.giscus 缺少必填项:%s。" (delimit $missing "、") }}
+    {{ end }}
+  {{ end }}
 {{ end }}
-
-{{ if and $giscus (ne $giscus.enabled false) $giscus.repo $giscus.repoId $giscus.category $giscus.categoryId }}
-  {{ $providers = $providers | append "giscus" }}
+{{ if in $providers "sodesu" }}
+  {{ if not $sodesu }}
+    {{ erroridf "comments-sodesu-missing" "comments: providers 中包含 sodesu,但缺少 [params.comments.sodesu] 配置。" }}
+  {{ else if not $sodesu.serverUrl }}
+    {{ erroridf "comments-sodesu-incomplete" "comments: params.comments.sodesu 缺少必填项:serverUrl。" }}
+  {{ end }}
 {{ end }}
-
-{{ if and $linuxdo (ne $linuxdo.enabled false) $linuxdo.discourseUrl }}
-  {{ $providers = $providers | append "linuxdo" }}
+{{ if and (in $providers "linuxdo") (not $linuxdo) }}
+  {{ erroridf "comments-linuxdo-missing" "comments: providers 中包含 linuxdo,但缺少 [params.comments.linuxdo] 配置。" }}
 {{ end }}
 
 {{ if gt (len $providers) 0 }}
-  {{ $defaultProvider := cond (and $comments.defaultProvider (in $providers $comments.defaultProvider)) $comments.defaultProvider (index $providers 0) }}
-  {{ if and (gt (len $providers) 1) (ne (index $providers 0) $defaultProvider) }}
-    {{ $ordered := slice $defaultProvider }}
-    {{ range $providers }}
-      {{ if ne . $defaultProvider }}
-        {{ $ordered = $ordered | append . }}
-      {{ end }}
-    {{ end }}
-    {{ $providers = $ordered }}
-  {{ end }}
+  {{ $initialProvider := index $providers 0 }}
+  {{ $multiple := gt (len $providers) 1 }}
 
   {{ $config := dict
-    "defaultProvider" $defaultProvider
     "providers" $providers
     "giscusThemeUrl" ("giscus-theme.css" | relURL)
     "article" (dict
@@ -73,6 +90,8 @@
       "discourseUserName" $linuxdo.username
       "fullApp" ($linuxdo.fullApp | default true)
       "embedHeight" ($linuxdo.embedHeight | default "800px")
+      "topicId" $linuxdo.topicId
+      "className" $linuxdo.className
     )) }}
   {{ end }}
 
@@ -80,33 +99,30 @@
     <div class="comments-section-head">
       <h2>评论</h2>
     </div>
-    <div class="comments-tabs" role="tablist" aria-label="评论系统切换">
-      {{ range $providers }}
-        {{ $provider := . }}
-        {{ $label := "Giscus" }}
-        {{ if eq $provider "sodesu" }}{{ $label = "Sodesu" }}{{ end }}
-        {{ if eq $provider "linuxdo" }}{{ $label = "LINUX DO" }}{{ end }}
-        <button
-          class="comments-tab{{ if eq $defaultProvider $provider }} is-active{{ end }}"
-          type="button"
-          role="tab"
-          aria-selected="{{ if eq $defaultProvider $provider }}true{{ else }}false{{ end }}"
-          aria-controls="comments-panel-{{ $provider }}"
-          id="comments-tab-{{ $provider }}"
-          data-comments-tab="{{ $provider }}"
-        >
-          {{ $label }}
-        </button>
-      {{ end }}
-    </div>
+    {{ if $multiple }}
+      <div class="comments-tabs" role="tablist" aria-label="评论系统切换">
+        {{ range $providers }}
+          {{ $provider := . }}
+          <button
+            class="comments-tab{{ if eq $initialProvider $provider }} is-active{{ end }}"
+            type="button"
+            role="tab"
+            aria-selected="{{ if eq $initialProvider $provider }}true{{ else }}false{{ end }}"
+            aria-controls="comments-panel-{{ $provider }}"
+            id="comments-tab-{{ $provider }}"
+            data-comments-tab="{{ $provider }}"
+          >
+            {{ index $labels $provider }}
+          </button>
+        {{ end }}
+      </div>
+    {{ end }}
     {{ range $providers }}
       {{ $provider := . }}
       <section
         class="comments-panel"
-        role="tabpanel"
-        aria-labelledby="comments-tab-{{ $provider }}"
-        id="comments-panel-{{ $provider }}"
-        {{ if ne $defaultProvider $provider }}hidden{{ end }}
+        {{ if $multiple }}role="tabpanel" aria-labelledby="comments-tab-{{ $provider }}" id="comments-panel-{{ $provider }}"{{ end }}
+        {{ if and $multiple (ne $initialProvider $provider) }}hidden{{ end }}
         data-comments-panel="{{ $provider }}"
       >
         <div class="{{ if eq $provider "giscus" }}giscus{{ end }}" data-comments-mount="{{ $provider }}"></div>

@@ -298,13 +298,16 @@
 
       root.dataset.bound = "true";
 
+      // providers 数组第一项即默认展开的提供者。
+      const initialProvider = config.providers[0];
+
       // 使用 Intersection Observer 实现懒加载
       if ("IntersectionObserver" in window) {
         const observer = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
               if (entry.isIntersecting) {
-                void activateProvider(root, config, config.defaultProvider);
+                void activateProvider(root, config, initialProvider);
                 observer.unobserve(root);
               }
             });
@@ -317,7 +320,7 @@
         observer.observe(root);
       } else {
         // 降级方案：直接加载
-        void activateProvider(root, config, config.defaultProvider);
+        void activateProvider(root, config, initialProvider);
       }
     });
   }
