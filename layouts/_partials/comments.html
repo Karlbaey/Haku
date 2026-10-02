@@ -84,15 +84,21 @@
       "copyright" ($sodesu.copyright | default false)
     )) }}
   {{ end }}
+
+  {{/* LINUX DO 走官方 Discourse 嵌入脚本,由模板直接渲染,不再经过 comments.js。
+       discourseUrl 必须以 / 结尾:embed.js 会拼接 "javascripts/embed.js"。 */}}
+  {{ $discourseUrl := "" }}
+  {{ $fullApp := true }}
   {{ if in $providers "linuxdo" }}
-    {{ $config = merge $config (dict "linuxdo" (dict
-      "discourseUrl" ($linuxdo.discourseUrl | default "https://linux.do/")
-      "discourseUserName" $linuxdo.username
-      "fullApp" ($linuxdo.fullApp | default true)
-      "embedHeight" ($linuxdo.embedHeight | default "800px")
-      "topicId" $linuxdo.topicId
-      "className" $linuxdo.className
-    )) }}
+    {{ $discourseUrl = $linuxdo.discourseUrl | default "https://linux.do/" }}
+    {{ if not (strings.HasSuffix $discourseUrl "/") }}
+      {{ $discourseUrl = printf "%s/" $discourseUrl }}
+    {{ end }}
+    {{/* 不能用 default:false —— false 在 Hugo 里算空值,会把 fullApp = false 吃掉;
+         也不能用 isset:站点参数的键会被 Hugo 转成小写,isset 永远匹配不上 fullApp。 */}}
+    {{ if ne $linuxdo.fullApp nil }}
+      {{ $fullApp = $linuxdo.fullApp }}
+    {{ end }}
   {{ end }}
 
   <section class="comments-section" data-comments-root>
@@ -125,9 +131,37 @@
         {{ if and $multiple (ne $initialProvider $provider) }}hidden{{ end }}
         data-comments-panel="{{ $provider }}"
       >
-        <div class="{{ if eq $provider "giscus" }}giscus{{ end }}" data-comments-mount="{{ $provider }}"></div>
+        {{ if eq $provider "linuxdo" }}
+          <div id="discourse-comments"></div>
+          {{ with $linuxdo.username }}<meta name="discourse-username" content="{{ . }}">{{ end }}
+          <script type="text/javascript">
+            DiscourseEmbed = {
+              discourseUrl: {{ $discourseUrl | jsonify | safeJS }},
+              discourseEmbedUrl: {{ $page.Permalink | jsonify | safeJS }},
+              {{ with $linuxdo.username }}discourseUserName: {{ . | jsonify | safeJS }},{{ end }}
+              {{ with $linuxdo.topicId }}topicId: {{ . | jsonify | safeJS }},{{ end }}
+              {{ with $linuxdo.className }}className: {{ . | jsonify | safeJS }},{{ end }}
+              fullApp: {{ $fullApp | jsonify | safeJS }},
+              embedHeight: {{ $linuxdo.embedHeight | default "800px" | jsonify | safeJS }},
+              // lazyLoad: false, // disable native lazy loading of the iframe
+              // dynamicHeight: true,
+              // embedMinHeight: '400',
+              // embedMaxHeight: '900',
+            };
+
+            (function () {
+              var d = document.createElement("script");
+              d.type = "text/javascript";
+              d.async = true;
+              d.src = DiscourseEmbed.discourseUrl + "javascripts/embed.js";
+              (document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]).appendChild(d);
+            })();
+          </script>
+        {{ else }}
+          <div class="{{ if eq $provider "giscus" }}giscus{{ end }}" data-comments-mount="{{ $provider }}"></div>
+        {{ end }}
       </section>
     {{ end }}
-    <script type="application/json" data-comments-config>{{ $config | jsonify | safeHTML }}</script>
+    <script type="application/json" data-comments-config>{{ $config | jsonify | safeHTML }}</script>		
   </section>
 {{ end }}
