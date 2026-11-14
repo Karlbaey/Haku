@@ -197,6 +197,8 @@ username = "your-linuxdo-username"
 
 未配置 `providers` 时，文章页不会渲染评论区。
 
+如需关闭单篇文章的评论区，在该文章的 front matter 中设置 `comment: false`。
+
 Sodesu 前端默认通过 CDN 加载，不需要在站点里额外安装任何包。你只需要提供可用的 `serverUrl`。
 
 ### 友情链接

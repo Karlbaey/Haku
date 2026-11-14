@@ -10,7 +10,7 @@
 {{ end }}
 
 {{ define "styles" }}
-  {{ if in site.Params.comments.providers "sodesu" }}
+  {{ if and (ne .Params.comment false) (in site.Params.comments.providers "sodesu") }}
     <link rel="stylesheet" href="https://cdn.jsdmirror.com/npm/@karlbaey/sodesu-for-haku@0.2.2/dist/sodesu-for-haku.css" />
     <link rel="stylesheet" href="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/prism-themes/1.9.0/prism-material-dark.min.css" />
   {{ end }}
@@ -46,7 +46,9 @@
       {{- $content | safeHTML -}}
     </article>
     {{ partial "copyright.html" (dict "page" .) }}
-    {{ partial "comments.html" (dict "page" .) }}
+    {{ if ne .Params.comment false }}
+      {{ partial "comments.html" (dict "page" .) }}
+    {{ end }}
   </main>
 {{ end }}
 
@@ -55,8 +57,10 @@
   <script src="{{ $articleScript.RelPermalink }}" integrity="{{ $articleScript.Data.Integrity }}" defer></script>
   {{ $codeFoldScript := resources.Get "js/code-fold.js" | minify | fingerprint }}
   <script src="{{ $codeFoldScript.RelPermalink }}" integrity="{{ $codeFoldScript.Data.Integrity }}" defer></script>
-  {{ $commentsScript := resources.Get "js/comments.js" | minify | fingerprint }}
-  <script src="{{ $commentsScript.RelPermalink }}" integrity="{{ $commentsScript.Data.Integrity }}" defer></script>
+  {{ if ne .Params.comment false }}
+    {{ $commentsScript := resources.Get "js/comments.js" | minify | fingerprint }}
+    <script src="{{ $commentsScript.RelPermalink }}" integrity="{{ $commentsScript.Data.Integrity }}" defer></script>
+  {{ end }}
   {{ if and (ne .Params.toc false) (gt (len (findRE "<a[^>]+href=" .TableOfContents)) 0) }}
     {{ $tocScript := resources.Get "js/toc.js" | minify | fingerprint }}
     <script src="{{ $tocScript.RelPermalink }}" integrity="{{ $tocScript.Data.Integrity }}" defer></script>
